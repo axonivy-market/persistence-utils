@@ -43,21 +43,39 @@
         <artifactId>project-build-plugin</artifactId>
         <version>9.3.1</version>
         <extensions>true</extensions>
+        <executions>
+          <execution>
+            <id>default-compileProject</id>
+            <configuration>
+              <compilerOptions>-XprintProcessorInfo</compilerOptions>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
         <version>3.1.0</version>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>src_generated/</directory>
-              <includes>
-                <include>**/*.java</include>
-              </includes>
-            </fileset>
-          </filesets>
-        </configuration>
+        <executions>
+          <execution>
+            <id>clean.generated</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+            <inherited>false</inherited>
+            <configuration>
+              <filesets>
+                <fileset>
+                  <directory>src_generated/</directory>
+                  <includes>
+                    <include>**/*.java</include>
+                  </includes>
+                </fileset>
+              </filesets>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
