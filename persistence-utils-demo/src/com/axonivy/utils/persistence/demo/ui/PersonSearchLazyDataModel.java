@@ -15,10 +15,9 @@ import com.axonivy.utils.persistence.demo.daos.PersonDAO;
 import com.axonivy.utils.persistence.demo.entities.Person;
 import com.axonivy.utils.persistence.demo.enums.PersonSearchField;
 import com.axonivy.utils.persistence.search.SearchFilter;
-import ch.ivyteam.ivy.jsf.primefaces.legazy.LazyDataModel7;
 
 
-public class PersonSearchLazyDataModel extends LazyDataModel7<Tuple> {
+public class PersonSearchLazyDataModel extends LazyDataModel<Tuple> {
 	private static final long serialVersionUID = 1L;
 	private List<Tuple> personTuples;
 
