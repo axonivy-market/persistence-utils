@@ -1,9 +1,9 @@
 package com.axonivy.utils.persistence.test;
 
 import com.axonivy.utils.persistence.demo.enums.Role;
+import com.axonivy.utils.persistence.demo.tool.test.service.TestService;
 import com.axonivy.utils.persistence.test.dao.TestDemoDAO;
 import com.axonivy.utils.persistence.test.mock.Mocked;
-import com.axonivy.utils.persistence.test.service.TestService;
 
 public class DemoTestBase extends IvyTestBase {
 	protected final TestDemoDAO testDemoDao = TestDemoDAO.getInstance();

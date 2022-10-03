@@ -12,6 +12,13 @@
           },
           {
             "groupId": "com.axonivy.utils.persistence",
+            "artifactId": "persistence-utils-demo-tool",
+            "version": "${version}",
+            "type": "iar",
+            "importInWorkspace": "false"
+          },
+          {
+            "groupId": "com.axonivy.utils.persistence",
             "artifactId": "persistence-utils-test",
             "version": "${version}",
             "type": "iar",
