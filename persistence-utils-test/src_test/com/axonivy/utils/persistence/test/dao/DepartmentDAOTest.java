@@ -10,8 +10,8 @@ import org.dbunit.dataset.DataSetException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.axonivy.utils.persistence.daos.DepartmentDAO;
-import com.axonivy.utils.persistence.entities.Department;
+import com.axonivy.utils.persistence.demo.daos.DepartmentDAO;
+import com.axonivy.utils.persistence.demo.entities.Department;
 import com.axonivy.utils.persistence.test.DemoTestBase;
 
 import ch.ivyteam.ivy.environment.IvyTest;

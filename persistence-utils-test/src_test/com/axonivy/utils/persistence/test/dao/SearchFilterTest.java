@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.axonivy.utils.persistence.daos.PersonDAO;
-import com.axonivy.utils.persistence.enums.PersonSearchField;
+import com.axonivy.utils.persistence.demo.daos.PersonDAO;
+import com.axonivy.utils.persistence.demo.enums.PersonSearchField;
 import com.axonivy.utils.persistence.search.SearchFilter;
 import com.axonivy.utils.persistence.test.DemoTestBase;
 
