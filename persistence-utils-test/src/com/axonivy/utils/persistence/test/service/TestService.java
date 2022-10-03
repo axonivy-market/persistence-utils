@@ -32,9 +32,13 @@ public class TestService {
 	 * @throws DatabaseUnitException
 	 * @throws IOException
 	 */
-	public static void loadStandardTestData(boolean clean, String...tableNames) throws SQLException, DatabaseUnitException, IOException {
+	public static void loadStandardTestData(boolean clean, String...tableNames) {
 		LOG.info("Preparing test data");
-		demoDao.loadStandardTestdata(clean, tableNames);
+		try {
+			demoDao.loadStandardTestdata(clean, tableNames);
+		} catch (SQLException | DatabaseUnitException | IOException e) {
+			throw new RuntimeException("Error loading testdata", e);
+		}
 	}
 
 

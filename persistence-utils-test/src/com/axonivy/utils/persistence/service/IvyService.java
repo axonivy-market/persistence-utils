@@ -8,10 +8,10 @@ import com.axonivy.utils.persistence.Logger;
 
 import ch.ivyteam.ivy.application.IApplication;
 import ch.ivyteam.ivy.environment.Ivy;
+import ch.ivyteam.ivy.runtime.IvyRuntime;
 import ch.ivyteam.ivy.security.IRole;
 import ch.ivyteam.ivy.security.IUser;
 import ch.ivyteam.ivy.security.exec.Sudo;
-import ch.ivyteam.ivy.workflow.IWorkflowContext;
 import ch.ivyteam.ivy.workflow.IWorkflowSession;
 
 
@@ -20,7 +20,6 @@ import ch.ivyteam.ivy.workflow.IWorkflowSession;
  */
 public class IvyService {
 	private static final Logger LOG = Logger.getLogger(IvyService.class);
-	private static final String DESIGNER_APPLICATION_NAME = "designer";
 
 	private IvyService() {
 	}
@@ -44,7 +43,8 @@ public class IvyService {
 	 * @return
 	 */
 	public static long getApplicationId() {
-		return Ivy.wf().getApplication().getId();
+		
+		return IApplication.current().getId();
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class IvyService {
 			IUser systemUser = getSystemUser();
 
 			if(systemUser != null) {
-				result = systemUser.getId() == user.getId();
+				result = systemUser.getSecurityMemberId() == user.getSecurityMemberId();
 			}
 		}
 		return result;
@@ -174,19 +174,8 @@ public class IvyService {
 	 * Note: this function might be called by Logger so do not log here... :-)
 	 * 
 	 * @return
-	 * @throws Exception
 	 */
-	public static boolean isDesigner() throws Exception {
-		boolean designer = false;
-		IWorkflowContext wf = Ivy.wf();
-
-		if(wf != null) {
-			IApplication application = wf.getApplication();
-
-			if(application != null) {
-				designer = DESIGNER_APPLICATION_NAME.equalsIgnoreCase(application.getName());
-			}
-		}
-		return designer;
+	public static boolean isDesigner() {
+		return IvyRuntime.isDesigner();
 	}
 }
