@@ -19,7 +19,7 @@
           },
           {
             "groupId": "com.axonivy.utils.persistence",
-            "artifactId": "persistence-utils-test",
+            "artifactId": "persistence-utils-demo-test",
             "version": "${version}",
             "type": "iar",
             "importInWorkspace": "false"

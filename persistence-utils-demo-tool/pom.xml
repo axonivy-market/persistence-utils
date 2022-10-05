@@ -26,6 +26,9 @@
         <artifactId>project-build-plugin</artifactId>
         <version>9.4.1</version>
         <extensions>true</extensions>
+        <configuration>
+        	<skipScriptValidation>true</skipScriptValidation>
+        </configuration>
       </plugin>
     </plugins>
   </build>
