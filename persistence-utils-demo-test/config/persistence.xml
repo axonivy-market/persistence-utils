@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.2" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
     <persistence-unit name="jpa_demo">
-        <non-jta-data-source>jpa-demo</non-jta-data-source>
+        <non-jta-data-source>jpa-demo-test</non-jta-data-source>
         <class>com.axonivy.utils.persistence.demo.entities.Department</class>
         <class>com.axonivy.utils.persistence.demo.entities.Person</class>
         <properties>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+        </properties>
+    </persistence-unit>
+    <persistence-unit name="persistence_utils">
+        <non-jta-data-source>persistence-utils-test</non-jta-data-source>
+        <class>com.axonivy.utils.persistence.entities.Car</class>
+        <class>com.axonivy.utils.persistence.entities.Producer</class>
+        <class>com.axonivy.utils.persistence.entities.Product</class>
+        <properties>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
             <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
-            <property name="hibernate.id.new_generator_mappings" value="false"/>
-            <property name="hibernate.hbm2ddl.auto" value="none"/>
         </properties>
     </persistence-unit>
 </persistence>
