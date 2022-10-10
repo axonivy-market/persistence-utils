@@ -16,6 +16,8 @@ import com.axonivy.utils.persistence.demo.entities.Person;
 import com.axonivy.utils.persistence.demo.enums.PersonSearchField;
 import com.axonivy.utils.persistence.search.SearchFilter;
 
+import ch.ivyteam.ivy.environment.Ivy;
+
 
 public class PersonSearchLazyDataModel extends LazyDataModel<Tuple> {
 	private static final long serialVersionUID = 1L;
@@ -51,6 +53,9 @@ public class PersonSearchLazyDataModel extends LazyDataModel<Tuple> {
 
 	@Override
 	public List<Tuple> load(int first, int pageSize, Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
+
+		Ivy.log().info("Called lazy datamodel load()");
+
 		PersonDAO dao = PersonDAO.getInstance();
 
 		SearchFilter filter = new SearchFilter();

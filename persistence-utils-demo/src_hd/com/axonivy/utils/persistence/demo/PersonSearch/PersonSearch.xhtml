@@ -46,9 +46,8 @@
 							value="#{data.personSearchBean.personSearchLazyDataModel}"
 							var="personTuple" rowKey="#{projectTuple.get(0)}"
 							sortMode="multiple" paginator="true" rows="20"
-							filterEvent="enter"
 							paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-							rowsPerPageTemplate="10,20,50" lazy="true"
+							rowsPerPageTemplate="10,20,50"
 							styleClass="person_search_table" reflow="true">
 							<f:facet name="header">
 								<p:commandButton id="toggler" type="button"
@@ -65,37 +64,35 @@
 							-->
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/ivyUserName')}"
-								sortBy="#{_.IVY_USER_NAME}"	filterBy="#{_.IVY_USER_NAME}"
+								field="IVY_USER_NAME"
 								style="width: 10em">
 								<h:outputText value="#{personTuple.get(1)}" />
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/firstName')}"
-								sortBy="#{_.FIRST_NAME}" filterBy="#{_.FIRST_NAME}">
+								field="FIRST_NAME">
 								<h:outputText value="#{personTuple.get(2)}" />
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/lastName')}"
-								sortBy="#{_.LAST_NAME}" filterBy="#{_.LAST_NAME}"
+								field="LAST_NAME"
 								style="width: 10em">
 								<h:outputText value="#{personTuple.get(3)}" />
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/birthdate')}"
-								sortBy="#{_.BIRTHDATE}" filterBy="#{_.BIRTHDATE}">
+								field="BIRTHDATE"
+								style="width: 10em">
 								<h:outputText value="#{personTuple.get(4)}" />
 								<f:facet name="filter">
-									<p:datePicker pattern="dd.MM.yyyy" navigator="true"
-										mindate="01.01.1800" timeInput="true">
-										<p:ajax event="dateSelect"
-											oncomplete="PF('personTable').filter()" />
-									</p:datePicker>
+									<p:datePicker pattern="dd.MM.yyyy" yearNavigator="true" monthNavigator="true" yearRange="1950:2022"
+										mindate="01.01.1800" onchange="PF('personTable').filter()" />
 								</f:facet>
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/maritalStatus')}"
-								sortBy="#{_.MARITAL_STATUS}" filterBy="#{_.MARITAL_STATUS}"
-								visible="false">
+								field="MARITAL_STATUS"
+								visible="true">
 								<f:facet name="filter">
 									<p:selectOneMenu onchange="PF('personTable').filter()">
 										<f:selectItem itemValue="#{null}"
@@ -108,22 +105,23 @@
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/maritalStatusLike')}"
-								sortBy="#{_.MARITAL_STATUS_LIKE}" filterBy="#{_.MARITAL_STATUS_LIKE}">
+								field="MARITAL_STATUS_LIKE">
 								<h:outputText value="#{personTuple.get(6).getCmsName()}" />
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/salary')}"
-								styleClass="right" sortBy="#{_.SALARY}" filterBy="#{_.SALARY}">
+								field="SALARY"
+								styleClass="right">
 								<h:outputText value="#{personTuple.get(7)}" />
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/departmentName')}"
-								sortBy="#{_.DEPARTMENT_NAME}" filterBy="#{_.DEPARTMENT_NAME}">
+								field="DEPARTMENT_NAME">
 								<h:outputText value="#{personTuple.get(8)}" />
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/syncToIvy')}"
-								sortBy="#{_.SYNC_TO_IVY}" filterBy="#{_.SYNC_TO_IVY}">
+								field="SYNC_TO_IVY">
 								<f:facet name="filter">
 									<p:toggleSwitch onchange="PF('personTable').filter()" />
 								</f:facet>
