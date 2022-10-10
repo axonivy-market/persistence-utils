@@ -42,9 +42,9 @@
 				</div>
 				<div class="ui-g">
 					<div class="ui-g-12 ui-md-12 ui-lg-12">
-						<p:dataTable id="personTable"
+						<p:dataTable id="personTable" widgetVar="personTable"
 							value="#{data.personSearchBean.personSearchLazyDataModel}"
-							var="personTuple" rowKey="#{projectTuple.get(0)}"
+							var="person" rowKey="#{person.id}"
 							sortMode="multiple" paginator="true" rows="20"
 							paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 							rowsPerPageTemplate="10,20,50"
@@ -66,24 +66,24 @@
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/ivyUserName')}"
 								field="IVY_USER_NAME"
 								style="width: 10em">
-								<h:outputText value="#{personTuple.get(1)}" />
+								<h:outputText value="#{person.get('IVY_USER_NAME')}" />
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/firstName')}"
 								field="FIRST_NAME">
-								<h:outputText value="#{personTuple.get(2)}" />
+								<h:outputText value="#{person.get('FIRST_NAME')}" />
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/lastName')}"
 								field="LAST_NAME"
 								style="width: 10em">
-								<h:outputText value="#{personTuple.get(3)}" />
+								<h:outputText value="#{person.get('LAST_NAME')}" />
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/birthdate')}"
 								field="BIRTHDATE"
 								style="width: 10em">
-								<h:outputText value="#{personTuple.get(4)}" />
+								<h:outputText value="#{person.get('BIRTHDATE')}" />
 								<f:facet name="filter">
 									<p:datePicker pattern="dd.MM.yyyy" yearNavigator="true" monthNavigator="true" yearRange="1950:2022"
 										mindate="01.01.1800" onchange="PF('personTable').filter()" />
@@ -101,23 +101,23 @@
 											itemLabel="#{m.getCmsName()}" itemValue="#{m}" />
 									</p:selectOneMenu>
 								</f:facet>
-								<h:outputText value="#{personTuple.get(5).getCmsName()}" />
+								<h:outputText value="#{person.get('MARITAL_STATUS').getCmsName()}" />
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/maritalStatusLike')}"
 								field="MARITAL_STATUS_LIKE">
-								<h:outputText value="#{personTuple.get(6).getCmsName()}" />
+								<h:outputText value="#{person.get('MARITAL_STATUS_LIKE').getCmsName()}" />
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/salary')}"
 								field="SALARY"
 								styleClass="right">
-								<h:outputText value="#{personTuple.get(7)}" />
+								<h:outputText value="#{person.get('SALARY')}" />
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/departmentName')}"
 								field="DEPARTMENT_NAME">
-								<h:outputText value="#{personTuple.get(8)}" />
+								<h:outputText value="#{person.get('DEPARTMENT_NAME')}" />
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/syncToIvy')}"
@@ -125,7 +125,7 @@
 								<f:facet name="filter">
 									<p:toggleSwitch onchange="PF('personTable').filter()" />
 								</f:facet>
-								<h:panelGroup rendered="#{personTuple.get(9)}">
+								<h:panelGroup rendered="#{person.get('SYNC_TO_IVY')}">
 									<i class="fa fa-check" aria-hidden="true" />
 								</h:panelGroup>
 							</p:column>
@@ -133,7 +133,7 @@
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/edit')}"
 								style="width: 2em; text-align:center">
 								<p:commandLink id="editButton"
-									actionListener="#{logic.editPerson(personTuple.get(0))}"
+									actionListener="#{logic.editPerson(person.id)}"
 									update="personDialog" oncomplete="PF('personDialog').show()">
 									<i class="fa fa-pencil" aria-hidden="true"></i>
 								</p:commandLink>
@@ -142,7 +142,7 @@
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/delete')}"
 								style="width: 2em; text-align:center">
 								<p:commandLink id="deleteButton"
-									actionListener="#{logic.deletePerson(personTuple.get(0))}"
+									actionListener="#{logic.deletePerson(person.id)}"
 									update="mainForm">
 									<i class="fa fa-trash" aria-hidden="true" />
 									<p:confirm

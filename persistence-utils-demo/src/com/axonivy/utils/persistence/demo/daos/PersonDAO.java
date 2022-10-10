@@ -2,6 +2,7 @@ package com.axonivy.utils.persistence.demo.daos;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -19,7 +20,9 @@ import com.axonivy.utils.persistence.dao.ExpressionMap;
 import com.axonivy.utils.persistence.dao.QuerySettings;
 import com.axonivy.utils.persistence.demo.Logger;
 import com.axonivy.utils.persistence.demo.daos.markers.AccessMarker;
+import com.axonivy.utils.persistence.demo.entities.Department_;
 import com.axonivy.utils.persistence.demo.entities.Person;
+import com.axonivy.utils.persistence.demo.entities.Person_;
 import com.axonivy.utils.persistence.demo.enums.AccessRestriction;
 import com.axonivy.utils.persistence.demo.enums.MaritalStatus;
 import com.axonivy.utils.persistence.demo.enums.PersonSearchField;
@@ -28,8 +31,7 @@ import com.axonivy.utils.persistence.demo.service.EnumService;
 import com.axonivy.utils.persistence.demo.service.IvyService;
 import com.axonivy.utils.persistence.search.AttributePredicates;
 import com.axonivy.utils.persistence.search.FilterPredicate;
-import com.axonivy.utils.persistence.demo.entities.Department_;
-import com.axonivy.utils.persistence.demo.entities.Person_;
+import com.axonivy.utils.persistence.service.DateService;
 
 
 public class PersonDAO extends AuditableDAO<Person_, Person> implements BaseDAO {
@@ -125,10 +127,9 @@ public class PersonDAO extends AuditableDAO<Person_, Person> implements BaseDAO 
 				Expression<Date> birthdateExpresssion = getExpression(expressionMap, query.r, Person_.birthdate);
 				attributePredicate.addSelection(birthdateExpresssion);
 				attributePredicate.addOrder(query.c.asc(birthdateExpresssion));
-				String searchDateString = filterPredicate.getValue();
-				if (searchDateString != null) {
-					Date searchDate = new Date(Long.parseLong(searchDateString));
-					attributePredicate.addPredicate(query.c.equal(birthdateExpresssion, searchDate));
+				LocalDate date = filterPredicate.getValue(LocalDate.class);
+				if (date != null) {
+					attributePredicate.addPredicate(query.c.equal(birthdateExpresssion, DateService.toDate(date)));
 				}
 				break;
 			case DEPARTMENT_NAME:
