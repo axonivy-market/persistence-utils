@@ -5,9 +5,8 @@ import java.text.MessageFormat;
 import org.apache.log4j.Level;
 import org.apache.log4j.Priority;
 
-import com.axonivy.utils.persistence.demo.service.IvyService;
-
 import ch.ivyteam.ivy.environment.Ivy;
+import ch.ivyteam.ivy.runtime.IvyRuntime;
 import ch.ivyteam.log.ILogger;
 
 /**
@@ -152,7 +151,7 @@ public class Logger implements ILogger {
 			synchronized (Logger.class) {
 				if(!initialized) {
 					try {
-						if(IvyService.isDesigner()) {
+						if(IvyRuntime.isDesigner()) {
 							ivyLogger = Ivy.log();
 							log4jLogger = null;
 						}
@@ -181,6 +180,6 @@ public class Logger implements ILogger {
 			return "null";
 		} else {
 			return o.toString();
-		} 
+		}
 	}
 }

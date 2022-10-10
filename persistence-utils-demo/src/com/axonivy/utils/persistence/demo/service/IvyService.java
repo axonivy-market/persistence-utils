@@ -23,7 +23,6 @@ import ch.ivyteam.ivy.security.IUser;
 import ch.ivyteam.ivy.security.exec.Sudo;
 import ch.ivyteam.ivy.workflow.ICase;
 import ch.ivyteam.ivy.workflow.ITask;
-import ch.ivyteam.ivy.workflow.IWorkflowContext;
 import ch.ivyteam.ivy.workflow.IWorkflowSession;
 import ch.ivyteam.ivy.workflow.TaskState;
 import ch.ivyteam.ivy.workflow.query.CaseQuery;
@@ -38,14 +37,13 @@ public class IvyService {
 	private static final String SESSION_KEY_BASE = IvyService.class.getCanonicalName() + ".";
 	private static final String SESSION_OLD_CONTENT_LOCALE = SESSION_KEY_BASE + "oldContentLocale";
 	private static final String SESSION_OLD_FORMATTING_LOCALE = SESSION_KEY_BASE + "oldFormattingLocale";
-	private static final String DESIGNER_APPLICATION_NAME = "designer";
 
 	private IvyService() {
 	}
 
 	/**
 	 * Set the application's default {@link Locale}.
-	 * 
+	 *
 	 * The locale will be set to {@link Constants#DEFAULT_LOCALE} into
 	 * the session and will be valid for this session until
 	 * {@link #restoreSessionLocale()} is called.
@@ -74,7 +72,7 @@ public class IvyService {
 
 	/**
 	 * Just a shortcut to run code as system.
-	 * 
+	 *
 	 * @param <T>
 	 * @param callable
 	 * @return
@@ -86,16 +84,16 @@ public class IvyService {
 
 	/**
 	 * Get the Id of the current application.
-	 * 
+	 *
 	 * @return
 	 */
 	public static long getApplicationId() {
-		return Ivy.wf().getApplication().getId();
+		return IApplication.current().getId();
 	}
 
 	/**
 	 * Find an {@link IRole}.
-	 * 
+	 *
 	 * @param role
 	 * @return
 	 */
@@ -105,7 +103,7 @@ public class IvyService {
 
 	/**
 	 * Find an ivy role.
-	 * 
+	 *
 	 * @param rolename
 	 * @return
 	 */
@@ -115,7 +113,7 @@ public class IvyService {
 
 	/**
 	 * Find an ivy user.
-	 * 
+	 *
 	 * @param username
 	 * @return
 	 */
@@ -125,10 +123,10 @@ public class IvyService {
 
 	/**
 	 * Get a non-blank Ivy global variable as a String.
-	 * 
+	 *
 	 * If the variable is not set or blank, then return default value. If the
 	 * variable is set, then it is trimmed before returning.
-	 * 
+	 *
 	 * @param name
 	 * @param defValue
 	 * @return
@@ -145,9 +143,9 @@ public class IvyService {
 
 	/**
 	 * Does the current user have global access?
-	 * 
-	 * Global access will be granted to the system user and to users having the Administrator role. 
-	 * 
+	 *
+	 * Global access will be granted to the system user and to users having the Administrator role.
+	 *
 	 * @return
 	 */
 	public static boolean hasGlobalAccess() {
@@ -157,7 +155,7 @@ public class IvyService {
 
 	/**
 	 * Get the current session user.
-	 * 
+	 *
 	 * @return
 	 */
 	public static IUser getSessionUser() {
@@ -175,7 +173,7 @@ public class IvyService {
 
 	/**
 	 * Get the current session username.
-	 * 
+	 *
 	 * @return
 	 */
 	public static String getSessionUserName() {
@@ -193,7 +191,7 @@ public class IvyService {
 
 	/**
 	 * Get the system user.
-	 * 
+	 *
 	 * @return
 	 */
 	public static IUser getSystemUser() {
@@ -211,7 +209,7 @@ public class IvyService {
 
 	/**
 	 * Is the current session user the system user?
-	 * 
+	 *
 	 * @return
 	 */
 	public static boolean isSystemUser() {
@@ -220,47 +218,28 @@ public class IvyService {
 
 	/**
 	 * Is the given user the system user?
-	 * 
+	 *
 	 * @param user
 	 * @return
 	 */
 	public static boolean isSystemUser(IUser user) {
 		boolean result = false;
 		if(user != null) {
+
+
+
 			IUser systemUser = getSystemUser();
 
 			if(systemUser != null) {
-				result = systemUser.getId() == user.getId();
+				result = systemUser.getSecurityMemberId() == user.getSecurityMemberId();
 			}
 		}
 		return result;
 	}
 
 	/**
-	 * Are we running in Designer?
-	 * 
-	 * Note: this function might be called by Logger so do not log here... :-)
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	public static boolean isDesigner() throws Exception {
-		boolean designer = false;
-		IWorkflowContext wf = Ivy.wf();
-
-		if(wf != null) {
-			IApplication application = wf.getApplication();
-
-			if(application != null) {
-				designer = DESIGNER_APPLICATION_NAME.equalsIgnoreCase(application.getName());
-			}
-		}
-		return designer;
-	}
-
-	/**
 	 * Check if the session user has any of the given Ivy roles.
-	 * 
+	 *
 	 * @param roleNames
 	 * @return true if user has a role
 	 */
@@ -286,9 +265,9 @@ public class IvyService {
 
 	/**
 	 * Check if the session user has a concrete ivy role.
-	 * 
+	 *
 	 * Note, that the System user and the Developer user will have all roles.
-	 * 
+	 *
 	 * @param roles
 	 * @return
 	 */
@@ -298,7 +277,7 @@ public class IvyService {
 
 	/**
 	 * Get list of user for a role.
-	 *  
+	 *
 	 * @param role
 	 * @return
 	 */
@@ -307,8 +286,8 @@ public class IvyService {
 	}
 
 	/**
-	 * Get list of user for a role. 
-	 * 
+	 * Get list of user for a role.
+	 *
 	 * @param roleName
 	 * @return List<IUser>
 	 */
@@ -325,7 +304,7 @@ public class IvyService {
 
 	/**
 	 * Get an attribute from the current session.
-	 * 
+	 *
 	 * @param key
 	 * @return
 	 */
@@ -343,7 +322,7 @@ public class IvyService {
 
 	/**
 	 * Set an attribute to the current session.
-	 * 
+	 *
 	 * @param key
 	 * @param attribute
 	 * @return
@@ -362,9 +341,9 @@ public class IvyService {
 
 	/**
 	 * Send a signal containing a single {@link String}.
-	 * 
+	 *
 	 * The {@link String} will typically contain the id of an object.
-	 * 
+	 *
 	 * @param signalCode
 	 * @param data
 	 */
@@ -374,7 +353,7 @@ public class IvyService {
 
 	/**
 	 * Send a signal.
-	 * 
+	 *
 	 * @param signalCode
 	 */
 	public static void sendSignal(String signalCode) {
@@ -383,7 +362,7 @@ public class IvyService {
 
 	/**
 	 * Execute a case query.
-	 * 
+	 *
 	 * @param caseQuery
 	 * @return
 	 */
@@ -393,7 +372,7 @@ public class IvyService {
 
 	/**
 	 * Execute a case query, force a single result.
-	 * 
+	 *
 	 * @param caseQuery
 	 * @return
 	 */
@@ -418,7 +397,7 @@ public class IvyService {
 
 	/**
 	 * Execute a task query.
-	 * 
+	 *
 	 * @param taskQuery
 	 * @return
 	 */
@@ -428,7 +407,7 @@ public class IvyService {
 
 	/**
 	 * Execute a task query, force a single result.
-	 * 
+	 *
 	 * @param taskQuery
 	 * @return
 	 */
@@ -454,7 +433,7 @@ public class IvyService {
 
 	/**
 	 * Reset a task if it is in an active state.
-	 * 
+	 *
 	 * Active States are:
 	 * <ul>
 	 * <li>{@link TaskState#RESUMED}</li>
@@ -463,7 +442,7 @@ public class IvyService {
 	 * <li>{@link TaskState#READY_FOR_JOIN}</li>
 	 * <li>{@link TaskState#FAILED}</li>
 	 * </ul>
-	 * 
+	 *
 	 */
 	public static void resetTaskIfActive() {
 		List<TaskState> states = Arrays.asList(TaskState.RESUMED, TaskState.CREATED, TaskState.PARKED, TaskState.READY_FOR_JOIN, TaskState.FAILED);
@@ -478,7 +457,7 @@ public class IvyService {
 
 	/**
 	 * Set embed in frame flag to false.
-	 * 
+	 *
 	 * @param wfCase
 	 */
 	public static void setEmbedInFrame(ICase wfCase) {

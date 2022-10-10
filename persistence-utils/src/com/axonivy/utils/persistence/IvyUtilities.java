@@ -7,11 +7,12 @@ import java.util.function.Function;
 
 import com.axonivy.utils.persistence.logging.Logger;
 
-import ch.ivyteam.ivy.environment.Ivy;
-import ch.ivyteam.ivy.security.ISecurityContext;
-import ch.ivyteam.ivy.server.ServerFactory;
-import ch.ivyteam.ivy.security.IRole;
 import ch.ivyteam.ivy.application.IApplication;
+import ch.ivyteam.ivy.environment.Ivy;
+import ch.ivyteam.ivy.runtime.IvyRuntime;
+import ch.ivyteam.ivy.security.IRole;
+import ch.ivyteam.ivy.security.ISecurityContext;
+import ch.ivyteam.ivy.security.exec.Sudo;
 
 /**
  * Some Ivy Utilities for the process.
@@ -25,9 +26,6 @@ public class IvyUtilities {
 	 *
 	 */
 	public static final String BYTES_SYMBOL = "B"; // NO_UCD (use private)
-
-	private static Boolean inDesigner = null;
-	private static final String DESIGNER = "designer";
 
 	/**
 	 * Get the name of the currently active process model.
@@ -46,7 +44,7 @@ public class IvyUtilities {
 
 	/**
 	 * Execute a call via the system context, where more permissions are allowed
-	 * 
+	 *
 	 * @param callable any callable or a lambda
 	 * @param <R> the type of the represented object
 	 * @return result value, can be of any type
@@ -58,7 +56,7 @@ public class IvyUtilities {
 			LOG.debug("Runnning in Test Mode, system permission should not be required");
 			return callable.call();
 		} else {
-			return ServerFactory.getServer().getSecurityManager().executeAsSystem(callable);
+			return Sudo.call(callable);
 		}
 	}
 
@@ -116,19 +114,13 @@ public class IvyUtilities {
 
 	/**
 	 * Check if this program is running in Axon Ivy Designer or not
-	 * 
+	 *
+	 * @deprecated use {@link IvyRuntime#isDesigner()}
 	 * @return true if this program is running in Axon Ivy Designer
 	 */
+	@Deprecated
 	public static boolean isDesigner() {
-		if (inDesigner == null) {
-			if (testMode) {
-				inDesigner = false;
-			} else {
-				// necessary to detect switching applications
-				inDesigner = isDesigner(Ivy.wf().getApplication());
-			}
-		}
-		return inDesigner;
+		return IvyRuntime.isDesigner();
 	}
 
 	/**
@@ -139,7 +131,7 @@ public class IvyUtilities {
 	 */
 	public static boolean isDesigner(IApplication application) {
 		try {
-			return asSystem(() -> DESIGNER.equalsIgnoreCase(application.getName()));
+			return asSystem(() -> IApplication.DESIGNER_APPLICATION_NAME.equalsIgnoreCase(application.getName()));
 		} catch (Exception e) {
 			LOG.warn("Could not check whether app is designer, returning false", e);
 		}
