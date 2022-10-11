@@ -11,6 +11,7 @@
     <module>${project.name}-demo</module>
     <module>${project.name}-demo-tool</module>
     <module>${project.name}-demo-test</module>
+    <module>${project.name}-demo-webtest</module>
     <module>${project.name}-product</module>
   </modules>
 
