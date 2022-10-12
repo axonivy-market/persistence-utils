@@ -1,8 +1,6 @@
 package com.axonivy.utils.persistence.webtest;
 
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.hidden;
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
@@ -109,7 +107,6 @@ public class DemoTest {
 
 		$(By.id("personForm:maritalStatus")).click();
 		$(By.id("personForm:maritalStatus_items")).$$(By.tagName("li")).find(text("married")).click();
-		$(By.id("personForm:maritalStatus")).click();
 
 		$(By.id("personForm:salary_input")).shouldBe(enabled).sendKeys("1111900");
 
@@ -180,11 +177,18 @@ public class DemoTest {
 	}
 
 	private static void startLoginAsAdmin() {
-		open(EngineUrl.create().toUrl() + "/faces/login.xhtml");
+		open(EngineUrl.base() + "default-workflow/faces/login.xhtml");
 
 		$(By.id("loginForm:userName")).shouldBe(enabled).sendKeys("jpa_admin");
 		$(By.id("loginForm:password")).shouldBe(enabled).sendKeys("jpa_admin");
 		$(By.id("loginForm:login")).shouldBe(enabled).click();
+		
+		open(EngineUrl.base() + "default-workflow/faces/profile.xhtml");
+		SelenideElement lang = $(By.name("profileForm:contentLanguage_editableInput")).shouldBe(enabled);
+		lang.clear();
+		lang.sendKeys("en");
+		
+		$(By.id("profileForm:saveBtn")).shouldBe(enabled).click();
 	}
 
 	private static int indexOf(String tableId, String text) {
