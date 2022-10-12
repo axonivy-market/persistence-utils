@@ -10,6 +10,6 @@ on:
 jobs:
   build:
     uses: axonivy-market/github-workflows/.github/workflows/ci.yml@v2
-    # Disable Tests
-    # with:
-      # mvnArgs: -DskipTests
+    # Disable Web Tests
+    with:
+      mvnArgs: -PnoWebTest
