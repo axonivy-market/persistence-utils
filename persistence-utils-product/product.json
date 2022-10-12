@@ -7,28 +7,20 @@
           {
             "groupId": "com.axonivy.utils.persistence",
             "artifactId": "persistence-utils-demo",
-            "version": "10.0.0-SNAPSHOT",
+            "version": "${version}",
             "type": "iar"
           },
           {
             "groupId": "com.axonivy.utils.persistence",
             "artifactId": "persistence-utils-demo-tool",
-            "version": "10.0.0-SNAPSHOT",
+            "version": "${version}",
             "type": "iar"
           },
           {
             "groupId": "com.axonivy.utils.persistence",
             "artifactId": "persistence-utils-demo-test",
-            "version": "10.0.0-SNAPSHOT",
-            "type": "iar",
-            "importInWorkspace": "false"
-          },
-          {
-            "groupId": "com.axonivy.utils.persistence",
-            "artifactId": "persistence-utils-demo-webtest",
-            "version": "10.0.0-SNAPSHOT",
-            "type": "iar",
-            "importInWorkspace": "false"
+            "version": "${version}",
+            "type": "iar"
           }
         ],
         "repositories": [
@@ -49,7 +41,7 @@
           {
             "groupId": "com.axonivy.utils.persistence",
             "artifactId": "persistence-utils",
-            "version": "10.0.0-SNAPSHOT",
+            "version": "${version}",
             "type": "jar"
           }
         ],

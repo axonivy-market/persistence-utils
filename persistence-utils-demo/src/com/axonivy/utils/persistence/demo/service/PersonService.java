@@ -13,7 +13,6 @@ import com.axonivy.utils.persistence.demo.entities.Department;
 import com.axonivy.utils.persistence.demo.entities.Person;
 import com.axonivy.utils.persistence.demo.enums.Role;
 
-import ch.ivyteam.ivy.application.IApplication;
 import ch.ivyteam.ivy.security.IRole;
 import ch.ivyteam.ivy.security.ISecurityContext;
 import ch.ivyteam.ivy.security.IUser;
@@ -35,7 +34,7 @@ public class PersonService {
 	 * Sync all {@link Person}s to ivy users.
 	 */
 	public static void syncUsers() {
-		ISecurityContext securityContext = IApplication.current().getSecurityContext();
+		ISecurityContext securityContext = ISecurityContext.current();
 		List<Person> all = PersonDAO.getInstance().findAll();
 
 		IRole userRole = IvyService.findRole(Role.USER);
@@ -51,7 +50,7 @@ public class PersonService {
 	 * @param person
 	 */
 	public static void syncUser(Person person) {
-		ISecurityContext securityContext = IApplication.current().getSecurityContext();
+		ISecurityContext securityContext = ISecurityContext.current();
 		IRole userRole = IvyService.findRole(Role.USER);
 		syncUser(securityContext, userRole, person);
 	}
