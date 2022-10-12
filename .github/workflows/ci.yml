@@ -11,5 +11,5 @@ jobs:
   build:
     uses: axonivy-market/github-workflows/.github/workflows/ci.yml@v2
     # Disable Web Tests
-    with:
-      mvnArgs: -PnoWebTest
+    # with:
+    #   mvnArgs: -PnoWebTest
