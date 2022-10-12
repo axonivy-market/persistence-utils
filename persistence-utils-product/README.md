@@ -4,17 +4,30 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 - Helps you create DAO classes for your entities with direct access to databases using standard APIs
 - Simplifies the creation of typical entity classes
 - Supports you with an easy-to-copy demo implementation to reduce your integration effort.
+- Shows example usage of some optional related technologies
+
+## Projects
+- *persistence-utils-demo* the demo project
+- *persistence-utils-demo-tool* tool tp generate test data for the demo project
+- *persistence-utils-test* JUnit tests for the persistence library and the demo project
+- *persistence-utils-demo* JUnit web test demo
 
 ## Demo
-Implemented features:
-- Persistence Library
-- Demo project with bean validation example
-- JUnit Tests for persistence library and demo project
-- DBUnit testdata to use in demo project and also in JUnit tests
+Features:
+- Use of the AxonIvy Persistence Library
+- [Java Bean Validation](https://beanvalidation.org/) example
+- [JUnit](https://junit.org/junit5/) tests for persistence library and demo project
+- [DBUnit](https://www.dbunit.org/) testdata to use in demo project and also in JUnit tests
+- [Quartz](http://www.quartz-scheduler.org/) job to raise salaries at regular time-intervals :-)
 
 ## Test data
 Prepare test data maintained in an integrated excel file using DBUnit.
 The same test data is used in the UI and in JUnit tests.
+
+## Database
+The demo project uses the hsqldb database and drops and creates all tables when started.
+You may change this to a different database but be careful tu understand and
+set correctly the `hibernate.hbm2ddl.auto` setting in `persistence.xml`!
 
 ![Testdata Preparation UI](images/Testdata.png "Testdata Preparation UI")
 
