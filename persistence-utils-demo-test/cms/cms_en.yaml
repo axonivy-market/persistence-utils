@@ -1,0 +1,7 @@
+Validations:
+  com:
+    axonivy:
+      utils:
+        persistence:
+          core:
+            valueRequired: Value is missing.

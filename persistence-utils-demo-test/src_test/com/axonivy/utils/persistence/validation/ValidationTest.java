@@ -23,6 +23,7 @@ import com.axonivy.utils.persistence.test.mock.SimpleFacesContext;
 import com.axonivy.utils.persistence.validation.groups.Error;
 import com.axonivy.utils.persistence.validation.groups.Warning;
 
+import ch.ivyteam.ivy.environment.AppFixture;
 import ch.ivyteam.ivy.environment.IvyTest;
 
 
@@ -62,7 +63,8 @@ public class ValidationTest extends DemoTestBase {
 	}
 
 	@Test
-	public void testMixedGroups() {
+	public void testMixedGroups(AppFixture fixture) {
+
 		Mockito.mockStatic(UiService.class, i -> i.getMethod().getName().equals("findComponent") ? null : i.callRealMethod());
 
 		switchOnLogging(Level.INFO);

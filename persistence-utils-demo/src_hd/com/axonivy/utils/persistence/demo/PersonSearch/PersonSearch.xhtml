@@ -56,12 +56,6 @@
 								<p:columnToggler datasource="personTable" trigger="toggler" />
 							</f:facet>
 
-							<!-- Note:
-							PF expects a bean property for sortBy and filterBy
-							(i.e. a String which ends in ".property"). It uses
-							"property" as the key of the filter/sort.
-							Therefore we took a 
-							-->
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/ivyUserName')}"
 								field="IVY_USER_NAME"

@@ -25,7 +25,7 @@ public class TestService {
 
 	/**
 	 * Load standard test data.
-	 * 
+	 *
 	 * @param clean
 	 * @param tableNames
 	 * @throws SQLException
@@ -44,7 +44,7 @@ public class TestService {
 
 	/**
 	 * Prepare the test environment.
-	 * 
+	 *
 	 * @param clean
 	 * @param throwException
 	 * @return
@@ -65,7 +65,7 @@ public class TestService {
 
 	/**
 	 * Prepare the test environment, catch errors returned in result string.
-	 * 
+	 *
 	 * @param clean
 	 * @return
 	 */
@@ -79,9 +79,9 @@ public class TestService {
 
 	/**
 	 * Get an {@link InputStream} containing data of all mentioned tables.
-	 * 
+	 *
 	 * If no tables are given, use a standard set.
-	 * 
+	 *
 	 * @param tablenames
 	 * @return
 	 */
