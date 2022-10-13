@@ -12,10 +12,15 @@
           },
           {
             "groupId": "com.axonivy.utils.persistence",
-            "artifactId": "persistence-utils-test",
+            "artifactId": "persistence-utils-demo-tool",
             "version": "${version}",
-            "type": "iar",
-            "importInWorkspace": "false"
+            "type": "iar"
+          },
+          {
+            "groupId": "com.axonivy.utils.persistence",
+            "artifactId": "persistence-utils-demo-test",
+            "version": "${version}",
+            "type": "iar"
           }
         ],
         "repositories": [

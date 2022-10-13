@@ -13,7 +13,6 @@ import com.axonivy.utils.persistence.demo.entities.Department;
 import com.axonivy.utils.persistence.demo.entities.Person;
 import com.axonivy.utils.persistence.demo.enums.Role;
 
-import ch.ivyteam.ivy.environment.Ivy;
 import ch.ivyteam.ivy.security.IRole;
 import ch.ivyteam.ivy.security.ISecurityContext;
 import ch.ivyteam.ivy.security.IUser;
@@ -35,7 +34,7 @@ public class PersonService {
 	 * Sync all {@link Person}s to ivy users.
 	 */
 	public static void syncUsers() {
-		ISecurityContext securityContext = Ivy.wf().getApplication().getSecurityContext();
+		ISecurityContext securityContext = ISecurityContext.current();
 		List<Person> all = PersonDAO.getInstance().findAll();
 
 		IRole userRole = IvyService.findRole(Role.USER);
@@ -51,7 +50,7 @@ public class PersonService {
 	 * @param person
 	 */
 	public static void syncUser(Person person) {
-		ISecurityContext securityContext = Ivy.wf().getApplication().getSecurityContext();
+		ISecurityContext securityContext = ISecurityContext.current();
 		IRole userRole = IvyService.findRole(Role.USER);
 		syncUser(securityContext, userRole, person);
 	}
@@ -66,9 +65,9 @@ public class PersonService {
 				LOG.info("Creating user {0}", ivyUserName);
 				user = securityContext.users().create(
 						NewUser.create(ivyUserName)
-							.fullName(String.format("%s %s (%s)", person.getFirstName(), person.getLastName(), dpmntName))
-							.password("password")
-							.mailAddress(String.format("%s.%s@demo.axonivy.com", person.getFirstName(), person.getLastName())).toNewUser());
+						.fullName(String.format("%s %s (%s)", person.getFirstName(), person.getLastName(), dpmntName))
+						.password("password")
+						.mailAddress(String.format("%s.%s@demo.axonivy.com", person.getFirstName(), person.getLastName())).toNewUser());
 
 				user.addRole(userRole);
 			}

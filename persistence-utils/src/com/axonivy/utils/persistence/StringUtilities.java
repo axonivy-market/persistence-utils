@@ -16,11 +16,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.axonivy.utils.persistence.beans.GetterIdString;
 import com.axonivy.utils.persistence.logging.Logger;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
  * Utilities and convenience functions for {@link String}s.
@@ -31,8 +31,15 @@ public class StringUtilities {
 	private static final String CLASS_SEPARATOR_REGEX = "\\"+CLASS_SEPARATOR_STRING;
 	private static final Logger LOG = Logger.getLogger(StringUtilities.class);
 
+	private static ObjectMapper MAPPER;
+
+	static {
+		MAPPER = new ObjectMapper();
+		MAPPER.registerModule(new JavaTimeModule());
+		MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	}
+
 	private StringUtilities(){
-		//no init needed
 	}
 
 	/**
@@ -54,7 +61,7 @@ public class StringUtilities {
 
 	/**
 	 * Helper for checking empty or null string after trimming
-	 * 
+	 *
 	 * @param nullSafeCheckString : String that need to check empty
 	 * @return true if empty or null after trimming
 	 */
@@ -64,7 +71,7 @@ public class StringUtilities {
 
 	/**
 	 * Helper for checking empty or null string after trimming
-	 * 
+	 *
 	 * @param nullSafeCheckObject : an array of object need to check empty
 	 * @return true if all objects are empty or null after trimming
 	 */
@@ -74,7 +81,7 @@ public class StringUtilities {
 
 	/**
 	 * Replace punctuation in string with replacement characters
-	 * 
+	 *
 	 * @param source : source string
 	 * @param replacement : replacement string
 	 * @return replaced string
@@ -85,7 +92,7 @@ public class StringUtilities {
 
 	/**
 	 * Replace all ocurrencies of {key} with value  (key ,value come hashmap)
-	 * 
+	 *
 	 * @param templateString  the regular expression to which this string is to be matched
 	 * @param values the replacement sequence of values
 	 * @return replaced string
@@ -149,7 +156,7 @@ public class StringUtilities {
 
 	/**
 	 * Gets a Byte List and converts it to a string with the given encoding
-	 * 
+	 *
 	 * @param list : a Byte List that need to convert to string
 	 * @param encoding : The name of a supported charset
 	 * @return resulted string
@@ -162,7 +169,7 @@ public class StringUtilities {
 			array[i] = current;
 			i++;
 		}
-		
+
 		return new String(array, encoding);
 	}
 
@@ -305,7 +312,7 @@ public class StringUtilities {
 	/**
 	 * Stripping leading 0
 	 * E.g  0000123456 --&gt; 123456
-	 * 
+	 *
 	 * @param original the String to remove characters from
 	 * @return modified string
 	 */
@@ -355,7 +362,7 @@ public class StringUtilities {
 
 	/**
 	 * Remove characters which are not allowed to be used as a CMS name
-	 * 
+	 *
 	 * @param toBeReplaced the string to modified
 	 * @return modified String which contains only alphanumeric characters and . or _
 	 */
@@ -368,7 +375,7 @@ public class StringUtilities {
 
 	/**
 	 * Convert json string to object of clazz
-	 * 
+	 *
 	 * @param jsonValue the string json
 	 * @param clazz the class
 	 * @param <T> the type of the represented object
@@ -377,12 +384,12 @@ public class StringUtilities {
 	public static <T> T fromJSONToObject(String jsonValue, Class<T> clazz) {
 		return fromJSONToObject(jsonValue, clazz, null);
 	}
-	
+
 	/**
 	 * Convert json string to object
 	 * If clazz is a Collection-like clazz and the collection contains entries of type clazzEntry, the result object is a collection
 	 * else only clazz is considered (no conllection support)
-	 * 
+	 *
 	 * @param jsonValue the string json
 	 * @param clazz the class
 	 * @param clazzEntry the class
@@ -390,45 +397,40 @@ public class StringUtilities {
 	 * @param <T> the type of the represented object
 	 * @return converted class
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T,U> T fromJSONToObject(String jsonValue, Class<T> clazz, Class<U> clazzEntry) {
-		ObjectMapper objMap = new ObjectMapper();
-		objMap.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		T deserializedInstance;
-		if(jsonValue!= null){
+		T object = null;
+		if(jsonValue != null){
 			String jsonString = jsonValue.replaceFirst(".*" + CLASS_SEPARATOR_REGEX, "");
 
 			try {
-				if(clazz!=null&& clazzEntry!=null&& Collection.class.isAssignableFrom(clazz) ){
-
-					@SuppressWarnings("unchecked")
-					CollectionType type = objMap.getTypeFactory()
-					.constructCollectionType((Class<? extends Collection<?>>) clazz, clazzEntry);
-					deserializedInstance = objMap.readValue(jsonString, type);
+				if(clazz != null && clazzEntry != null && Collection.class.isAssignableFrom(clazz)) {
+					CollectionType type = MAPPER
+							.getTypeFactory()
+							.constructCollectionType((Class<? extends Collection<?>>) clazz, clazzEntry);
+					object = MAPPER.readValue(jsonString, type);
 				}else{
-					deserializedInstance = objMap.readValue(jsonString, clazz);
+					object = MAPPER.readValue(jsonString, clazz);
 				}
-				return deserializedInstance;
 			} catch (IOException e) {
 				LOG.error("Could not deserialize value {0} into {1}", e, jsonString, clazz);
 			}
 		}
 
-		return null;
+		return object;
 	}
 
 
 	/**
 	 * Convert an object to JSON represent as a {@link String}
-	 * 
+	 *
 	 * @param value JSON value of the object
 	 * @return a string represent JSON value of the object
 	 */
 	public static String fromObjectToJSON(Object value) {
 		if(value != null){
 			try {
-				ObjectMapper objectMapper = new ObjectMapper();
-				objectMapper.setSerializationInclusion(Include.NON_EMPTY);
-				return objectMapper.writeValueAsString(value);
+				return MAPPER.writeValueAsString(value);
 			} catch (JsonProcessingException e) {
 				LOG.error("Could not serialize value {0} into json string", e, value);
 			}

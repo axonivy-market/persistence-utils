@@ -1,8 +1,10 @@
 {
-  "format" : "9.4.20",
+  "format" : "10.0.0",
   "id" : "173B897CD644184D",
-  "data" : "com.axonivy.utils.persistence.demo.DepartmentSearch.DepartmentSearchData",
   "kind" : "HTML_DIALOG",
+  "config" : {
+    "data" : "com.axonivy.utils.persistence.demo.DepartmentSearch.DepartmentSearchData"
+  },
   "elements" : [ {
       "id" : "f0",
       "type" : "HtmlDialogStart",

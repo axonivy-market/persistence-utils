@@ -39,7 +39,7 @@
 						<p:dataTable id="departmentTable" value="#{data.departmentSearchBean.departments}" var="department" rowKey="#{department.id}"
 								sortMode="multiple" paginator="true" rows="20" filterEvent="enter"
 								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-								rowsPerPageTemplate="10,20,50" styleClass="department_search_table" reflow="true">
+								rowsPerPageTemplate="10,20,50" styleClass="department_search_table" reflow="true" lazy="false">
 							<p:column headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/DepartmentSearch/name')}" style="width: 40em">
 								<h:outputText value="#{department.name}" styleClass="#{department.deleted ? 'deleted' : ''}"/>
 							</p:column>

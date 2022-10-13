@@ -14,12 +14,12 @@ import com.axonivy.utils.persistence.demo.Logger;
 import com.axonivy.utils.persistence.demo.daos.DepartmentDAO;
 import com.axonivy.utils.persistence.demo.daos.PersonDAO;
 import com.axonivy.utils.persistence.demo.entities.Department;
+import com.axonivy.utils.persistence.demo.entities.Department_;
 import com.axonivy.utils.persistence.demo.entities.Person;
 import com.axonivy.utils.persistence.demo.service.PersonService;
 import com.axonivy.utils.persistence.demo.service.ValidationService;
 import com.axonivy.utils.persistence.validation.groups.SaveErrorGroup;
 import com.axonivy.utils.persistence.validation.groups.SaveWarnGroup;
-import com.axonivy.utils.persistence.demo.entities.Department_;
 
 
 public class PersonSearchBean {

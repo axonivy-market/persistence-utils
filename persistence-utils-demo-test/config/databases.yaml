@@ -1,0 +1,11 @@
+Databases:
+  jpa-demo-test:
+    Url: jdbc:hsqldb:mem:jpa-demo-test
+    Driver: org.hsqldb.jdbc.JDBCDriver
+    Password: ${decrypt:}
+    MaxConnections: 50
+  persistence-utils-test:
+    Url: jdbc:hsqldb:mem:persistence-utils-test
+    Driver: org.hsqldb.jdbc.JDBCDriver
+    Password: ${decrypt:}
+    MaxConnections: 50
