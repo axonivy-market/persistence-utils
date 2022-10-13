@@ -1,8 +1,10 @@
 {
-  "format" : "9.4.20",
+  "format" : "10.0.0",
   "id" : "173A4BB5DE327C81",
-  "data" : "com.axonivy.utils.persistence.demo.PersonSearch.PersonSearchData",
   "kind" : "HTML_DIALOG",
+  "config" : {
+    "data" : "com.axonivy.utils.persistence.demo.PersonSearch.PersonSearchData"
+  },
   "elements" : [ {
       "id" : "f0",
       "type" : "HtmlDialogStart",
