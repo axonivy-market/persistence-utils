@@ -25,10 +25,12 @@ import com.codeborne.selenide.SelenideElement;
 /**
  * This WebTest will add a new department and a new person to that department.
  * Next step is to verify that the previously added entities are listed in the table.
+ * 
+ * NOTE: WebTests must follow this name scheme: WebTest*IT
  */
 @IvyWebTest(headless = true)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class DemoTest {
+public class WebTestDemoIT {
 	private static String marketingDepartmentName;
 	private static String productionDepartmentName;
 	private static String firstName;
