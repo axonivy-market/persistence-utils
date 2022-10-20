@@ -27,6 +27,12 @@
         <artifactId>project-build-plugin</artifactId>
         <version>10.0.0</version>
         <extensions>true</extensions>
+        <configuration>
+          <compilerOptions>
+            <compilerOption>-XprintProcessorInfo</compilerOption> 
+            <compilerOption>-XprintRounds</compilerOption>
+          </compilerOptions>
+        </configuration>
       </plugin>
     </plugins>
   </build>
