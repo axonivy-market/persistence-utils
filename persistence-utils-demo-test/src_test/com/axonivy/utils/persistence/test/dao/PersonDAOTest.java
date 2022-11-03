@@ -69,6 +69,7 @@ public class PersonDAOTest extends DemoTestBase {
 	//@Test
 	public void testData() throws Exception {
 		LOG.info("Writig Excel file");
+		TestDemoDAO testDemoDao = TestDemoDAO.getInstance();
 		testDemoDao.exportTablesToExcel("C:/Temp/exported.xls", Person.class.getSimpleName(), Department.class.getSimpleName());
 		LOG.info("Wrote Excel file");
 	}

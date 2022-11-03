@@ -13,7 +13,6 @@ import ch.ivyteam.ivy.environment.IvyTest;
 
 @IvyTest
 public class CarDAOTest extends IvyTestBase {
-	private static final CarDAO carDAO = CarDAO.getInstance();
 
 	/**
 	 * Test problem described in TG-781
@@ -24,6 +23,7 @@ public class CarDAOTest extends IvyTestBase {
 	 */
 	@Test
 	public void testSyntax() {
+		CarDAO carDAO = CarDAO.getInstance();
 		carDAO.findAll(new QuerySettings<Car>().withOrderAttributes(Car_.name));
 	}
 }
