@@ -16,9 +16,11 @@ import org.apache.logging.log4j.core.Filter.Result;
 import org.apache.logging.log4j.core.appender.ConsoleAppender;
 import org.apache.logging.log4j.core.filter.ThresholdFilter;
 import org.apache.logging.log4j.core.layout.PatternLayout;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
+import com.axonivy.utils.persistence.IvyEntityManager;
 import com.axonivy.utils.persistence.demo.Logger;
 import com.axonivy.utils.persistence.demo.service.IvyService;
 
@@ -37,6 +39,11 @@ public class IvyTestBase {
 	public void setup(AppFixture fixture) {
 		// start with system user
 		fixture.loginUser(IvyService.getSystemUser());
+	}
+	
+	@AfterAll
+	public static void down() {
+		IvyEntityManager.getInstance().clearThreadlocals();
 	}
 
 	public PackageLevel packageLevel(String packagePrefix, Level level) {

@@ -9,10 +9,10 @@ Thumbs.db
 hs_err_pid*
 
 # maven
-target/
+**/target/
 
 # ivy
-lib/mvn-deps/
-logs/
+**/lib/
+**/logs/
 src_dataClasses/
 src_wsproc/

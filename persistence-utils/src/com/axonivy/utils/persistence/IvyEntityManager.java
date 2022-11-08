@@ -19,15 +19,10 @@ public class IvyEntityManager {
 
 	private static final Logger LOG = Logger.getLogger(IvyEntityManager.class);
 
-	/**
-	 * Singleton instance.
-	 */
 	private static IvyEntityManager singleton = new IvyEntityManager();
 
 	private final ThreadLocal<Integer> sessions = new ThreadLocal<>();
-
 	private final ThreadLocal<Map<String, PersistenceContext>> threadLocalPersistenceContexts = new ThreadLocal<>();
-
 
 	/**
 	 * Container for objects which are cached for each thread, persistence unit and
@@ -242,4 +237,11 @@ public class IvyEntityManager {
 				closedEm ? "(the entity manager was closed)" : "");
 	}
 	
+	/**
+	 * Clears the state of this singleton instance: <b>should only be moved in JUNIT testing code!</b>
+	 */
+	public void clearThreadlocals() {
+		sessions.remove();
+		threadLocalPersistenceContexts.remove();
+	}
 }
