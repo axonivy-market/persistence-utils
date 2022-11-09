@@ -20,6 +20,17 @@
       <version>${project.version}</version>
     </dependency>
   </dependencies>
+  
+  <repositories>
+    <repository>
+      <id>axonivy.public</id>
+      <url>https://maven.axonivy.com</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  
   <build>
     <plugins>
       <plugin>

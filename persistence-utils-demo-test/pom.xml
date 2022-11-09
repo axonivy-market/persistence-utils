@@ -4,7 +4,7 @@
 	<groupId>com.axonivy.utils.persistence</groupId>
 	<artifactId>persistence-utils-demo-test</artifactId>
 	<version>10.0.1-SNAPSHOT</version>
-	<packaging>iar-integration-test</packaging>
+	<packaging>iar</packaging>
 	<description>Test project of the persistence utils demo project. Note, that this project is currently also used to test some aspects of the persistence library.</description>
 	<dependencies>
 		<dependency>
