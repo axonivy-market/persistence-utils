@@ -2,6 +2,7 @@ package com.axonivy.utils.persistence.entities;
 
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,6 +18,9 @@ public class Constrained extends GenericEntity<UUID> {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected UUID id;
 
+	@Column(unique = true)
+	protected String name;
+
 	@Override
 	public String getSessionUsername() {
 		return "test";
@@ -31,4 +35,13 @@ public class Constrained extends GenericEntity<UUID> {
 	public void setId(UUID id) {
 		this.id = id;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }
