@@ -21,7 +21,7 @@ public class GenericDAOTest extends DemoTestBase {
 	}
 
 	@Test
-	public void testBasicFunctionality() {
+	public void testAPS148() {
 		ConstrainedDAO dao = ConstrainedDAO.getInstance();
 
 		Constrained entity1 = new Constrained();
@@ -32,12 +32,15 @@ public class GenericDAOTest extends DemoTestBase {
 		holder.constrained = new Constrained();
 		holder.constrained.setName("Test");
 
-
 		assertThrows(PersistenceException.class, () -> {
 			holder.constrained = dao.save(holder.constrained);
 			fail("Expected exception");
 		});
 
-		LOG.info("Saved Entity Ids: {0} {1}", entity1.getId(), holder.constrained.getId());
+		Constrained entity3 = new Constrained();
+		entity3.setName("Test3");
+		entity3 = dao.save(entity3);
+
+		LOG.info("Saved Entity Ids: {0} {1} {2}", entity1.getId(), holder.constrained.getId(), entity3.getId());
 	}
 }

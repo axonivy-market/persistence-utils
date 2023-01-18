@@ -231,7 +231,7 @@ public abstract class AbstractDAO implements BaseDAO {
 		}
 
 		/**
-		 * Commit a transaction if there is no nested transaction
+		 * Commit a transaction if there is no nested transaction.
 		 * 
 		 * @return int number of active transaction levels
 		 * @throws TransactionRolledbackException
@@ -251,16 +251,16 @@ public abstract class AbstractDAO implements BaseDAO {
 		}
 
 		/**
-		 * Rollback all transactions
+		 * Rollback all transactions.
 		 */
 		public void rollback() {
 			LOG.debug("transaction rollback (nesting: {0} active: {1} thread: {2})", count, isActive,
 					Thread.currentThread().getId());
+			count = 0;
 			if (isActive) {
 				transaction.rollback();
 			}
 			isActive = false;
-			count = 0;
 		}
 
 		@Override
