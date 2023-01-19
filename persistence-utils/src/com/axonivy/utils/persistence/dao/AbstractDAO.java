@@ -51,14 +51,12 @@ import com.axonivy.utils.persistence.logging.Logger;
  */
 public abstract class AbstractDAO implements BaseDAO {
 
+	// The current (potentially nested) transaction for this thread
 	private static final ThreadLocal<ManagedTransaction> threadLocalTransaction = new ThreadLocal<>();
-	// hold an additional map of transactions which is only used for logging and
-	// debugging purposes
-	private static final Map<Thread, ManagedTransaction> currentTransactions = Collections
-			.synchronizedMap(new HashMap<>());
+	// Map of transactions for logging and debugging purposes
+	private static final Map<Thread, ManagedTransaction> currentTransactions = Collections.synchronizedMap(new HashMap<>());
 
 	private static final Logger LOG = Logger.getLogger(AbstractDAO.class);
-
 	private static final String INDENT_INC = "    ";
 
 	/**
@@ -71,7 +69,6 @@ public abstract class AbstractDAO implements BaseDAO {
 	 * public constructor
 	 */
 	public AbstractDAO() {
-
 	}
 
 	/**
@@ -231,7 +228,7 @@ public abstract class AbstractDAO implements BaseDAO {
 		}
 
 		/**
-		 * Commit a transaction if there is no nested transaction
+		 * Commit a transaction if there is no nested transaction.
 		 * 
 		 * @return int number of active transaction levels
 		 * @throws TransactionRolledbackException
@@ -251,16 +248,16 @@ public abstract class AbstractDAO implements BaseDAO {
 		}
 
 		/**
-		 * Rollback all transactions
+		 * Rollback all transactions.
 		 */
 		public void rollback() {
 			LOG.debug("transaction rollback (nesting: {0} active: {1} thread: {2})", count, isActive,
 					Thread.currentThread().getId());
+			count = 0;
 			if (isActive) {
 				transaction.rollback();
 			}
 			isActive = false;
-			count = 0;
 		}
 
 		@Override

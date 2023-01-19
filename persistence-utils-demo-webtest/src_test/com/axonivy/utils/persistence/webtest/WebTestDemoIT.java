@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 
 import com.axonivy.ivy.webtest.IvyWebTest;
 import com.axonivy.ivy.webtest.engine.EngineUrl;
@@ -69,7 +70,9 @@ public class WebTestDemoIT {
 		int index = indexOf("mainForm:departmentTable", marketingDepartmentName);
 		$(By.id("mainForm:departmentTable:" + index + ":editButton")).shouldBe(enabled).click();
 
-		$(By.id("departmentForm:departmentName")).shouldBe(enabled).sendKeys("2");
+		SelenideElement depNameField = $(By.id("departmentForm:departmentName"));
+		depNameField.shouldBe(enabled).click();
+		depNameField.sendKeys(Keys.END, "2");
 		marketingDepartmentName += "2";
 
 		$(By.id("departmentForm:saveButton")).shouldBe(enabled).click();
@@ -107,6 +110,8 @@ public class WebTestDemoIT {
 
 		$(By.id("personForm:lastName")).shouldBe(enabled).sendKeys(lastName);
 
+		$(By.id("personForm:birthdate_input")).shouldBe(enabled).sendKeys("01.11.1981", Keys.TAB);
+		
 		$(By.id("personForm:maritalStatus")).click();
 		$(By.id("personForm:maritalStatus_items")).$$(By.tagName("li")).find(text("married")).click();
 
@@ -115,7 +120,6 @@ public class WebTestDemoIT {
 		$(By.id("personForm:department")).click();
 		$(By.id("personForm:department_items")).$$(By.tagName("li")).find(text(productionDepartmentName)).click();
 
-		$(By.id("personForm:birthdate_input")).shouldBe(enabled).sendKeys("01.11.1981");
 
 		$(By.id("personForm:saveButton")).shouldBe(enabled).click();
 
@@ -140,7 +144,7 @@ public class WebTestDemoIT {
 		$(By.id("personForm:maritalStatus")).click();
 
 		$(By.id("personForm:birthdate_input")).shouldBe(enabled).clear();
-		$(By.id("personForm:birthdate_input")).shouldBe(enabled).sendKeys("02.12.1982");
+		$(By.id("personForm:birthdate_input")).shouldBe(enabled).sendKeys("02.12.1982", Keys.TAB);
 
 		$(By.id("personForm:saveButton")).shouldBe(enabled).click();
 	}

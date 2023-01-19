@@ -38,7 +38,7 @@ import ch.ivyteam.ivy.bpm.error.BpmError;
  * @author peter
  */
 public abstract class CriteriaQueryGenericContext<T extends Serializable, R extends Object>
-		extends QueryGenericContext<T> {
+extends QueryGenericContext<T> {
 
 	private static final Logger log = Logger.getLogger(CriteriaQueryGenericContext.class);
 	/**
@@ -105,7 +105,7 @@ public abstract class CriteriaQueryGenericContext<T extends Serializable, R exte
 	 * @param <R> return object
 	 */
 	public static class InternalCriteriaQueryGenericContext<T extends Serializable, R extends Object>
-			extends CriteriaQueryGenericContext<T, R> {
+	extends CriteriaQueryGenericContext<T, R> {
 		private final Supplier<Void> autoCloseable;
 
 		/**
@@ -355,7 +355,7 @@ public abstract class CriteriaQueryGenericContext<T extends Serializable, R exte
 		if (expressions != null) {
 			Predicate restriction = q.getRestriction();
 			Predicate newconditions = c.and(expressions); // join the newconditions together via AND, then add to old
-															// conditions via OR
+			// conditions via OR
 			if (restriction != null) {
 				restriction = c.or(restriction, newconditions);// (old restrictionr) OR (newconditions)
 			} else {
@@ -503,7 +503,7 @@ public abstract class CriteriaQueryGenericContext<T extends Serializable, R exte
 			tree.down();
 			tree.format("Joins");
 			tree.down();
-			
+
 			for (Object object : joins) {
 				tree.format("%s", object.toString());
 			}
@@ -551,14 +551,14 @@ public abstract class CriteriaQueryGenericContext<T extends Serializable, R exte
 	}
 
 	/**
-	 * shorthand for selecting a column of root entity. e.g.
+	 * Shorthand for selecting a column of root entity. e.g.
 	 * this.q.select(this.r.get(column));
 	 * 
 	 * @param column represents persistent single-valued properties or fields.
 	 * @return the same object as being called CriteriaQueryGenericContext
 	 */
 	public CriteriaQueryGenericContext<T, R> select(SingularAttribute<T, R> column) {
-		this.q.select(this.r.get(column));
+		q.select(r.get(column));
 
 		return this;
 	}

@@ -196,7 +196,6 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	}
 
 	/**
-	 *
 	 * Do a find by Example search. This is an even simpler call to
 	 * {@link GenericDAO }.findByExample(...)
 	 *<p>Example:</p>
@@ -398,7 +397,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 							? f.c.like(f.r.get(attr.getName()), "%" + value.toString() + "%")
 									: f.c.equal(f.r.get(attr.getName()), value);
 
-							result = isOrSyntax ? f.c.or(result, expr) : f.c.and(result, expr);
+					result = isOrSyntax ? f.c.or(result, expr) : f.c.and(result, expr);
 				} else if (value != null) {
 					Collection<?> collectionOfValues = (Collection<?>) value;
 					if (!collectionOfValues.isEmpty()) {
@@ -424,13 +423,15 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 
 	/**
 	 * Find a bean by it's primary key.
-	 *<p>Example:</p>
-	 *<pre>
-	 *{@code
+	 * 
+	 * <p>Example:</p>
+	 * <pre>
+	 * {@code
 	 *	T bean = dao.findById(id);
-	 *}
-	 *</pre>
-	 *<p>Note that T is a entity</p>
+	 * }
+	 * </pre>
+	 * <p>Note that T is an entity</p>
+	 * 
 	 * @param id primary key of entity
 	 * @return entity with specified id
 	 */
@@ -465,13 +466,15 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 
 	/**
 	 * Find all beans of this type.
-	 *<p>Example:</p>
-	 *<pre>
-	 *{@code
+	 * 
+	 * <p>Example:</p>
+	 * <pre>
+	 * {@code
 	 *	List<T> beans = dao.findAll();
-	 *}
-	 *</pre>
+	 * }
+	 * </pre>
 	 * <p>Note that T is a entity</p>
+	 * 
 	 * @return list of all beans of this type
 	 */
 	public List<T> findAll() {
@@ -480,13 +483,15 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 
 	/**
 	 * Find all beans of specific type.
-	 *<p>Example:</p>
-	 *<pre>
-	 *{@code
+	 * 
+	 * <p>Example:</p>
+	 * <pre>
+	 * {@code
 	 *	List<T> beans = dao.findAll(new QuerySettings<T>());
-	 *}
-	 *</pre>
+	 * }
+	 * </pre>
 	 * <p>Note that T is a entity</p>
+	 * 
 	 * @param querySettings specify paging, markers,orders...
 	 * @return a list
 	 */
@@ -502,16 +507,17 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 
 	/**
 	 * Find beans by criteria.
-	 *<p>Example:</p>
-	 *<pre>
-	 *try (CriteriaQueryGenericContext{@code<T, U>} query = dao.initializeQuery(T.class, U.class)) {
+	 * 
+	 * <p>Example:</p>
+	 * <pre>
+	 * try (CriteriaQueryGenericContext{@code<T, U>} query = dao.initializeQuery(T.class, U.class)) {
 	 *
 	 *	Expression{@code<String>} path = dao.getExpression(null, query.r, {@code T_.property});
 	 *	query.q.where(q.c.like(path, value)); // value to search, c.like method search
 	 *	query.q.multiselect(path);
 	 *	List{@code<U>} beans = dao.findByCriteria(query);
-	 *}
-	 *</pre>
+	 * }
+	 * </pre>
 	 * <p>Note that T is a entity, U is a return object</p>
 	 * @param factory query context
 	 * @param <U> the type of the represented object
@@ -532,9 +538,9 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 * parallel, the counting query only needs the "where" part (including JOINS).
 	 *
 	 * Note: it is NOT TRIVIAL to copy a {@link CriteriaQueryContext}.
-	 *<p>Example:</p>
-	 *<pre>
-	 *try (CriteriaQueryGenericContext{@code<T, U>} query = dao.initializeQuery(T.class, U.class);
+	 * <p>Example:</p>
+	 * <pre>
+	 * try (CriteriaQueryGenericContext{@code<T, U>} query = dao.initializeQuery(T.class, U.class);
 	 *	CriteriaQueryGenericContext{@code<T, Long>}countQuery = dao.initializeQuery(T.class,Long.class);) {
 	 *
 	 *	Expression{@code<String>} path = dao.getExpression(null, query.r, {@code T_.property});
@@ -542,9 +548,10 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 *	query.q.multiselect(path);
 	 *	countQuery.where(query.q.getRestriction());
 	 *	Long count = dao.countByCriteria(countQuery);
-	 *}
-	 *</pre>
+	 * }
+	 * </pre>
 	 * <p>Note that T is a entity, U is a return object</p>
+	 * 
 	 * @param f query context for serializable type T
 	 * @return count of distinct rows in query
 	 */
@@ -679,12 +686,13 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	}
 
 	/**
-	 * Raw update of beans by criteria. This version only handles the optimistic
-	 * lock in on way.
-	 *
-	 * This version does not check permissions.
+	 * Raw update of beans by criteria.
+	 * 
+	 * This version only handles the optimistic lock in one way and
+	 * does not check permissions.
 	 *
 	 * @param criteriaFactory update query context for serializable type T
+	 * 
 	 * @return number of updated row
 	 */
 	public long updateRawByCriteria(UpdateQueryGenericContext<T> criteriaFactory) {
@@ -735,16 +743,16 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 *
 	 * This version does not check permissions and do delete physically in the
 	 * database.
-	 *<p>Example:</p>
-	 *<pre>
-	 *try (DeleteQueryContext{@code<T>} query = dao.initializeDeleteQuery();) {
+	 * <p>Example:</p>
+	 * <pre>
+	 * try (DeleteQueryContext{@code<T>} query = dao.initializeDeleteQuery();) {
 	 *
 	 *	Expression{@code<String>} path = dao.getExpression(null, query.r, T_.property);
 	 *	Predicate wdaInPredicate = query.c.equal(query.r.get(T_.property), value); // value to search, c.equal method search
 	 *	query.d.where(wdaInPredicate);
 	 *	Long result = dao.deletePhysicallyRawByCriteria(query);
-	 *}
-	 *</pre>
+	 * }
+	 * </pre>
 	 * <p>Note that T is a entity, T_ is a meta model</p>
 	 * @param criteriaFactory delete query context for serializable type T
 	 * @return number of updated row
@@ -785,7 +793,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	}
 
 	/**
-	 * Create a query always returning a tuple of objects
+	 * Create a query always returning a tuple of objects.
 	 * 
 	 * @return query object returning tuples
 	 */
@@ -913,13 +921,15 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 * Save a bean.
 	 *
 	 * The save may lead to an insert or an update.
-	 *<p>Example:</p>
-	 *<pre>
-	 *{@code
-	 *	T saveBean = dao.save(bean);
-	 *}
-	 *</pre>
+	 * 
+	 * <p>Example:</p>
+	 * <pre>
+	 * {@code
+	 *	 T saveBean = dao.save(bean);
+	 * }
+	 * </pre>
 	 * <p>Note that bean is a entity T object</p>
+	 * 
 	 * @param bean represents a entity T object
 	 * @return bean
 	 */
@@ -940,33 +950,28 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 		T bean = oldBean;
 		UpdateType type = UpdateType.UPDATE;
 
-		try {
-			T current = find(bean);
-			if (current == null) {
-				type = UpdateType.ADD;
-			} else {
-			}
+		T current = find(bean);
+		if (current == null) {
+			type = UpdateType.ADD;
+		} else {
+		}
 
-			if (callbacks != null) {
-				for (DaoCallback<T> callback : callbacks) {
-					if (callback != null) {
-						callback.prePersist().accept(bean);
-					}
+		if (callbacks != null) {
+			for (DaoCallback<T> callback : callbacks) {
+				if (callback != null) {
+					callback.prePersist().accept(bean);
 				}
 			}
+		}
 
-			bean = mergeBean(bean, type, current);
+		bean = mergeBean(bean, type, current);
 
-			if (callbacks != null) {
-				for (DaoCallback<T> callback : callbacks) {
-					if (callback != null) {
-						callback.postPersist().accept(bean);
-					}
+		if (callbacks != null) {
+			for (DaoCallback<T> callback : callbacks) {
+				if (callback != null) {
+					callback.postPersist().accept(bean);
 				}
 			}
-
-		} catch (PersistenceException e) {
-			throw new PersistenceException(e);
 		}
 
 		return bean;
@@ -976,13 +981,13 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 * Delete a bean.
 	 *
 	 * The delete must not necessarily be physical for all beans.
-	 *<p>Example:</p>
-	 *<pre>
-	 *{@code
-	 *	T deleteBean = dao.delete(bean);
-	 *}
-	 *</pre>
-	 *<p>Note that bean is a entity T object</p>
+	 * <p>Example:</p>
+	 * <pre>
+	 * {@code
+	 *	 T deleteBean = dao.delete(bean);
+	 * }
+	 * </pre>
+	 * <p>Note that bean is a entity T object</p>
 	 * @param oldBean represents a entity T object
 	 * @return bean
 	 */
@@ -1044,13 +1049,20 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 			// case we get an optimistic lock exception.
 			updateMap.put(tmpBean.getId(), newUpdateInformation);
 		} catch (Exception e) {
-			rollbackTransaction();
-
 			String message = MessageFormat.format("Exception during operation {0}: {1}: {2}.", newUpdateInformation, e.getClass(), e.getMessage());
-
 			UpdateInformation oldUpdateInformation = updateMap.get(tmpBean.getId());
 			if (oldUpdateInformation != null) {
-				message = MessageFormat.format("{0} The previous operation for this entity was: {1}", message, oldUpdateInformation);
+				message = String.join(" ",
+						message,
+						MessageFormat.format("The previous operation for this entity was: {1}.", message, oldUpdateInformation));
+			}
+
+			try {
+				rollbackTransaction();
+			} catch (Exception e2) {
+				message = String.join(" ",
+						message,
+						MessageFormat.format("Additionally, there was an exception trying to roll back the operation: {0}: {1}.", e2.getClass(), e2.getMessage()));
 			}
 
 			LOG.error(message);
@@ -1134,12 +1146,13 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 
 	/**
 	 * Save all beans (must be of same type) in list.
-	 *<p>Example:</p>
-	 *<pre>
-	 *{@code
-	 *	List<T> saveBeans = dao.saveAll(beans);
-	 *}
-	 *</pre>
+	 * 
+	 * <p>Example:</p>
+	 * <pre>
+	 * {@code
+	 *	 List<T> saveBeans = dao.saveAll(beans);
+	 * }
+	 * </pre>
 	 * <p>Note that beans is a list entity T object</p>
 	 * @param beans represents a list entity T object
 	 * @return list bean
@@ -1176,12 +1189,13 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 
 	/**
 	 * Delete all beans (must be of same type) in list.
-	 *<p>Example:</p>
-	 *<pre>
-	 *{@code
-	 *	List<T> deleteBeans = dao.deleteAll(beans);
-	 *}
-	 *</pre>
+	 * 
+	 * <p>Example:</p>
+	 * <pre>
+	 * {@code
+	 *	 List<T> deleteBeans = dao.deleteAll(beans);
+	 * }
+	 * </pre>
 	 * <p>Note that beans is a list entity T object</p>
 	 * @param beans represents a list entity T object
 	 * @return list bean
@@ -1208,7 +1222,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	}
 
 	/**
-	 * Delete object and dependend objects.
+	 * Delete object and dependent objects.
 	 *
 	 * It is up to the objects DAO to correctly implement the function
 	 *<p>Example:</p>
@@ -1241,12 +1255,13 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 
 	/**
 	 * Delete all beans with cascade (must be of same type) in list.
-	 *<p>Example:</p>
-	 *<pre>
-	 *{@code
-	 *	List<T> deleteBeans = dao.deleteAllCascade(beans);
-	 *}
-	 *</pre>
+	 * 
+	 * <p>Example:</p>
+	 * <pre>
+	 * {@code
+	 *	 List<T> deleteBeans = dao.deleteAllCascade(beans);
+	 * }
+	 * </pre>
 	 * <p>Note that beans is a list entity T object</p>
 	 * @param beans represents a list entity T object
 	 * @return list bean
@@ -1346,15 +1361,20 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 * This function is generic and it should not be necessary to overload it for
 	 * different objects. Instead, override/implement the function
 	 * {@link #getAttributePredicate(CriteriaQueryGenericContext, FilterPredicate, ExpressionMap)}.
-	 *<p>Example:</p>
-	 *<pre>
-	 *{@code
-	 *SearchFilter searchFilter = new SearchFilter().add(SearchField.FIELD, value); // value search
-	 *List<Tuple> result = dao.findBySearchFilter(searchFilter, new QuerySettings<Product>().withFirstResult(0)
-				.withMaxResults(2).withMarkers(AuditableMarker.ACTIVE).withOrderAttributes(T_.property)););
-	 *}
-	 *</pre>
-	 *<p>Note: SearchField a enumeration for search field, T_ is meta model</p> 
+	 * <p>Example:</p>
+	 * <pre>
+	 * {@code
+	 *   SearchFilter searchFilter = new SearchFilter().add(SearchField.FIELD, value); // value search
+	 *   List<Tuple> result = dao
+	 *   			.findBySearchFilter(searchFilter, new QuerySettings<Product>()
+	 *   			.withFirstResult(0)
+	 *   			.withMaxResults(2)
+	 *   			.withMarkers(AuditableMarker.ACTIVE)
+	 *   			.withOrderAttributes(T_.property)));
+	 * }
+	 * </pre>
+	 * <p>Note: SearchField a enumeration for search field, T_ is meta model</p> 
+	 *
 	 * @param searchFilter a search filter combines {@link FilterPredicate}s and {@link FilterOrder}s
 	 * @param querySettings specify paging, markers,orders...
 	 * @return list of tuples which searchfilter found
@@ -1385,14 +1405,15 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 
 	/**
 	 * Perform a search without defined querySettings
-	 *<p>Example:</p>
-	 *<pre>
-	 *{@code
-	 *SearchFilter searchFilter = new SearchFilter().add(SearchField.FIELD, value); // value search
-	 *List<Tuple> result = dao.countBySearchFilter(searchFilter);
-	 *}
-	 *</pre>
-	 *<p>Note: SearchField a enumeration for search field</p> 
+	 * <p>Example:</p>
+	 * <pre>
+	 * {@code
+	 *  SearchFilter searchFilter = new SearchFilter().add(SearchField.FIELD, value); // value search
+	 *  List<Tuple> result = dao.countBySearchFilter(searchFilter);
+	 * }
+	 * </pre>
+	 * <p>Note: SearchField a enumeration for search field</p>
+	 *  
 	 * @param searchFilter a search filter combines {@link FilterPredicate}s and {@link FilterOrder}s
 	 * @return long count of found entries
 	 */
@@ -1403,15 +1424,20 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	/**
 	 * Perform a search by a given {@link SearchFilter} and return the number of
 	 * hits.
-	 *<p>Example:</p>
-	 *<pre>
-	 *{@code
-	 *SearchFilter searchFilter = new SearchFilter().add(SearchField.FIELD, value); // value search
-	 *List<Tuple> result = dao.countBySearchFilter(searchFilter, new QuerySettings<Product>().withFirstResult(0)
-				.withMaxResults(2).withMarkers(AuditableMarker.ACTIVE).withOrderAttributes(T_.property)););
-	 *}
-	 *</pre>
-	 *<p>Note: SearchField a enumeration for search field, T_ is meta model</p>
+	 * <p>Example:</p>
+	 * <pre>
+	 * {@code
+	 *   SearchFilter searchFilter = new SearchFilter().add(SearchField.FIELD, value); // value search
+	 *   List<Tuple> result = dao.countBySearchFilter(searchFilter,
+	 *   	new QuerySettings<Product>()
+	 * 		  		.withFirstResult(0)
+	 *   			.withMaxResults(2)
+	 *   			.withMarkers(AuditableMarker.ACTIVE)
+	 *   			.withOrderAttributes(T_.property)));
+	 * }
+	 * </pre>
+	 * <p>Note: SearchField a enumeration for search field, T_ is meta model</p>
+	 *
 	 * @param searchFilter a search filter combines {@link FilterPredicate}s and {@link FilterOrder}s
 	 * @param querySettings specify paging, markers,orders...
 	 * @return total records after filter
