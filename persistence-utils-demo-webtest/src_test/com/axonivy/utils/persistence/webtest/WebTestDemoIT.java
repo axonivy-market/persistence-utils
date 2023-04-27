@@ -55,6 +55,7 @@ public class WebTestDemoIT {
 	@Test
 	@Order(1)
 	public void testAddNewDepartment() {
+		startLoginAsAdmin(); //re-login
 		addNewDepartment(marketingDepartmentName);
 
 		$(By.id("mainForm:departmentTable_data")).shouldHave(text(marketingDepartmentName));
