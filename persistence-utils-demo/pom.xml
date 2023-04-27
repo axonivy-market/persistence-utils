@@ -1,46 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.axonivy.utils.persistence</groupId>
   <artifactId>persistence-utils-demo</artifactId>
   <version>10.0.3-SNAPSHOT</version>
   <packaging>iar</packaging>
   <dependencies>
-
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-jpamodelgen</artifactId>
       <version>5.4.33.Final</version>
       <scope>provided</scope>
     </dependency>
-
     <dependency>
       <groupId>com.axonivy.utils.persistence</groupId>
       <artifactId>persistence-utils</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>
-  
   <repositories>
     <repository>
-      <id>axonivy.public</id>
-      <url>https://maven.axonivy.com</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
+      <id>axonivy.public</id>
+      <url>https://maven.axonivy.com</url>
     </repository>
   </repositories>
-  
   <build>
     <plugins>
       <plugin>
         <groupId>com.axonivy.ivy.ci</groupId>
         <artifactId>project-build-plugin</artifactId>
-        <version>10.0.3</version>
+        <version>10.0.6</version>
         <extensions>true</extensions>
         <configuration>
           <compilerOptions>
-            <compilerOption>-XprintProcessorInfo</compilerOption> 
+            <compilerOption>-XprintProcessorInfo</compilerOption>
             <compilerOption>-XprintRounds</compilerOption>
           </compilerOptions>
         </configuration>
