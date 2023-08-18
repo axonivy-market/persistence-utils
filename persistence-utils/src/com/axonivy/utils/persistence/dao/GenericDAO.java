@@ -810,11 +810,10 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 * @param <U> the type of the represented object
 	 * @return criteria query for combination of T and U
 	 */
-	public <U> CriteriaQueryGenericContext<T, U> initializeQuery(
-			Class<T> rootType, Class<U> queryType) {
+	public <U> CriteriaQueryGenericContext<T, U> initializeQuery(Class<T> rootType, Class<U> queryType) {
 
 		CriteriaBuilder cb = getEM().getCriteriaBuilder();
-		beginSession();// try(AutoCloseTransaction autoSession = beginSession()
+		beginSession();
 
 		CriteriaQuery<U> query = cb.createQuery(queryType);
 		Root<T> root = query.from(rootType);
