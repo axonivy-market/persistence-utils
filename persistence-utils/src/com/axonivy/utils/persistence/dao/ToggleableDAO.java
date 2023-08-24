@@ -1,6 +1,6 @@
 package com.axonivy.utils.persistence.dao;
 
-import java.util.Date;
+import java.time.Instant;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Path;
@@ -44,8 +44,8 @@ public abstract class ToggleableDAO<MetaDataGeneric extends ToggleableEntity_,A 
 			which = marker.getWhich();
 		}
 		
-		Path<Date> expiry = rootPath.get(ToggleableEntity_.expiryDate);
-		Path<Boolean> isEnabled = rootPath.get(ToggleableEntity_.isEnabled);
+		Path<Instant> expiry = rootPath.get(ToggleableEntity_.expiry);
+		Path<Boolean> isEnabled = rootPath.get(ToggleableEntity_.enabled);
 
 		switch (which) {
 		case ACTIVE: //(expired null or not expired) and isEnabled = true
@@ -56,7 +56,7 @@ public abstract class ToggleableDAO<MetaDataGeneric extends ToggleableEntity_,A 
 			break;
 		case INACTIVE: //expired or not isEnabled = false
 			context.where(context.c.or(
-					context.c.lessThanOrEqualTo(expiry, new Date()),
+					context.c.lessThanOrEqualTo(expiry, Instant.now()),
 					context.c.equal(isEnabled, false)));
 			break;
 		default:
@@ -66,8 +66,8 @@ public abstract class ToggleableDAO<MetaDataGeneric extends ToggleableEntity_,A 
 
 	protected static <U> Predicate getNotExpiredAndEnabledSelection(
 			CriteriaQueryGenericContext<?, U> f, Path<? extends ToggleableEntity> rootPath  ) {
-		Predicate nullOrNotExpired = f.c.or(f.c.isNull(rootPath.get(ToggleableEntity_.expiryDate)),f.c.greaterThan(rootPath.get(ToggleableEntity_.expiryDate), new Date()));
-		return f.c.and(nullOrNotExpired,f.c.equal(rootPath.get(ToggleableEntity_.isEnabled), true));
+		Predicate nullOrNotExpired = f.c.or(f.c.isNull(rootPath.get(ToggleableEntity_.expiry)),f.c.greaterThan(rootPath.get(ToggleableEntity_.expiry), Instant.now()));
+		return f.c.and(nullOrNotExpired,f.c.equal(rootPath.get(ToggleableEntity_.enabled), true));
 	}
 
 	@Override

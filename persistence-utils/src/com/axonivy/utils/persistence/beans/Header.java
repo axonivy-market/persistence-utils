@@ -1,7 +1,11 @@
 package com.axonivy.utils.persistence.beans;
 
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -23,13 +27,13 @@ public class Header implements Serializable {
 	private final int HEADERINITIALIZER = 0;//JPA nulls the header instance in auditable, if all properties in header are null, we have to create a dummy property so that header stays initialized all the time http://www.coderanch.com/t/629485/ORM/databases/columns-Embedded-field-NULL-JPA
 
 	@Column(insertable = true, updatable = false)
-	private Date createdDate;
+	private Instant createdDate;
 
 	@Column
-	private Date modifiedDate;
+	private Instant modifiedDate;
 
 	@Column
-	private Date flaggedDeletedDate;
+	private Instant flaggedDeletedDate;
 
 	@Column(length = 255)
 	private String createdByUserName;
@@ -41,11 +45,11 @@ public class Header implements Serializable {
 	private String flaggedDeletedByUserName;
 
 	/**
-	 * {@link Date} of creation.
+	 * {@link Instant} of creation.
 	 *
 	 * @return date of creation.
 	 */
-	public Date getCreatedDate() {
+	public Instant getCreatedDate() {
 		return createdDate;
 	}
 
@@ -54,16 +58,16 @@ public class Header implements Serializable {
 	 *
 	 * @param createdDate creation date
 	 */
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(Instant createdDate) {
 		this.createdDate = createdDate;
 	}
 
 	/**
-	 * {@link Date} of last modification.
+	 * {@link Instant} of last modification.
 	 *
 	 * @return last modification date
 	 */
-	public Date getModifiedDate() {
+	public Instant getModifiedDate() {
 		return modifiedDate;
 	}
 
@@ -72,16 +76,16 @@ public class Header implements Serializable {
 	 *
 	 * @param modifiedDate last modification date
 	 */
-	public void setModifiedDate(Date modifiedDate) {
+	public void setModifiedDate(Instant modifiedDate) {
 		this.modifiedDate = modifiedDate;
 	}
 
 	/**
-	 * {@link Date} of deletion.
+	 * {@link Instant} of deletion.
 	 *
 	 * @return deletion date
 	 */
-	public Date getFlaggedDeletedDate() {
+	public Instant getFlaggedDeletedDate() {
 		return flaggedDeletedDate;
 	}
 
@@ -90,7 +94,7 @@ public class Header implements Serializable {
 	 *
 	 * @param flaggedDeletedDate deletion date
 	 */
-	public void setFlaggedDeletedDate(Date flaggedDeletedDate) {
+	public void setFlaggedDeletedDate(Instant flaggedDeletedDate) {
 		this.flaggedDeletedDate = flaggedDeletedDate;
 	}
 
@@ -161,4 +165,160 @@ public class Header implements Serializable {
 				+ "]";
 	}
 
+	/**
+	 * {@link Instant} of creation as {@link Date}.
+	 *
+	 * @return date of creation.
+	 * @deprecated added only for easy conversion to old data type
+	 * @see #getCreatedDate()
+	 */
+	public Date getCreatedDateAsDate() {
+		return Date.from(this.createdDate);
+	}
+	
+	/**
+	 * Set the creation date from {@link Date}
+	 *
+	 * @param createdDate creation date
+	 * @deprecated added only for easy conversion to old data type
+	 * @see #setCreatedDate(Instant)
+	 */
+	public void setCreateDateAsDate(Date createdDate) {
+		if(Objects.nonNull(createdDate)) {
+			this.createdDate = createdDate.toInstant();
+		} else {
+			this.createdDate = null;
+		}
+	}
+	
+	/**
+	 * {@link Instant} of creation as {@link LocalDateTime}.
+	 * 
+	 * The conversion is done using the systems default ZoneOffset.
+	 *
+	 * @return date of creation.
+	 */
+	public LocalDateTime getCreatedDateAsLocalDateTime() {
+		return LocalDateTime.ofInstant(this.createdDate, ZoneOffset.systemDefault());
+	}
+	
+	/**
+	 * Set the creation date from {@link LocalDateTime}
+	 * 
+	 * The conversion is done using the systems default ZoneOffset.
+	 *
+	 * @param createDate creation date
+	 */
+	public void setCreateDateAsLocalDateTime(LocalDateTime createDate) {
+		if(Objects.nonNull(createDate)) {
+			this.createdDate = createDate.atZone(ZoneOffset.systemDefault()).toInstant();
+		} else {
+			this.createdDate = null;
+		}
+	}
+	
+	/**
+	 * {@link Instant} of last modification as {@link Date}.
+	 *
+	 * @return date of last modification.
+	 * @deprecated added only for easy conversion to old data type
+	 * @see #getModifiedDate
+	 */
+	public Date getModifiedDateAsDate() {
+		return Date.from(this.modifiedDate);
+	}
+	
+	/**
+	 * Set the date of last modification from {@link Date}
+	 *
+	 * @param modifiedDate last modification date
+	 * @deprecated added only for easy conversion to old data type
+	 * @see #setModifiedDate(Instant)
+	 */
+	public void setModifiedDateAsDate(Date modifiedDate) {
+		if(Objects.nonNull(modifiedDate)) {
+			this.modifiedDate = modifiedDate.toInstant();
+		} else {
+			this.modifiedDate = null;
+		}
+	}
+	
+	/**
+	 * {@link Instant} of last modification as {@link LocalDateTime}.
+	 * 
+	 * The conversion is done using the systems default ZoneOffset.
+	 *
+	 * @return date of last modification.
+	 */
+	public LocalDateTime getModifiedDateAsLocalDateTime() {
+		return LocalDateTime.ofInstant(this.modifiedDate, ZoneOffset.systemDefault());
+	}
+	
+	/**
+	 * Set the date of last modification from {@link LocalDateTime}
+	 *
+	 * The conversion is done using the systems default ZoneOffset.
+	 * 
+	 * @param modifiedDate last modification date
+	 */
+	public void setModifiedDateAsLocalDateTime(LocalDateTime modifiedDate) {
+		if(Objects.nonNull(modifiedDate)) {
+			this.modifiedDate = modifiedDate.atZone(ZoneOffset.systemDefault()).toInstant();
+		} else {
+			this.modifiedDate = null;
+		}
+	}
+	
+	/**
+	 * {@link Instant} of deletion as {@link Date}.
+	 *
+	 * @return date of deletion
+	 * @deprecated added only for easy conversion to old data type
+	 * @see #getFlaggedDeletedDate
+	 */
+	public Date getFlaggedDeletedDateAsDate() {
+		return Date.from(this.flaggedDeletedDate);
+	}
+	
+	/**
+	 * Set the date of deletion from {@link Date}
+	 *
+	 * @param flaggedDeletedDate deletion date
+	 * @deprecated added only for easy conversion to old data type
+	 * @see #setFlaggedDeletedDate(Instant)
+	 */
+	public void setFlaggedDeletedDateAsDate(Date flaggedDeletedDate) {
+		if(Objects.nonNull(flaggedDeletedDate)) {
+			this.flaggedDeletedDate = flaggedDeletedDate.toInstant();
+		} else {
+			this.flaggedDeletedDate = null;
+		}
+	}
+	
+	/**
+	 * {@link Instant} of deletion as {@link LocalDateTime}.
+	 * 
+	 * The conversion is done using the systems default ZoneOffset.
+	 *
+	 * @return date of deletion.
+	 */
+	public LocalDateTime getFlaggedDeletedDateAsLocalDateTime() {
+		return LocalDateTime.ofInstant(this.flaggedDeletedDate, ZoneOffset.systemDefault());
+	}
+	
+	/**
+	 * Set the date of deletion from {@link LocalDateTime}
+	 *
+	 * The conversion is done using the systems default ZoneOffset.
+	 * 
+	 * @param flaggedDeletedDate deletion date
+	 */
+	public void setFlaggedDeletedDateAsLocalDateTime(LocalDateTime flaggedDeletedDate) {
+		if(Objects.nonNull(flaggedDeletedDate)) {
+			this.flaggedDeletedDate = flaggedDeletedDate.atZone(ZoneOffset.systemDefault()).toInstant();
+		} else {
+			this.flaggedDeletedByUserName = null;
+		}
+	}
+	
 }

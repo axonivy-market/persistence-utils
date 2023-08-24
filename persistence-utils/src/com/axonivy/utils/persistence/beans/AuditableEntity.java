@@ -1,7 +1,7 @@
 package com.axonivy.utils.persistence.beans;
 
+import java.time.Instant;
 import java.util.Comparator;
-import java.util.Date;
 
 import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
@@ -30,7 +30,7 @@ public abstract class AuditableEntity extends GenericIdEntity {
 
 	@PrePersist
 	protected void prePersist() {
-		Date now = new Date();
+		Instant now = Instant.now();
 		String userName = getSessionUsername();
 
 		if(header.getCreatedDate() == null){
@@ -48,7 +48,7 @@ public abstract class AuditableEntity extends GenericIdEntity {
 	@PreUpdate
 	protected void preUpdate() {
 		if(!isAuditingDisabled()) {
-			Date now = new Date();
+			Instant now = Instant.now();
 			header.setModifiedDate(now);
 			header.setModifiedByUserName(getSessionUsername());
 		}
@@ -60,7 +60,7 @@ public abstract class AuditableEntity extends GenericIdEntity {
 	@PreRemove
 	public void preRemove()  {
 		if(!isAuditingDisabled()) {
-			Date now = new Date();
+			Instant now = Instant.now();
 			String userName = getSessionUsername();
 			header.setFlaggedDeletedDate(now);
 			header.setFlaggedDeletedByUserName(userName);
@@ -73,7 +73,7 @@ public abstract class AuditableEntity extends GenericIdEntity {
 	 * Modify header to undelete the bean.
 	 */
 	public void preUndelete() {
-		Date now = new Date();
+		Instant now = Instant.now();
 		String userName = getSessionUsername();
 		header.setFlaggedDeletedDate(null);
 		header.setFlaggedDeletedByUserName(null);
@@ -122,8 +122,8 @@ public abstract class AuditableEntity extends GenericIdEntity {
 	 */
 	public static Comparator<AuditableEntity> createCreatedOnComparator() {
 		return (entity1, entity2) -> {
-			Date createdOn1 = entity1.getHeader() != null ? entity1.getHeader().getCreatedDate() : null;
-			Date createdOn2 = entity2.getHeader() != null ? entity2.getHeader().getCreatedDate() : null;
+			Instant createdOn1 = entity1.getHeader() != null ? entity1.getHeader().getCreatedDate() : null;
+			Instant createdOn2 = entity2.getHeader() != null ? entity2.getHeader().getCreatedDate() : null;
 
 			if (createdOn1 != null) {
 				return createdOn2 == null ? -1 : createdOn1.compareTo(createdOn2);
