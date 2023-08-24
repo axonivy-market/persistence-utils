@@ -16,9 +16,9 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 
 ### 10.0.4
 *Changes*
-[APS-156](https://1ivy.atlassian.net/browse/APS-156) Fix handling of session in CriteriaQueryContext
-[APS-86](https://1ivy.atlassian.net/browse/APS-86) Use Instant for Auditable Entities create/update/delete
-[APS-87](https://1ivy.atlassian.net/browse/APS-87) Rename isEnabled in ToggleableEntity
+- [APS-156](https://1ivy.atlassian.net/browse/APS-156) Fix handling of session in CriteriaQueryContext
+- [APS-86](https://1ivy.atlassian.net/browse/APS-86) Use Instant for Auditable Entities create/update/delete
+- [APS-87](https://1ivy.atlassian.net/browse/APS-87) Rename isEnabled in ToggleableEntity
 
 *Incompatibilities*
 - Datatype of **AuditableEntity**s **Header** attributes for create/update and delete date where changed to *Instant*
@@ -26,7 +26,7 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 - Datatype of **ToggleableEntity**s **enabled** has been changed to boolean
 
 *Recommendations*
-- rename the expiry column to **expiry** unless you have customized the column names anyways. e.g. ALTER TABLE <yourtable> RENAME COLUMN <expiryDate> TO <expiry>.
+- rename the expiry column to **expiry** unless you have customized the column names anyways. e.g. ALTER TABLE **yourtable** RENAME COLUMN **expiryDate** TO **expiry**.
 - Make sure there are no *NULL* values for the **enabled** column in your database. The column was defined as not nullable, so only manual changes in the database should have lead to *NULL* values
 - use *get/set...AsDate* or *get/set...AsLocalDateTime* methods to get converted datatypes of create/update/delete/expiry *Instant*s
 
@@ -35,17 +35,17 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 - Added sources to maven artifact
 
 *Incompatibilities*
-*None*
+- *None*
 
 *Recommendations*
-*None*
+- *None*
 
 ### 10.0.2
 *Changes*
-[APS-148](https://1ivy.atlassian.net/browse/APS-148) Exception during save is silently swallowed
+- [APS-148](https://1ivy.atlassian.net/browse/APS-148) Exception during save is silently swallowed
 
 *Incompatibilities*
-*None*
+- *None*
 
 *Recommendations*
 - **forceSingleResult()** was moved to higher class. In case you implemented your own version, check whether you can remove it
@@ -61,16 +61,16 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 
 ### 0.10.0
 *Changes*
-[APS-84](https://1ivy.atlassian.net/browse/APS-84) forceSingleResult() should work for any type
-[APS-91](https://1ivy.atlassian.net/browse/APS-91) Make AbstractDAO.unproxyAndInitialize() typesafe
-[APS-108](https://1ivy.atlassian.net/browse/APS-108) Add deleted throw() in GenericDAO.save() again
+- [APS-84](https://1ivy.atlassian.net/browse/APS-84) forceSingleResult() should work for any type
+- [APS-91](https://1ivy.atlassian.net/browse/APS-91) Make AbstractDAO.unproxyAndInitialize() typesafe
+- [APS-108](https://1ivy.atlassian.net/browse/APS-108) Add deleted throw() in GenericDAO.save() again
 
 *Incompatibilities*
-*None*
+- *None*
 
 ### 0.9.4
 *Changes*
-[TG-1013](https://1ivy.atlassian.net/browse/TG-1013) Persistence Library History Fix
+- [TG-1013](https://1ivy.atlassian.net/browse/TG-1013) Persistence Library History Fix
 
 *Incompatibilities*
 - Changes to history
@@ -80,14 +80,14 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 
 ### 0.9.3
 *Changes*
-[TG-781](https://1ivy.atlassian.net/browse/TG-781) Persistence Library: Allow super types in QuerySettings
+- [TG-781](https://1ivy.atlassian.net/browse/TG-781) Persistence Library: Allow super types in QuerySettings
 
 *Incompatibilities*
-*None*
+- *None*
 
 ### 0.9.2
 *Changes*
-[TG-871](https://1ivy.atlassian.net/browse/TG-871) Persistence Library: SearchFilter: Sorting does not work for fields which are not part of the result tuple
+- [TG-871](https://1ivy.atlassian.net/browse/TG-871) Persistence Library: SearchFilter: Sorting does not work for fields which are not part of the result tuple
 
 *Incompatibilities*
 - removed function **GenericDAO.isSyncableEntity()**
@@ -95,10 +95,10 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 
 ### 0.9.1
 *Changes*
-[TG-780](https://1ivy.atlassian.net/browse/TG-780) Persistence Library: Split into library and test
+- [TG-780](https://1ivy.atlassian.net/browse/TG-780) Persistence Library: Split into library and test
 
 *Incompatibilities*
-*None*
+- *None*
 
 ### 0.9.0
 *Incompatibilities*
