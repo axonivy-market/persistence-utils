@@ -2,7 +2,7 @@ package com.axonivy.utils.persistence.daos;
 
 import javax.persistence.criteria.Expression;
 
-import com.axonivy.utils.persistence.dao.AuditableDAO;
+import com.axonivy.utils.persistence.dao.AuditableIdDAO;
 import com.axonivy.utils.persistence.dao.CriteriaQueryGenericContext;
 import com.axonivy.utils.persistence.dao.ExpressionMap;
 import com.axonivy.utils.persistence.entities.Product;
@@ -12,7 +12,7 @@ import com.axonivy.utils.persistence.search.AttributePredicates;
 import com.axonivy.utils.persistence.search.FilterPredicate;
 
 
-public class ProductDAO extends AuditableDAO<Product_, Product> implements BaseDAO {
+public class ProductDAO extends AuditableIdDAO<Product_, Product> implements BaseDAO {
 
 	@Override
 	protected Class<Product> getType() {

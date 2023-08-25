@@ -8,7 +8,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.axonivy.utils.persistence.beans.AuditableEntity;
+import com.axonivy.utils.persistence.beans.AuditableIdEntity;
 import com.axonivy.utils.persistence.validation.IvyNotBlank;
 import com.axonivy.utils.persistence.validation.IvySizeMax;
 import com.axonivy.utils.persistence.validation.groups.SaveErrorGroup;
@@ -16,7 +16,7 @@ import com.axonivy.utils.persistence.validation.groups.SaveErrorGroup;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(name = "UC_Department_name", columnNames = {"name"}))
-public class Department extends AuditableEntity {
+public class Department extends AuditableIdEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Column(length = 64)

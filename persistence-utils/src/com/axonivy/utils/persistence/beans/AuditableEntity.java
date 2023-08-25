@@ -1,5 +1,6 @@
 package com.axonivy.utils.persistence.beans;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Comparator;
 
@@ -17,7 +18,7 @@ import com.axonivy.utils.persistence.annotations.CascadeCopy;
  * 
  */
 @MappedSuperclass
-public abstract class AuditableEntity extends GenericIdEntity {
+public abstract class AuditableEntity<ID extends Serializable> extends VersionableEntity<ID> {
 
 	private static final long serialVersionUID = 758520274735110178L;
 
@@ -120,7 +121,7 @@ public abstract class AuditableEntity extends GenericIdEntity {
 	/**
 	 * @return Comparator comparing only  according to createdDate field
 	 */
-	public static Comparator<AuditableEntity> createCreatedOnComparator() {
+	public static <ID extends Serializable> Comparator<AuditableEntity<ID>> createCreatedOnComparator() {
 		return (entity1, entity2) -> {
 			Instant createdOn1 = entity1.getHeader() != null ? entity1.getHeader().getCreatedDate() : null;
 			Instant createdOn2 = entity2.getHeader() != null ? entity2.getHeader().getCreatedDate() : null;

@@ -1,12 +1,12 @@
 package com.axonivy.utils.persistence.dao;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 
-import com.axonivy.utils.persistence.beans.GenericIdEntity;
 import com.axonivy.utils.persistence.beans.ToggleableEntity;
 import com.axonivy.utils.persistence.beans.ToggleableEntity_;
 import com.axonivy.utils.persistence.dao.markers.ToggleableMarker;
@@ -20,11 +20,12 @@ import com.axonivy.utils.persistence.search.FilterPredicate;
  * @param <MetaDataGeneric> meta model
  * @param <A> Entity
  */
-public abstract class ToggleableDAO<MetaDataGeneric extends ToggleableEntity_,A extends ToggleableEntity> extends AuditableDAO<MetaDataGeneric,A> {
+public abstract class ToggleableDAO<MetaDataGeneric extends ToggleableEntity_,A extends ToggleableEntity<? extends Serializable>>
+	extends AuditableDAO<MetaDataGeneric,A> {
 
 	@Override
 	protected <U> void manipulateCriteriaFactory(CriteriaQueryGenericContext<A, U> context) {
-		constructActiveStatusQuery(context,context.r);
+		constructActiveStatusQuery(context, context.r);
 		super.manipulateCriteriaFactory(context);
 	}
 
@@ -35,8 +36,8 @@ public abstract class ToggleableDAO<MetaDataGeneric extends ToggleableEntity_,A 
 	 * bound type or collection, and is a "primitive" expression
 	 * @param <U> the type of the represented object
 	 */
-	public static <U> void constructActiveStatusQuery(
-			CriteriaQueryGenericContext<? extends GenericIdEntity, U> context,Path<? extends ToggleableEntity> rootPath) {
+	public <U> void constructActiveStatusQuery(
+			CriteriaQueryGenericContext<A, U> context, Path<A> rootPath) {
 
 		ToggleableStatus which = ToggleableStatus.ACTIVE;
 		ToggleableMarker marker = context.getQuerySettings().getMarker(ToggleableMarker.class);
@@ -64,8 +65,8 @@ public abstract class ToggleableDAO<MetaDataGeneric extends ToggleableEntity_,A 
 		}
 	}
 
-	protected static <U> Predicate getNotExpiredAndEnabledSelection(
-			CriteriaQueryGenericContext<?, U> f, Path<? extends ToggleableEntity> rootPath  ) {
+	protected <U> Predicate getNotExpiredAndEnabledSelection(
+			CriteriaQueryGenericContext<A, U> f, Path<A> rootPath  ) {
 		Predicate nullOrNotExpired = f.c.or(f.c.isNull(rootPath.get(ToggleableEntity_.expiry)),f.c.greaterThan(rootPath.get(ToggleableEntity_.expiry), Instant.now()));
 		return f.c.and(nullOrNotExpired,f.c.equal(rootPath.get(ToggleableEntity_.enabled), true));
 	}
@@ -95,9 +96,9 @@ public abstract class ToggleableDAO<MetaDataGeneric extends ToggleableEntity_,A 
 	 * @param filterPredicate a single predicate of a filter
 	 * @param result predicates, selections and templates for ordering
 	 */
-	public static void constructStatusExpression(
-			CriteriaQueryGenericContext<?, ?> query,
-			Path<? extends ToggleableEntity> rootPath, FilterPredicate filterPredicate, AttributePredicates result) {
+	public <U> void constructStatusExpression(
+			CriteriaQueryGenericContext<A, U> query,
+			Path<A> rootPath, FilterPredicate filterPredicate, AttributePredicates result) {
 
 		Predicate nullOrNotExpiredAndEnabled = getNotExpiredAndEnabledSelection(query,rootPath);
 		Expression<Number> selectExpression = query.c.<Number>selectCase().when(nullOrNotExpiredAndEnabled , query.c.literal(1L)).otherwise(query.c.literal(0L));//boolean not working
@@ -106,7 +107,7 @@ public abstract class ToggleableDAO<MetaDataGeneric extends ToggleableEntity_,A 
 		setStatusMarkFromFilterPredicate(query, filterPredicate);
 	}
 
-	protected static void setStatusMarkFromFilterPredicate(
+	protected void setStatusMarkFromFilterPredicate(
 			CriteriaQueryGenericContext<?, ?> query,
 			FilterPredicate filterPredicate) {
 
