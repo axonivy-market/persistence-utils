@@ -74,7 +74,7 @@ public abstract class ToggleableEntity extends AuditableEntity {
 	 * @return true if expiryDate is set and is before
 	 */
 	public boolean isExpired() {
-		return expiry != null && expiry.isBefore(Instant.now(null));
+		return expiry != null && expiry.isBefore(Instant.now());
 	}
 
 	/**
