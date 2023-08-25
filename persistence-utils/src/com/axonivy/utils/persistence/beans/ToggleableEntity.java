@@ -121,7 +121,7 @@ public abstract class ToggleableEntity extends AuditableEntity {
 	 * @return expiry date.
 	 */
 	public LocalDateTime getExpiryAsLocalDateTime() {
-		return LocalDateTime.ofInstant(this.expiry, ZoneOffset.systemDefault());
+		return Objects.nonNull(expiry) ? LocalDateTime.ofInstant(this.expiry, ZoneOffset.systemDefault()) : null;
 	}
 	
 	/**
@@ -132,11 +132,7 @@ public abstract class ToggleableEntity extends AuditableEntity {
 	 * @param expiry expiry date
 	 */
 	public void setExpiryAsLocalDateTime(LocalDateTime expiry) {
-		if(Objects.nonNull(expiry)) {
-			this.expiry = expiry.atZone(ZoneOffset.systemDefault()).toInstant();
-		} else {
-			this.expiry = null;
-		}
+		this.expiry = Objects.nonNull(expiry) ? expiry.atZone(ZoneOffset.systemDefault()).toInstant() : null;  
 	}
 
 }
