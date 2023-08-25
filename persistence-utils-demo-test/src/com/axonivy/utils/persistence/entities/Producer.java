@@ -8,11 +8,11 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.axonivy.utils.persistence.beans.ToggleableEntity;
+import com.axonivy.utils.persistence.beans.ToggleableIdEntity;
 
 @Entity
 @Table(name = "producer")
-public class Producer extends ToggleableEntity {
+public class Producer extends ToggleableIdEntity {
 
 	/**
 	 * 

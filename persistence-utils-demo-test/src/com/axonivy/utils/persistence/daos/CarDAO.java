@@ -1,11 +1,11 @@
 package com.axonivy.utils.persistence.daos;
 
-import com.axonivy.utils.persistence.dao.AuditableDAO;
+import com.axonivy.utils.persistence.dao.AuditableIdDAO;
 import com.axonivy.utils.persistence.entities.Car;
 import com.axonivy.utils.persistence.entities.Car_;
 
 
-public class CarDAO extends AuditableDAO<Car_, Car> implements BaseDAO {
+public class CarDAO extends AuditableIdDAO<Car_, Car> implements BaseDAO {
 	private static final CarDAO instance = new CarDAO();
 
 	

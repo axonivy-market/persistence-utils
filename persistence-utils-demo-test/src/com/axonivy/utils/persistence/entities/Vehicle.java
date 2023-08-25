@@ -3,10 +3,10 @@ package com.axonivy.utils.persistence.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-import com.axonivy.utils.persistence.beans.AuditableEntity;
+import com.axonivy.utils.persistence.beans.AuditableIdEntity;
 
 @Entity
-public class Vehicle extends AuditableEntity {
+public class Vehicle extends AuditableIdEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Column(length = 64)

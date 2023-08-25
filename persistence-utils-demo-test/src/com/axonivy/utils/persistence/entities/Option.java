@@ -2,10 +2,10 @@ package com.axonivy.utils.persistence.entities;
 
 import javax.persistence.Entity;
 
-import com.axonivy.utils.persistence.beans.ToggleableEntity;
+import com.axonivy.utils.persistence.beans.ToggleableIdEntity;
 
 @Entity
-public class Option extends ToggleableEntity {
+public class Option extends ToggleableIdEntity {
 
 	private static final long serialVersionUID = 1L;
 	

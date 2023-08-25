@@ -1,5 +1,6 @@
 package com.axonivy.utils.persistence.beans;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -14,7 +15,7 @@ import javax.persistence.MappedSuperclass;
  *
  */
 @MappedSuperclass
-public abstract class ToggleableEntity extends AuditableEntity {
+public abstract class ToggleableEntity<ID extends Serializable> extends AuditableEntity<ID> {
 
 	private static final long serialVersionUID = 5872211233738039349L;
 
