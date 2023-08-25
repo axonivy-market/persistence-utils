@@ -173,7 +173,7 @@ public class Header implements Serializable {
 	 * @see #getCreatedDate()
 	 */
 	public Date getCreatedDateAsDate() {
-		return Date.from(this.createdDate);
+		return Objects.nonNull(this.createdDate) ? Date.from(this.createdDate) : null;
 	}
 	
 	/**
@@ -184,11 +184,7 @@ public class Header implements Serializable {
 	 * @see #setCreatedDate(Instant)
 	 */
 	public void setCreateDateAsDate(Date createdDate) {
-		if(Objects.nonNull(createdDate)) {
-			this.createdDate = createdDate.toInstant();
-		} else {
-			this.createdDate = null;
-		}
+		this.createdDate = Objects.nonNull(createdDate) ? createdDate.toInstant() : null;
 	}
 	
 	/**
@@ -199,7 +195,7 @@ public class Header implements Serializable {
 	 * @return date of creation.
 	 */
 	public LocalDateTime getCreatedDateAsLocalDateTime() {
-		return LocalDateTime.ofInstant(this.createdDate, ZoneOffset.systemDefault());
+		return Objects.nonNull(this.createdDate) ? LocalDateTime.ofInstant(this.createdDate, ZoneOffset.systemDefault()) : null;
 	}
 	
 	/**
@@ -210,11 +206,7 @@ public class Header implements Serializable {
 	 * @param createDate creation date
 	 */
 	public void setCreateDateAsLocalDateTime(LocalDateTime createDate) {
-		if(Objects.nonNull(createDate)) {
-			this.createdDate = createDate.atZone(ZoneOffset.systemDefault()).toInstant();
-		} else {
-			this.createdDate = null;
-		}
+		this.createdDate = Objects.nonNull(createDate) ? createDate.atZone(ZoneOffset.systemDefault()).toInstant() : null;
 	}
 	
 	/**
@@ -225,7 +217,7 @@ public class Header implements Serializable {
 	 * @see #getModifiedDate
 	 */
 	public Date getModifiedDateAsDate() {
-		return Date.from(this.modifiedDate);
+		return Objects.nonNull(this.modifiedDate) ? Date.from(this.modifiedDate) : null;
 	}
 	
 	/**
@@ -236,11 +228,7 @@ public class Header implements Serializable {
 	 * @see #setModifiedDate(Instant)
 	 */
 	public void setModifiedDateAsDate(Date modifiedDate) {
-		if(Objects.nonNull(modifiedDate)) {
-			this.modifiedDate = modifiedDate.toInstant();
-		} else {
-			this.modifiedDate = null;
-		}
+		this.modifiedDate = Objects.nonNull(modifiedDate) ? modifiedDate.toInstant() : null;
 	}
 	
 	/**
@@ -251,7 +239,7 @@ public class Header implements Serializable {
 	 * @return date of last modification.
 	 */
 	public LocalDateTime getModifiedDateAsLocalDateTime() {
-		return LocalDateTime.ofInstant(this.modifiedDate, ZoneOffset.systemDefault());
+		return Objects.nonNull(this.modifiedDate) ? LocalDateTime.ofInstant(this.modifiedDate, ZoneOffset.systemDefault()) : null;
 	}
 	
 	/**
@@ -262,11 +250,7 @@ public class Header implements Serializable {
 	 * @param modifiedDate last modification date
 	 */
 	public void setModifiedDateAsLocalDateTime(LocalDateTime modifiedDate) {
-		if(Objects.nonNull(modifiedDate)) {
-			this.modifiedDate = modifiedDate.atZone(ZoneOffset.systemDefault()).toInstant();
-		} else {
-			this.modifiedDate = null;
-		}
+		this.modifiedDate = Objects.nonNull(modifiedDate) ? modifiedDate.atZone(ZoneOffset.systemDefault()).toInstant() : null;
 	}
 	
 	/**
@@ -277,7 +261,7 @@ public class Header implements Serializable {
 	 * @see #getFlaggedDeletedDate
 	 */
 	public Date getFlaggedDeletedDateAsDate() {
-		return Date.from(this.flaggedDeletedDate);
+		return Objects.nonNull(this.flaggedDeletedDate) ? Date.from(this.flaggedDeletedDate) : null;
 	}
 	
 	/**
@@ -288,11 +272,7 @@ public class Header implements Serializable {
 	 * @see #setFlaggedDeletedDate(Instant)
 	 */
 	public void setFlaggedDeletedDateAsDate(Date flaggedDeletedDate) {
-		if(Objects.nonNull(flaggedDeletedDate)) {
-			this.flaggedDeletedDate = flaggedDeletedDate.toInstant();
-		} else {
-			this.flaggedDeletedDate = null;
-		}
+		this.flaggedDeletedDate = Objects.nonNull(flaggedDeletedDate) ? flaggedDeletedDate.toInstant() : null;
 	}
 	
 	/**
@@ -303,7 +283,7 @@ public class Header implements Serializable {
 	 * @return date of deletion.
 	 */
 	public LocalDateTime getFlaggedDeletedDateAsLocalDateTime() {
-		return LocalDateTime.ofInstant(this.flaggedDeletedDate, ZoneOffset.systemDefault());
+		return Objects.nonNull(this.flaggedDeletedDate) ? LocalDateTime.ofInstant(this.flaggedDeletedDate, ZoneOffset.systemDefault()) : null;
 	}
 	
 	/**
@@ -314,11 +294,7 @@ public class Header implements Serializable {
 	 * @param flaggedDeletedDate deletion date
 	 */
 	public void setFlaggedDeletedDateAsLocalDateTime(LocalDateTime flaggedDeletedDate) {
-		if(Objects.nonNull(flaggedDeletedDate)) {
-			this.flaggedDeletedDate = flaggedDeletedDate.atZone(ZoneOffset.systemDefault()).toInstant();
-		} else {
-			this.flaggedDeletedByUserName = null;
-		}
+		this.flaggedDeletedDate = Objects.nonNull(flaggedDeletedDate) ? flaggedDeletedDate.atZone(ZoneOffset.systemDefault()).toInstant() : null;
 	}
 	
 }

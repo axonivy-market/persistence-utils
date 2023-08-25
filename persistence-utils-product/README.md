@@ -28,12 +28,13 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 
 - Datatype of `AuditableEntity`s `Header` attributes for create/update and delete date where changed to `Instant`
 - Attribute `expiryDate` of `ToggleableEntity` has been renamed to **expiry** and its datatype changed to `Instant`
-- Datatype of `ToggleableEntity`s **enabled** has been changed to boolean
+- Attribute `ToggleableEntity`s **isEnabled** has been renamed to **enabled** and its datatype changed to `boolean`
 - `AuditableEntity` and `ToggleableEntity` are now derived from `VersionableEntity` instead of `GenericIdEntity`
 - To provide a version of the changed Entities with a predefined `String` id the new Entities `AuditableIdEntity` and `ToggleableIdEntity` and matching DAOs have been introduced
 
 *Recommendations*
 - rename the expiry column to **expiry** unless you have customized the column names anyways. e.g. ALTER TABLE **yourtable** RENAME COLUMN **expiryDate** TO **expiry**.
+- rename the isEnabled column to **enabled** unless you have customized the column names anyways. e.g. ALTER TABLE **yourtable** RENAME COLUMN **isEnabled** TO **enabled**.
 - Make sure there are no *NULL* values for the **enabled** column in your database. The column was defined as not nullable, so only manual changes in the database should have lead to *NULL* values
 - use `get/set...AsDate` or `get/set...AsLocalDateTime` methods if you need to get converted datatypes of create/modify/delete/expiry `Instant`s
 - Change usage of `AuditableEntity` and `ToggleableEntity` to `AuditableIdEntity` and `ToggleableIdEntity`. Use matching DAOs

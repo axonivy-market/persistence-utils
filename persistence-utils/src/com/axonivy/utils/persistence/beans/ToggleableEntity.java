@@ -75,8 +75,7 @@ public abstract class ToggleableEntity<ID extends Serializable> extends Auditabl
 	 * @return true if expiryDate is set and is before
 	 */
 	public boolean isExpired() {
-		Instant now = Instant.now();
-		return expiry != null && expiry.compareTo(now) < 0;
+		return expiry != null && expiry.isBefore(Instant.now(null));
 	}
 
 	/**
@@ -122,7 +121,7 @@ public abstract class ToggleableEntity<ID extends Serializable> extends Auditabl
 	 * @return expiry date.
 	 */
 	public LocalDateTime getExpiryAsLocalDateTime() {
-		return LocalDateTime.ofInstant(this.expiry, ZoneOffset.systemDefault());
+		return Objects.nonNull(expiry) ? LocalDateTime.ofInstant(this.expiry, ZoneOffset.systemDefault()) : null;
 	}
 	
 	/**
@@ -133,11 +132,7 @@ public abstract class ToggleableEntity<ID extends Serializable> extends Auditabl
 	 * @param expiry expiry date
 	 */
 	public void setExpiryAsLocalDateTime(LocalDateTime expiry) {
-		if(Objects.nonNull(expiry)) {
-			this.expiry = expiry.atZone(ZoneOffset.systemDefault()).toInstant();
-		} else {
-			this.expiry = null;
-		}
+		this.expiry = Objects.nonNull(expiry) ? expiry.atZone(ZoneOffset.systemDefault()).toInstant() : null;  
 	}
 
 }
