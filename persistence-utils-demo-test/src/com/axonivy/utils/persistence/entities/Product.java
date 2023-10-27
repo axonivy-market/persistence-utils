@@ -4,11 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.axonivy.utils.persistence.beans.AuditableEntity;
+import com.axonivy.utils.persistence.beans.AuditableIdEntity;
 
 @Entity
 @Table(name = "product")
-public class Product extends AuditableEntity {
+public class Product extends AuditableIdEntity {
 
 	/**
 	 * 

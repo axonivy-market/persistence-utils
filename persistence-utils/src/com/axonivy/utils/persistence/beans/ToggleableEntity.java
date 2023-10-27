@@ -1,34 +1,36 @@
 package com.axonivy.utils.persistence.beans;
 
+import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  * Base for all entities which can be enabled and disabled.
  *
  */
 @MappedSuperclass
-public abstract class ToggleableEntity extends AuditableEntity {
+public abstract class ToggleableEntity<ID extends Serializable> extends AuditableEntity<ID> {
 
 	private static final long serialVersionUID = 5872211233738039349L;
 
 	@Column(nullable = false)
-	private Boolean isEnabled;
+	private boolean enabled;
 
 	@Column
-	@Temporal(TemporalType.DATE)
-	private Date expiryDate;
+	private Instant expiry;
 
 	
 	/**
 	 * default constructor
 	 */
 	public ToggleableEntity() {
-		isEnabled = true;
+		enabled = true;
 	}
 
 	/**
@@ -36,8 +38,8 @@ public abstract class ToggleableEntity extends AuditableEntity {
 	 *
 	 * @return true if enabled flag is set to true
 	 */
-	public Boolean getIsEnabled() {
-		return isEnabled;
+	public boolean isEnabled() {
+		return enabled;
 	}
 
 	/**
@@ -45,8 +47,8 @@ public abstract class ToggleableEntity extends AuditableEntity {
 	 *
 	 * @param isEnabled the new checks if is enabled
 	 */
-	public void setIsEnabled(Boolean isEnabled) {
-		this.isEnabled = isEnabled;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	/**
@@ -54,8 +56,8 @@ public abstract class ToggleableEntity extends AuditableEntity {
 	 *
 	 * @return the expiry date
 	 */
-	public Date getExpiryDate() {
-		return expiryDate;
+	public Instant getExpiry() {
+		return expiry;
 	}
 
 	/**
@@ -63,8 +65,8 @@ public abstract class ToggleableEntity extends AuditableEntity {
 	 *
 	 * @param expiryDate the new expire date
 	 */
-	public void setExpiryDate(Date expiryDate) {
-		this.expiryDate = expiryDate;
+	public void setExpiry(Instant expiryDate) {
+		this.expiry = expiryDate;
 	}
 
 	/**
@@ -73,7 +75,7 @@ public abstract class ToggleableEntity extends AuditableEntity {
 	 * @return true if expiryDate is set and is before
 	 */
 	public boolean isExpired() {
-		return expiryDate != null && expiryDate.before(new Date());
+		return expiry != null && expiry.isBefore(Instant.now());
 	}
 
 	/**
@@ -82,7 +84,55 @@ public abstract class ToggleableEntity extends AuditableEntity {
 	 * @return true, if is active
 	 */
 	public boolean isActive() {
-		return getIsEnabled() != null && getIsEnabled() && !isExpired();
+		return isEnabled() && !isExpired();
+	}
+	
+	/**
+	 * Gets the expiry as {@link Date}.
+	 *
+	 * @return expiry date
+	 * @deprecated added only for easy conversion to old data type
+	 * @see #getFlaggedDeletedDate
+	 */
+	public Date getExpiryAsDate() {
+		return Date.from(this.expiry);
+	}
+	
+	/**
+	 * Sets the expiry from {@link Date}
+	 *
+	 * @param expiry expiry date
+	 * @deprecated added only for easy conversion to old data type
+	 * @see #setFlaggedDeletedDate(Instant)
+	 */
+	public void setExpiryAsDate(Date expiry) {
+		if(Objects.nonNull(expiry)) {
+			this.expiry = expiry.toInstant();
+		} else {
+			this.expiry = null;
+		}
+	}
+	
+	/**
+	 * Gets the expiry as {@link LocalDateTime}.
+	 * 
+	 * The conversion is done using the systems default ZoneOffset.
+	 *
+	 * @return expiry date.
+	 */
+	public LocalDateTime getExpiryAsLocalDateTime() {
+		return Objects.nonNull(expiry) ? LocalDateTime.ofInstant(this.expiry, ZoneOffset.systemDefault()) : null;
+	}
+	
+	/**
+	 * Sets the expiry from {@link LocalDateTime}
+	 *
+	 * The conversion is done using the systems default ZoneOffset.
+	 * 
+	 * @param expiry expiry date
+	 */
+	public void setExpiryAsLocalDateTime(LocalDateTime expiry) {
+		this.expiry = Objects.nonNull(expiry) ? expiry.atZone(ZoneOffset.systemDefault()).toInstant() : null;  
 	}
 
 }

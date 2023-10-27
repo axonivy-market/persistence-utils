@@ -1,7 +1,8 @@
 package com.axonivy.utils.persistence.dao;
 
+import java.io.Serializable;
+import java.time.Instant;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,8 +25,8 @@ import ch.ivyteam.ivy.environment.Ivy;
  * 
  * @author peter
  */
-public abstract class AuditableDAO<MetaDataGeneric extends AuditableEntity_, A extends AuditableEntity>
-		extends GenericIdEntityDAO<MetaDataGeneric, A> {
+public abstract class AuditableDAO<MetaDataGeneric extends AuditableEntity_, A extends AuditableEntity<? extends Serializable>>
+		extends GenericDAO<MetaDataGeneric, A> {
 
 	/**
 	 * Status to use if none is specified.
@@ -46,7 +47,7 @@ public abstract class AuditableDAO<MetaDataGeneric extends AuditableEntity_, A e
 	 */
 	@Override
 	protected void manipulateUpdateQuery(UpdateQueryGenericContext<A> context) {
-		context.u.set(context.r.get(AuditableEntity_.header).get(Header_.modifiedDate), new Date());
+		context.u.set(context.r.get(AuditableEntity_.header).get(Header_.modifiedDate), Instant.now());
 		context.u.set(context.r.get(AuditableEntity_.header).get(Header_.modifiedByUserName), getModifiedUserName()); 
 		Predicate wherePredicate = context.u.getRestriction();
 		Attribute<?, ?>[] attributes = new Attribute<?, ?>[0];
@@ -119,7 +120,7 @@ public abstract class AuditableDAO<MetaDataGeneric extends AuditableEntity_, A e
 	 * @param <A> the type of elements in this collection
 	 * @return a list
 	 */
-	public static <A extends AuditableEntity> List<A> filter(Collection<A> all, AuditableStatus auditableStatus) {
+	public static <A extends AuditableEntity<Serializable>> List<A> filter(Collection<A> all, AuditableStatus auditableStatus) {
 		List<A> result = null;
 		if (all != null) {
 			switch (auditableStatus) {
@@ -145,7 +146,7 @@ public abstract class AuditableDAO<MetaDataGeneric extends AuditableEntity_, A e
 	 * @param <A> the type of elements in this collection
 	 * @return a list
 	 */
-	public static <A extends AuditableEntity> List<A> filter(Collection<A> all) {
+	public static <A extends AuditableEntity<Serializable>> List<A> filter(Collection<A> all) {
 		return filter(all, DEFAULT_AUDITABLE_STATUS);
 	}
 

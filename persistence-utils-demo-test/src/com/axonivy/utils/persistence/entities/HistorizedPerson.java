@@ -4,12 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import com.axonivy.utils.persistence.annotations.Audit;
-import com.axonivy.utils.persistence.beans.AuditableEntity;
+import com.axonivy.utils.persistence.beans.AuditableIdEntity;
 import com.axonivy.utils.persistence.daos.AuditHandler;
 
 @Entity
 @Audit(handler = AuditHandler.class)
-public class HistorizedPerson extends AuditableEntity {
+public class HistorizedPerson extends AuditableIdEntity {
 
 	/**
 	 * auto generated id

@@ -13,7 +13,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 
-import com.axonivy.utils.persistence.dao.AuditableDAO;
+import com.axonivy.utils.persistence.dao.AuditableIdDAO;
 import com.axonivy.utils.persistence.dao.CriteriaQueryContext;
 import com.axonivy.utils.persistence.dao.CriteriaQueryGenericContext;
 import com.axonivy.utils.persistence.dao.ExpressionMap;
@@ -34,7 +34,7 @@ import com.axonivy.utils.persistence.search.FilterPredicate;
 import com.axonivy.utils.persistence.service.DateService;
 
 
-public class PersonDAO extends AuditableDAO<Person_, Person> implements BaseDAO {
+public class PersonDAO extends AuditableIdDAO<Person_, Person> implements BaseDAO {
 	private static final Logger LOG = Logger.getLogger(PersonDAO.class);
 	private static final PersonDAO instance = new PersonDAO();
 
