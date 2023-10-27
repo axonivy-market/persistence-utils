@@ -17,6 +17,7 @@ import org.openqa.selenium.Keys;
 
 import com.axonivy.ivy.webtest.IvyWebTest;
 import com.axonivy.ivy.webtest.engine.EngineUrl;
+import com.axonivy.ivy.webtest.engine.WebAppFixture;
 import com.axonivy.ivy.webtest.primeui.PrimeUi;
 import com.axonivy.ivy.webtest.primeui.widget.InputNumber;
 import com.codeborne.selenide.ElementsCollection;
@@ -47,15 +48,13 @@ public class WebTestDemoIT {
 		firstName = "Peter" + randomNumber;
 		lastName = "S" + randomNumber;
 		ivyUserName = firstName.toLowerCase() + "." + lastName.toLowerCase();
-
-		startLoginAsAdmin();
 	}
 
 
 	@Test
 	@Order(1)
-	public void testAddNewDepartment() {
-		startLoginAsAdmin(); //re-login
+	public void testAddNewDepartment(WebAppFixture fixture) {
+		startLoginAsAdmin(fixture); //re-login
 		addNewDepartment(marketingDepartmentName);
 
 		$(By.id("mainForm:departmentTable_data")).shouldHave(text(marketingDepartmentName));
@@ -183,12 +182,8 @@ public class WebTestDemoIT {
 		open(EngineUrl.createProcessUrl("persistence-utils-demo/173A4BC5D38BAD52/personSearch.ivp"));
 	}
 
-	private static void startLoginAsAdmin() {
-		open(EngineUrl.base() + "default-workflow/faces/login.xhtml");
-
-		$(By.id("loginForm:userName")).shouldBe(enabled).sendKeys("jpa_admin");
-		$(By.id("loginForm:password")).shouldBe(enabled).sendKeys("jpa_admin");
-		$(By.id("loginForm:login")).shouldBe(enabled).click();
+	private static void startLoginAsAdmin(WebAppFixture fixture) {
+		fixture.login("jpa_admin", "jpa_admin");
 		
 		open(EngineUrl.base() + "default-workflow/faces/profile.xhtml");
 		SelenideElement lang = $(By.name("profileForm:contentLanguage_editableInput")).shouldBe(enabled);
