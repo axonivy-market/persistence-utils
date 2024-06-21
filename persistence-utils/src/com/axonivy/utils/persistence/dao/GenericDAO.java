@@ -18,9 +18,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -29,7 +29,6 @@ import javax.persistence.Query;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaBuilder.Case;
 import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
@@ -1622,27 +1621,97 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 * @param attributePredicate
 	 * @param typeExpression
 	 */
+	@SuppressWarnings("unchecked")
 	protected <C extends HasCmsName> void addCmsEnumSelectionOrderAndIn(CriteriaQueryGenericContext<T, ?> query, Class<C> clazz, FilterPredicate filterPredicate, AttributePredicates attributePredicate, Expression<C> typeExpression) {
+		addCmsEnumSelectionOrderForValueProvider(query, clazz,
+				(filter, entries) -> {
+					// Create the array class of our Enum
+					// and use it to extract an enum array from the filterPredicate.
+					var arrayType = Array.newInstance(clazz, 0).getClass();
+					var values = (Object[])filterPredicate.getValue(arrayType);
+					return values == null || values.length == 0 ? null : (Collection<C>) List.of(values);
+				},
+				filterPredicate, attributePredicate, typeExpression);
+	}
+
+	/**
+	 * Add selection, filter-predicate and order for an enum implementing {@link HasCmsName} which will be filtered by String comtained in the current locales CMS name.
+	 *
+	 * <p>
+	 * First all enumeration values will be looked up in CMS and converted to the current language.
+	 * Next this list is sorted and a case query is prepared giving every possible value it's
+	 * sort index. This index will then be used for sorting. Contains will be performed on the
+	 * CMS entries of the enum and then the resulting enums will be searched.
+	 * </p>
+	 *
+	 * @param <C>
+	 * @param query
+	 * @param clazz the enumeration which implements HasCmsName
+	 * @param filterPredicate searched with in query
+	 * @param attributePredicate
+	 * @param typeExpression
+	 */
+	protected <C extends HasCmsName> void addCmsEnumSelectionOrderAndContains(CriteriaQueryGenericContext<T, ?> query, Class<C> clazz, FilterPredicate filterPredicate, AttributePredicates attributePredicate, Expression<C> typeExpression) {
+		addCmsEnumSelectionOrderForValueProvider(query, clazz,
+				(filter, entries) -> {
+					var value = filterPredicate.getValue(String.class);
+					Collection<C> values = null;
+					// Filter the enum values where cms name contains search text.
+					if (value != null) {
+						final var contained = value.toLowerCase();
+						values = entries.stream()
+								.filter(e -> e.getValue().toLowerCase().contains(contained))
+								.map(e -> e.getKey())
+								.toList();
+					}
+					return values;
+				},
+				filterPredicate, attributePredicate, typeExpression);
+	}
+
+	/**
+	 * Add selection, filter-predicate and order for an enum implementing {@link HasCmsName} which will be filtered by a list of possible values.
+	 *
+	 * <p>
+	 * First all enumeration values will be looked up in CMS and converted to the current language.
+	 * Next this list is sorted and a case query is prepared giving every possible value it's
+	 * sort index. This index will then be used for sorting. Contains will be performed on the
+	 * CMS entries of the enum and then the resulting enums will be searched.
+	 * </p>
+	 * 
+	 * <p>
+	 * Note, this function should probably not be used directly but as a helper to create
+	 * predicates for enum based searches. See examples in this class how to use it.
+	 * </p>
+	 *
+	 * @param <C>
+	 * @param query
+	 * @param clazz the enumeration which implements HasCmsName
+	 * @param valuesProvider function getting a {@link FilterPredicate} and a List of {@link Entry} (key is the enumeration, value is the CMS String), which should return the enum values that should be filtered
+	 * @param filterPredicate searched with in query
+	 * @param attributePredicate
+	 * @param typeExpression
+	 */
+	protected <C extends HasCmsName> void addCmsEnumSelectionOrderForValueProvider(CriteriaQueryGenericContext<T, ?> query, Class<C> clazz, BiFunction<FilterPredicate, List<Map.Entry<C, String>>, Collection<C>> valuesProvider, FilterPredicate filterPredicate, AttributePredicates attributePredicate, Expression<C> typeExpression) {
 		attributePredicate.addSelection(typeExpression);
 
-		// Get enum entries sorted by CMS name.
-		List<Entry<C, String>> entries = EnumService.getSortedByCmsName(clazz);
+		// Get a list of CMS entries sorted by the CMS String in the current locale.
+		// Every entry contains the enum as the key and the CMS String as the value.
+		var entries = EnumService.getSortedByCmsName(clazz);
 
-		// Create the array class of our Enum
-		// and use it to extract an enum array from the filterPredicate.
-		Class<?> arrayType = Array.newInstance(clazz, 0).getClass();
-		Object[] values = (Object[]) filterPredicate.getValue(arrayType);
+		// Filter the enum values, that match the filter predicate.
+		var values = valuesProvider.apply(filterPredicate, entries);
 
-		// Filter the enum values where cms name contains search text.
-		if (values != null && values.length > 0) {
+		if(values != null) {
 			attributePredicate.addPredicate(typeExpression.in(values));
 		}
 
-		// Create an case query that replaces every enum by it's sort index.
-		Case<Integer> caseExpression = query.c.selectCase();
+		// Create a case query that replaces every enum by it's sort index.
+		var caseExpression = query.c.selectCase();
 
-		int i = 0;
-		for (Entry<C, String> entry : entries) {
+		// Get enum entries sorted by CMS name.
+		var i = 0;
+		for (var entry : entries) {
 			caseExpression = caseExpression.when(query.c.equal(typeExpression, entry.getKey()), i);
 			i++;
 		}

@@ -110,7 +110,7 @@ public class SearchFilterTest extends DemoTestBase {
 	}
 
 	@Test
-	public void testSearchEnumLike(AppFixture fixture) {
+	public void testSearchEnumContains(AppFixture fixture) {
 		switchOnLogging(Level.INFO,
 				packageLevelHibernateSqlStatements(),
 				packageLevelHibernateSqlParameters(),
