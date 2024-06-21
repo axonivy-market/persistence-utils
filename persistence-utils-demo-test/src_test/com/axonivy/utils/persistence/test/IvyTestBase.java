@@ -23,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 import com.axonivy.utils.persistence.IvyEntityManager;
 import com.axonivy.utils.persistence.demo.Logger;
 import com.axonivy.utils.persistence.demo.service.IvyService;
+import com.axonivy.utils.persistence.test.service.LogService;
 
 import ch.ivyteam.ivy.application.IApplication;
 import ch.ivyteam.ivy.environment.AppFixture;
@@ -40,7 +41,7 @@ public class IvyTestBase {
 		// start with system user
 		fixture.loginUser(IvyService.getSystemUser());
 	}
-	
+
 	@AfterAll
 	public static void down() {
 		IvyEntityManager.getInstance().clearThreadlocals();
@@ -81,17 +82,22 @@ public class IvyTestBase {
 	 * @param message
 	 * @param globalLevel
 	 * @param packageLevels
+	 * @deprecated use {@link LogService}
 	 */
+	@Deprecated
 	public void switchOnLogging(Level globalLevel, PackageLevel...packageLevels) {
 		switchOnLogging("Configuring logging system:", globalLevel, packageLevels);
 	}
 
 	/**
 	 * Automatically switch logging to a useful default after test.
+	 * @deprecated use {@link LogService}
 	 */
+	@Deprecated
 	@AfterEach
 	public void switchOffLogging() {
 		switchOnLogging("Resetting logging system:", Level.WARN);
+		LogService.get().consoleLog(Level.INFO);
 	}
 
 	/**
