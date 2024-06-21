@@ -26,12 +26,12 @@ import com.axonivy.utils.persistence.demo.entities.Person_;
 import com.axonivy.utils.persistence.demo.enums.AccessRestriction;
 import com.axonivy.utils.persistence.demo.enums.MaritalStatus;
 import com.axonivy.utils.persistence.demo.enums.PersonSearchField;
-import com.axonivy.utils.persistence.demo.ivy.HasCmsName;
-import com.axonivy.utils.persistence.demo.service.EnumService;
 import com.axonivy.utils.persistence.demo.service.IvyService;
+import com.axonivy.utils.persistence.enums.HasCmsName;
 import com.axonivy.utils.persistence.search.AttributePredicates;
 import com.axonivy.utils.persistence.search.FilterPredicate;
 import com.axonivy.utils.persistence.service.DateService;
+import com.axonivy.utils.persistence.service.EnumService;
 
 
 public class PersonDAO extends AuditableIdDAO<Person_, Person> implements BaseDAO {
@@ -163,35 +163,13 @@ public class PersonDAO extends AuditableIdDAO<Person_, Person> implements BaseDA
 						getExpression(expressionMap, query.r, Person_.lastName));
 				break;
 			case MARITAL_STATUS:
-			{
-				Expression<MaritalStatus> msExpression = getExpression(expressionMap, query.r, Person_.maritalStatus);
-
-				attributePredicate.addSelection(msExpression);
-
-				// get enum entries sorted by CMS name
-				List<Entry<HasCmsName, String>> entries = EnumService.getSortedByCmsName(MaritalStatus.values());
-
-				// filter the enum values where cms name contains search text
-				if(filterPredicate.hasValue()) {
-					MaritalStatus value = MaritalStatus.valueOf(filterPredicate.getValue());
-					attributePredicate.addPredicate(msExpression.in(value));
-				}
-
-				// create an ascending integer for every entry to use for sorting
-				Case<Integer> msCaseExpression = query.c.selectCase();
-
-				int i = 0;
-				for (Entry<HasCmsName, String> entry : entries) {
-					msCaseExpression = msCaseExpression.when(query.c.equal(msExpression, entry.getKey()), i);
-					i++;
-				}
-				msCaseExpression.otherwise(i);
-
-				attributePredicate.addOrder(query.c.asc(msCaseExpression));
-
+				addCmsEnumSelectionOrderAndIn(query,
+						MaritalStatus.class,
+						filterPredicate,
+						attributePredicate,
+						getExpression(expressionMap, query.r, Person_.maritalStatus));
 				break;
-			}
-			case MARITAL_STATUS_LIKE:
+			case MARITAL_STATUS_CONTAINS:
 			{
 				Expression<MaritalStatus> msExpression = getExpression(expressionMap, query.r, Person_.maritalStatus);
 

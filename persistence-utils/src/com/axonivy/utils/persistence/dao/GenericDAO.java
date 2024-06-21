@@ -3,6 +3,7 @@ package com.axonivy.utils.persistence.dao;
 import static com.axonivy.utils.persistence.enums.UpdateType.DELETE;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
@@ -17,6 +18,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,6 +29,7 @@ import javax.persistence.Query;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaBuilder.Case;
 import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
@@ -60,6 +63,7 @@ import com.axonivy.utils.persistence.beans.GenericIdEntity_;
 import com.axonivy.utils.persistence.beans.Header;
 import com.axonivy.utils.persistence.beans.Updatable;
 import com.axonivy.utils.persistence.beans.VersionableEntity_;
+import com.axonivy.utils.persistence.enums.HasCmsName;
 import com.axonivy.utils.persistence.enums.UpdateType;
 import com.axonivy.utils.persistence.history.handler.AuditHandler;
 import com.axonivy.utils.persistence.logging.Logger;
@@ -68,6 +72,7 @@ import com.axonivy.utils.persistence.search.FilterOrder;
 import com.axonivy.utils.persistence.search.FilterPredicate;
 import com.axonivy.utils.persistence.search.FindByExample;
 import com.axonivy.utils.persistence.search.SearchFilter;
+import com.axonivy.utils.persistence.service.EnumService;
 
 /**
  * @author Various People
@@ -1564,28 +1569,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	}
 
 	/**
-	 * Helper method for simplifying selection order and predicate calls in
-	 * filterSearch, using like search
-	 * 
-	 * @param query
-	 * @param filterPredicate
-	 * @param attrPredicates
-	 * @param expression
-	 * @return result of add selection operation
-	 */
-	protected boolean addSelectionOrderAndLike(CriteriaQueryGenericContext<T, ?> query, FilterPredicate filterPredicate, AttributePredicates attrPredicates, Expression<String> expression) {
-		boolean res = attrPredicates.addSelection(expression);
-		attrPredicates.addOrder(query.c.asc(expression));
-		String name = filterPredicate.getValue();
-		if (name != null) {
-			attrPredicates.addPredicate(query.c.like(expression, "%" + name + "%"));
-		}
-		return res;
-	}
-
-	/**
-	 * Helper method for simplifying selection order and predicate calls in
-	 * filterSearch, using equals search
+	 * Create selection, filter-predicate and order for a String equal search.
 	 * 
 	 * @param query
 	 * @param filterPredicate
@@ -1594,13 +1578,78 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 * @return result of add selection operation
 	 */
 	protected boolean addSelectionOrderAndEqual(CriteriaQueryGenericContext<T, ?> query, FilterPredicate filterPredicate, AttributePredicates attrPredicates, Expression<String> expression) {
-		boolean res = attrPredicates.addSelection(expression);
+		var res = attrPredicates.addSelection(expression);
 		attrPredicates.addOrder(query.c.asc(expression));
-		String name = filterPredicate.getValue();
+		var name = filterPredicate.getValue();
 		if (name != null) {
 			attrPredicates.addPredicate(query.c.equal(expression, name));
 		}
 		return res;
+	}
+
+	/**
+	 * Create selection, filter-predicate and order for a String like search.
+	 * 
+	 * @param query
+	 * @param filterPredicate
+	 * @param attrPredicates
+	 * @param expression
+	 * @return result of add selection operation
+	 */
+	protected boolean addSelectionOrderAndLike(CriteriaQueryGenericContext<T, ?> query, FilterPredicate filterPredicate, AttributePredicates attrPredicates, Expression<String> expression) {
+		var res = attrPredicates.addSelection(expression);
+		attrPredicates.addOrder(query.c.asc(expression));
+		var name = filterPredicate.getValue();
+		if (name != null) {
+			attrPredicates.addPredicate(query.c.like(expression, "%" + name + "%"));
+		}
+		return res;
+	}
+
+	/**
+	 * Add selection, filter-predicate and order for an enum implementing {@link HasCmsName} which will be filtered by a list of possible values.
+	 *
+	 * <p>
+	 * First all enumeration values will be looked up in CMS and converted to the current language.
+	 * Next this list is sorted and a case query is prepared giving every possible value it's
+	 * sort index. This index will then be used for sorting. In is handled as usually.
+	 * </p>
+	 *
+	 * @param <C>
+	 * @param query
+	 * @param clazz the enumeration which implements HasCmsName
+	 * @param filterPredicate searched with in query
+	 * @param attributePredicate
+	 * @param typeExpression
+	 */
+	protected <C extends HasCmsName> void addCmsEnumSelectionOrderAndIn(CriteriaQueryGenericContext<T, ?> query, Class<C> clazz, FilterPredicate filterPredicate, AttributePredicates attributePredicate, Expression<C> typeExpression) {
+		attributePredicate.addSelection(typeExpression);
+
+		// Get enum entries sorted by CMS name.
+		List<Entry<C, String>> entries = EnumService.getSortedByCmsName(clazz);
+
+		// Create the array class of our Enum
+		// and use it to extract an enum array from the filterPredicate.
+		Class<?> arrayType = Array.newInstance(clazz, 0).getClass();
+		Object[] values = (Object[]) filterPredicate.getValue(arrayType);
+
+		// Filter the enum values where cms name contains search text.
+		if (values != null && values.length > 0) {
+			attributePredicate.addPredicate(typeExpression.in(values));
+		}
+
+		// Create an case query that replaces every enum by it's sort index.
+		Case<Integer> caseExpression = query.c.selectCase();
+
+		int i = 0;
+		for (Entry<C, String> entry : entries) {
+			caseExpression = caseExpression.when(query.c.equal(typeExpression, entry.getKey()), i);
+			i++;
+		}
+		caseExpression.otherwise(i);
+
+		// Add order for the sort index.
+		attributePredicate.addOrder(query.c.asc(caseExpression));
 	}
 
 	/**

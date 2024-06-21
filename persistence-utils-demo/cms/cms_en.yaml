@@ -80,8 +80,6 @@ Enums:
                   name: single
                 WIDOWED:
                   name: widowed
-                X:
-                  name: divorced
               Role:
                 ADMINISTRATOR:
                   name: Administrator

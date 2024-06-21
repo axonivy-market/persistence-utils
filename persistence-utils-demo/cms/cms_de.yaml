@@ -80,8 +80,6 @@ Enums:
                   name: ledig
                 WIDOWED:
                   name: verwitwet
-                X:
-                  name: x
               Role:
                 ADMINISTRATOR:
                   name: Administrator

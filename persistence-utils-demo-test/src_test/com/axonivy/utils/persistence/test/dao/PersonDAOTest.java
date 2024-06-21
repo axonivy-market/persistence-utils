@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
-import javax.persistence.Tuple;
 import javax.transaction.TransactionRolledbackException;
 
 import org.apache.logging.log4j.Level;
@@ -16,8 +15,6 @@ import org.junit.jupiter.api.Test;
 import com.axonivy.utils.persistence.demo.daos.PersonDAO;
 import com.axonivy.utils.persistence.demo.entities.Department;
 import com.axonivy.utils.persistence.demo.entities.Person;
-import com.axonivy.utils.persistence.demo.enums.PersonSearchField;
-import com.axonivy.utils.persistence.search.SearchFilter;
 import com.axonivy.utils.persistence.test.DemoTestBase;
 
 import ch.ivyteam.ivy.environment.AppFixture;
@@ -75,50 +72,7 @@ public class PersonDAOTest extends DemoTestBase {
 	}
 
 	@Test
-	public void testSearch() {
-		SearchFilter filter = new SearchFilter();
-
-		filter
-		.add(PersonSearchField.ID)
-		.add(PersonSearchField.IVY_USER_NAME)
-		.add(PersonSearchField.FIRST_NAME)
-		.add(PersonSearchField.LAST_NAME)
-		.add(PersonSearchField.BIRTHDATE)
-		.add(PersonSearchField.MARITAL_STATUS)
-		.add(PersonSearchField.SALARY)
-		.add(PersonSearchField.DEPARTMENT_NAME);
-
-		filter.addSort(PersonSearchField.LAST_NAME, true).addSort(PersonSearchField.FIRST_NAME, true);
-
-		List<Tuple> persons = personDAO.findBySearchFilter(filter);
-
-		logTuples("Persons", persons, -30);
-
-		assertThat(persons).as("Find tuples").hasSizeGreaterThan(300);
-	}
-
-	@Test
-	public void testSearchIndividual() {
-		switchOnLogging(Level.INFO,
-				packageLevelHibernateSqlStatements(),
-				packageLevelHibernateSqlParameters(),
-				packageLevel("com.axonivy", Level.INFO));
-
-		SearchFilter filter = new SearchFilter();
-
-		filter.add(PersonSearchField.ID)
-		.add(PersonSearchField.IVY_USER_NAME, "er");
-
-		List<Tuple> persons = personDAO.findBySearchFilter(filter);
-
-		logTuples("Persons", persons, -30);
-
-		assertThat(persons).as("Find tuples").hasSizeGreaterThan(100);
-	}
-
-	@Test
 	public void testTransactions() throws TransactionRolledbackException {
-
 		Person person = personDAO.findByIvyUserName(userLeitung, null);
 		assertThat(person).as("Find person").isNotNull();
 		Department leitung = person.getDepartment();

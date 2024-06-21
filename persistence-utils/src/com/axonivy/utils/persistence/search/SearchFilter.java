@@ -11,9 +11,6 @@ import java.util.Map;
  * Search filter.
  *
  * A search filter combines {@link FilterPredicate}s and {@link FilterOrder}s.
- *
- * @author peter
- *
  */
 public class SearchFilter {
 
