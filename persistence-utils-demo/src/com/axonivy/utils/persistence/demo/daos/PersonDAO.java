@@ -32,7 +32,7 @@ public class PersonDAO extends AuditableIdDAO<Person_, Person> implements BaseDA
 	private static final Logger LOG = Logger.getLogger(PersonDAO.class);
 	private static final PersonDAO instance = new PersonDAO();
 
-	private PersonDAO() {
+	protected PersonDAO() {
 	}
 
 	public static PersonDAO getInstance() {

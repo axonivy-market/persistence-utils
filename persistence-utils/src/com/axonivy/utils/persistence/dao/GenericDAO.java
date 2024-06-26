@@ -523,13 +523,13 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 * }
 	 * </pre>
 	 * <p>Note that T is a entity, U is a return object</p>
-	 * @param factory query context
+	 * @param ctx query context
 	 * @param <U> the type of the represented object
 	 * @return list of entities according to specified factory, with applied
 	 *         permissions
 	 */
-	public <U> List<U> findByCriteria(CriteriaQueryGenericContext<T, U> factory) {
-		return factory != null ? findByCriteriaInternal(factory) : new ArrayList<U>();
+	public <U> List<U> findByCriteria(CriteriaQueryGenericContext<T, U> ctx) {
+		return ctx != null ? findByCriteriaInternal(ctx) : new ArrayList<U>();
 	}
 
 	/**
@@ -602,84 +602,68 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 *
 	 * This version does not check permissions.
 	 *
-	 * @param criteriaFactory
+	 * @param ctx
 	 * @return
 	 */
-	private <U> List<U> findByCriteriaInternal(CriteriaQueryGenericContext<T, U> criteriaFactory) {
+	private <U> List<U> findByCriteriaInternal(CriteriaQueryGenericContext<T, U> ctx) {
 		LocalTime startOfMeasurements = LocalTime.now();
 		try (AutoCloseable au = beginSession()) {
 
-			QuerySettings<T> querySettings = criteriaFactory.getQuerySettings();
+			QuerySettings<T> querySettings = ctx.getQuerySettings();
 
-			// add orders
-			criteriaFactory.orderBy(querySettings.getOrders().toArray(new Order[0]));
-			// add orders specified by simple attributes
-			List<SingularAttribute<? super T, ?>> orderAttributes = querySettings.getOrderAttributes();
+			// Add orders.
+			ctx.orderBy(querySettings.getOrders().toArray(new Order[0]));
+			// Add orders specified by simple attributes.
+			var orderAttributes = querySettings.getOrderAttributes();
+			var orders = orderAttributes.stream().map(o -> ctx.asc(o)).toArray(Order[]::new);
+			ctx.orderBy(orders);
 
-			List<Order> order = new ArrayList<>();
+			CriteriaQueryGenericContext.TypedQueryInterceptor<U> tqi = ctx.getTypedQueryInterceptor();
 
-			for (SingularAttribute<? super T, ?> orderAttribute : orderAttributes) {
-				if (orderAttribute == null) {
-					LOG.warn(
-							"DAO {0} was called with a singular order attribute which is null, ignoring it",
-							getClass().getCanonicalName());
-				} else {
-					order.add(criteriaFactory.asc(orderAttribute));
-				}
-			}
+			// Add functionality for a bean hierarchy.
+			manipulateCriteriaFactory(ctx);
 
-			criteriaFactory.orderBy(order.toArray(new Order[0]));
-
-			CriteriaQueryGenericContext.TypedQueryInterceptor<U> tqi = criteriaFactory.getTypedQueryInterceptor();
-
-			// use this function to add functionality for a certain type of bean
-			manipulateCriteriaFactory(criteriaFactory);
-
-			TypedQuery<U> query = getEM().createQuery(criteriaFactory.q);
+			TypedQuery<U> query = getEM().createQuery(ctx.q);
 
 			if (tqi != null) {
 				tqi.beforeGetResultList(query);
 			}
 
-			Integer firstResult = querySettings.getFirstResult();
+			var firstResult = querySettings.getFirstResult();
 			if (firstResult != null && firstResult >= 0) {
 				query.setFirstResult(firstResult);
 			}
 
-			Integer maxResults = querySettings.getMaxResults();
+			var maxResults = querySettings.getMaxResults();
 			if (maxResults != null && maxResults >= 0) {
 				query.setMaxResults(maxResults);
 			}
 
-			handleReadingAudit(criteriaFactory);
+			handleReadingAudit(ctx);
 
+			// Execute the query.
 			List<U> resultList = query.getResultList();
+
+
+
+
 
 			if (tqi != null) {
 				resultList = tqi.afterGetResultList(resultList);
 			}
 
 			if (LOG.isDebugEnabled()) {
-				LocalTime endOfMeasurements = LocalTime.now();
-				double millis = startOfMeasurements.until(endOfMeasurements,
-						ChronoUnit.NANOS) / 1000000.0;
+				double millis = startOfMeasurements.until(LocalTime.now(), ChronoUnit.NANOS) / 1000000.0;
 
-				String criteriaString = criteriaFactory.getQueryString(query);
+				String criteriaString = ctx.getQueryString(query);
 				if (!StringUtils.isBlank(criteriaString)) {
 					criteriaString = ":\n    " + criteriaString;
 				}
 
 				if (millis > 500) {
-					LOG.warn("{0}: find took {2} ms : statement{1}", getType()
-							.getSimpleName(), criteriaString, NumberFormat
-							.getNumberInstance().format(millis));
-					LOG.warn("this query took more than 500 miliseconds");
+					LOG.warn("{0}: Long Query took {2} ms, statement: {1}", getType().getSimpleName(), criteriaString, NumberFormat.getNumberInstance().format(millis));
 				} else {
-					LOG.debug(
-							"{0}: find by criteria took {2} ms : statement{1}",
-							getType().getSimpleName(), criteriaString,
-							NumberFormat.getNumberInstance().format(millis));
-
+					LOG.debug("{0}: Query took {2} ms, statement: {1}",	getType().getSimpleName(), criteriaString, NumberFormat.getNumberInstance().format(millis));
 				}
 			}
 
@@ -1393,7 +1377,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 
 			AttributePredicates totalAps = searchFilterToAttributePredicates(searchFilter, query);
 
-			// build query from all predicates and selections and orders
+			// Build query from all predicates and selections and orders.
 			query.q.where(totalAps.getPredicatesArray());
 			query.q.multiselect(totalAps.getSelectionsArray());
 			query.q.orderBy(totalAps.getOrders());
@@ -1407,47 +1391,59 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	}
 
 	/**
-	 * Perform a search without defined querySettings
-	 * <p>Example:</p>
-	 * <pre>
-	 * {@code
-	 *  SearchFilter searchFilter = new SearchFilter().add(SearchField.FIELD, value); // value search
-	 *  List<Tuple> result = dao.countBySearchFilter(searchFilter);
-	 * }
-	 * </pre>
-	 * <p>Note: SearchField a enumeration for search field</p>
-	 *  
-	 * @param searchFilter a search filter combines {@link FilterPredicate}s and {@link FilterOrder}s
-	 * @return long count of found entries
+	 * Count number of results of {@link SearchFilter}.
+	 * 
+	 * <p>
+	 * Counting is performed non-distinct, without any {@link QuerySettings}.
+	 * </p>
+	 * 
+	 * @param searchFilter
+	 * @return
 	 */
 	public long countBySearchFilter(SearchFilter searchFilter) {
 		return countBySearchFilter(searchFilter, null);
 	}
 
 	/**
-	 * Perform a search by a given {@link SearchFilter} and return the number of
-	 * hits.
+	 * Count number of results of {@link SearchFilter}.
+	 * 
+	 * <p>
+	 * Counting is performed non-distinct.
+	 * </p>
+	 * 
+	 * @param searchFilter
+	 * @param querySettings
+	 * @return
+	 */
+	public long countBySearchFilter(SearchFilter searchFilter, QuerySettings<T> querySettings) {
+		return countBySearchFilter(searchFilter, false, querySettings);
+	}
+
+	/**
+	 * Count number of results of {@link SearchFilter}.
+	 * 
 	 * <p>Example:</p>
 	 * <pre>
 	 * {@code
-	 *   SearchFilter searchFilter = new SearchFilter().add(SearchField.FIELD, value); // value search
-	 *   List<Tuple> result = dao.countBySearchFilter(searchFilter,
-	 *   	new QuerySettings<Product>()
-	 * 		  		.withFirstResult(0)
-	 *   			.withMaxResults(2)
-	 *   			.withMarkers(AuditableMarker.ACTIVE)
-	 *   			.withOrderAttributes(T_.property)));
+	 *   SearchFilter searchFilter = new SearchFilter().add(SearchField.FIELD, value);
+	 *   List<Tuple> result = dao.countBySearchFilter(
+	 *   	searchFilter,
+	 *   	true,
+	 *   	new QuerySettings<MyEntity>().withMarkers(MyMarker.MARK1))
 	 * }
 	 * </pre>
-	 * <p>Note: SearchField a enumeration for search field, T_ is meta model</p>
+	 *
+	 *
+	 * Note: distinct is probably not working as expected, therefore the
+	 * function is private (and cannot be called counting distinct) until
+	 * an intuitive solution is found.
 	 *
 	 * @param searchFilter a search filter combines {@link FilterPredicate}s and {@link FilterOrder}s
+	 * @param distinct do a distinct count
 	 * @param querySettings specify paging, markers,orders...
 	 * @return total records after filter
 	 */
-	public long countBySearchFilter(SearchFilter searchFilter,
-			QuerySettings<T> querySettings) {
-		LOG.debug("find by search filter");
+	private long countBySearchFilter(SearchFilter searchFilter, boolean distinct, QuerySettings<T> querySettings) {
 		try (CriteriaQueryGenericContext<T, Long> query = initializeQuery(getType(), Long.class)) {
 
 			if (querySettings != null) {
@@ -1456,15 +1452,13 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 
 			AttributePredicates totalAps = searchFilterToAttributePredicates(searchFilter, query);
 
-			// build query from all predicates but ignore selections and orders for counting
+			// Build query from all predicates but orders for counting.
 			query.q.where(totalAps.getPredicatesArray());
 
-			LOG.debug("query: {0}", query);
+			var countEx = distinct ? query.c.countDistinct(query.r) : query.c.count(query.r);
+			query.q.multiselect(countEx);
 
-			query.q.multiselect(query.c.count(query.r));
-
-			long result = findByCriteria(query).stream().findFirst().orElse(0L);
-			LOG.debug("counted {0} tuples for given predicates", result);
+			long result = forceSingleResult(findByCriteria(query));
 
 			return result;
 		}
@@ -1739,30 +1733,43 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	}
 
 	/**
-	 * Get a list result and return the entry.
+	 * Expect a collection containing at maximum a single result and return the single result or <code>null</code> if there is none.
 	 *
-	 * If there is more than one entry, return the first one, but log an error.
+	 * If there is more than one entry, return the first one, but log a warning.
 	 *
-	 * @param resultList list entity
-	 * 
-	 * @return entity
+	 * @param <CT>
+	 * @param results
+	 * @return
 	 */
-	protected T forceSingleResult(List<T> resultList) {
-		T result = null;
+	public <CT> CT forceSingleResult(Collection<CT> results) {
+		CT result = null;
 
-		if(resultList != null) {
-			int entries = resultList.size();
+		if(results != null) {
+			int entries = results.size();
 			if(entries > 0) {
-				result = resultList.get(0);
+				result = results.stream().findFirst().get();
 				if (entries > 1) {
-					LOG.warn("forceSingleResult was called with a list containing {0} entries. The ids are: {1}",
+					LOG.warn("Expected single result but got {0} entries. The ids are: {1}",
 							entries,
-							resultList.stream().map(g -> String.format("%s:%s", g.getClass().getCanonicalName(), g.getId())).collect(Collectors.joining(", "))
-							);
+							results.stream()
+							.map(r -> {
+								String string = "null";
+								if(r != null) {
+									if(r instanceof GenericEntity) {
+										GenericEntity<?> entity = (GenericEntity<?>) r;
+										string = "%s:%s".formatted(entity.getClass(), entity.getId());
+									}
+									else {
+										string = r.toString();
+									}
+								}
+								return string;
+							})
+							.collect(Collectors.joining(", ")));
 				}
 			}
 		} else {
-			LOG.warn("forceSingleResult was called with a null list which is very unusual");
+			LOG.warn("Expected a collection with a single result, but the collection is null (which is very unusual).");
 		}
 
 		return result;

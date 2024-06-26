@@ -18,6 +18,7 @@ import org.apache.logging.log4j.Level;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.axonivy.utils.persistence.Constants;
 import com.axonivy.utils.persistence.demo.daos.PersonDAO;
 import com.axonivy.utils.persistence.demo.enums.MaritalStatus;
 import com.axonivy.utils.persistence.demo.enums.PersonSearchField;
@@ -25,6 +26,8 @@ import com.axonivy.utils.persistence.enums.HasCmsName;
 import com.axonivy.utils.persistence.helper.SessionLocale;
 import com.axonivy.utils.persistence.search.SearchFilter;
 import com.axonivy.utils.persistence.test.DemoTestBase;
+import com.axonivy.utils.persistence.test.service.LogService;
+import com.axonivy.utils.persistence.test.service.LogService.LoggerLevel;
 
 import ch.ivyteam.ivy.environment.AppFixture;
 import ch.ivyteam.ivy.environment.IvyTest;
@@ -64,10 +67,7 @@ public class SearchFilterTest extends DemoTestBase {
 
 	@Test
 	public void testSearchIndividual() {
-		switchOnLogging(Level.INFO,
-				packageLevelHibernateSqlStatements(),
-				packageLevelHibernateSqlParameters(),
-				packageLevel("com.axonivy", Level.INFO));
+		LogService.get().consoleLog(Level.INFO, LoggerLevel.forPackage(Constants.class, 0, Level.INFO), LoggerLevel.HIBERNATE_SQL_STATEMENTS);
 
 		var filter = new SearchFilter();
 
@@ -89,10 +89,7 @@ public class SearchFilterTest extends DemoTestBase {
 
 	@Test
 	public void testSearchEnum(AppFixture fixture) {
-		switchOnLogging(Level.INFO,
-				packageLevelHibernateSqlStatements(),
-				packageLevelHibernateSqlParameters(),
-				packageLevel("com.axonivy", Level.INFO));
+		LogService.get().consoleLog(Level.INFO, LoggerLevel.forPackage(Constants.class, 0, Level.INFO), LoggerLevel.HIBERNATE_SQL_STATEMENTS);
 
 		LOG.info("Test ascending sort of enum");
 		var filter = new SearchFilter()
@@ -111,10 +108,7 @@ public class SearchFilterTest extends DemoTestBase {
 
 	@Test
 	public void testSearchEnumContains(AppFixture fixture) {
-		switchOnLogging(Level.INFO,
-				packageLevelHibernateSqlStatements(),
-				packageLevelHibernateSqlParameters(),
-				packageLevel("com.axonivy", Level.INFO));
+		LogService.get().consoleLog(Level.INFO, LoggerLevel.forPackage(Constants.class, 0, Level.INFO), LoggerLevel.HIBERNATE_SQL_STATEMENTS);
 
 		LOG.info("Test ascending sort of enum");
 		var filter = new SearchFilter()
@@ -132,10 +126,7 @@ public class SearchFilterTest extends DemoTestBase {
 
 	@Test
 	public void testSearchEnumOrder(AppFixture fixture) {
-		switchOnLogging(Level.INFO,
-				packageLevelHibernateSqlStatements(),
-				packageLevelHibernateSqlParameters(),
-				packageLevel("com.axonivy", Level.INFO));
+		LogService.get().consoleLog(Level.INFO, LoggerLevel.forPackage(Constants.class, 0, Level.INFO), LoggerLevel.HIBERNATE_SQL_STATEMENTS);
 
 		LOG.info("Test ascending sort of enum");
 		var filter = new SearchFilter()
