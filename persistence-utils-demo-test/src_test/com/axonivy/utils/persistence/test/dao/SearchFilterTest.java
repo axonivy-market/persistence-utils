@@ -19,11 +19,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.axonivy.utils.persistence.Constants;
+import com.axonivy.utils.persistence.dao.CriteriaQueryGenericContext;
+import com.axonivy.utils.persistence.dao.ExpressionMap;
+import com.axonivy.utils.persistence.demo.Logger;
 import com.axonivy.utils.persistence.demo.daos.PersonDAO;
+import com.axonivy.utils.persistence.demo.entities.Person;
 import com.axonivy.utils.persistence.demo.enums.MaritalStatus;
 import com.axonivy.utils.persistence.demo.enums.PersonSearchField;
 import com.axonivy.utils.persistence.enums.HasCmsName;
 import com.axonivy.utils.persistence.helper.SessionLocale;
+import com.axonivy.utils.persistence.search.AttributePredicates;
+import com.axonivy.utils.persistence.search.FilterPredicate;
 import com.axonivy.utils.persistence.search.SearchFilter;
 import com.axonivy.utils.persistence.test.DemoTestBase;
 import com.axonivy.utils.persistence.test.service.LogService;
@@ -161,6 +167,59 @@ public class SearchFilterTest extends DemoTestBase {
 		try (SessionLocale sessionLocale = SessionLocale.get(Locale.ENGLISH)) {
 			var tuples = personDAO.findBySearchFilter(filter);
 			assertThat(assertOrder(cmsName(tuples, 1), false).size()).isGreaterThan(1);
+		}
+	}
+
+	@Test
+	public void testSearchFilterAccess() {
+		LogService.get().consoleLog(Level.INFO, LoggerLevel.forPackage(Constants.class, 0, Level.INFO), LoggerLevel.HIBERNATE_SQL_STATEMENTS);
+
+		LOG.info("Test ascending sort of enum");
+		var filter = SearchFilter.create()
+				.add(PersonSearchField.ID)
+				.add(PersonSearchField.DEPARTMENT_NAME, "Marketing")
+				.add(PersonSearchField.FIRST_NAME)
+				.add(PersonSearchField.LAST_NAME)
+				.addSort(PersonSearchField.LAST_NAME, true)
+				.addSort(PersonSearchField.FIRST_NAME, true);
+
+		var dao = new SearchFilterTestDAO();
+
+		var tuples = dao.findBySearchFilter(filter);
+	}
+
+	static class SearchFilterTestDAO extends PersonDAO {
+		protected final Logger LOG = Logger.getLogger(SearchFilterTestDAO.class);
+		@Override
+		protected AttributePredicates getAttributePredicate(CriteriaQueryGenericContext<Person, ?> query, FilterPredicate filterPredicate, ExpressionMap expressionMap) {
+			AttributePredicates ap = filterPredicate.getSearchFilter().getAttributePredicates();
+			Enum<?> searchEnum = filterPredicate.getSearchEnum();
+			int selections = ap.getSelections().size();
+			int predicates = ap.getPredicates().size();
+			LOG.info("Before Enum: {0} Selections: {1} Predicates: {2}", searchEnum, selections, predicates);
+
+			switch((PersonSearchField)searchEnum) {
+			case ID:
+				assertThat(selections).isEqualTo(0);
+				assertThat(predicates).isEqualTo(0);
+				break;
+			case DEPARTMENT_NAME:
+				assertThat(selections).isEqualTo(1);
+				assertThat(predicates).isEqualTo(0);
+				break;
+			case FIRST_NAME:
+				assertThat(selections).isEqualTo(2);
+				assertThat(predicates).isEqualTo(1);
+				break;
+			case LAST_NAME:
+				assertThat(selections).isEqualTo(3);
+				assertThat(predicates).isEqualTo(1);
+				break;
+			default:
+				break;
+
+			}
+			return super.getAttributePredicate(query, filterPredicate, expressionMap);
 		}
 	}
 

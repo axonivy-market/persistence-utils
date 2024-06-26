@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
@@ -1474,40 +1473,44 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 * @param query Query context for serializable type T
 	 * @return
 	 */
-	protected AttributePredicates searchFilterToAttributePredicates(
-			SearchFilter searchFilter, CriteriaQueryGenericContext<T, ?> query) {
-		// build and collect all predicates and all selections
-		Map<Enum<?>, AttributePredicates> attributePredicatesMap = new LinkedHashMap<>();
-		ExpressionMap expressionMap = query.getCurrentExpressionMap();
-		for (FilterPredicate filterPredicate : searchFilter.getFilterPredicates()) {
-			LOG.debug("adding filter predicate {0}", filterPredicate);
-			AttributePredicates ap = getAttributePredicate(query, filterPredicate, expressionMap);
-			// remember the produced selections and predicates for this filter
-			attributePredicatesMap.put(filterPredicate.getSearchFilter(), ap);
+	protected AttributePredicates searchFilterToAttributePredicates(SearchFilter searchFilter, CriteriaQueryGenericContext<T, ?> query) {
+
+		// Reset the search filter, so we son't get predicates from a previous search.
+		searchFilter.reset();
+
+		// Build and collect all predicates and all selections.
+		var attributePredicates = searchFilter.getAttributePredicates();
+		var orderMap = new HashMap<Enum<?>, List<Order>>();
+
+		var expressionMap = query.getCurrentExpressionMap();
+		for (var filterPredicate : searchFilter.getFilterPredicates()) {
+			// Create the attributes for a single search enum.
+			LOG.debug("Adding filter predicate {0}.", filterPredicate);
+			var singleEnumAttributePredicates = getAttributePredicate(query, filterPredicate, expressionMap);
+
+			// Add the new selections and predicates to the total collection.
+			attributePredicates.addSelections(singleEnumAttributePredicates.getSelections());
+			attributePredicates.addPredicates(singleEnumAttributePredicates.getPredicates());
+
+			// Remember the orders (if multiple are found, only first one will be taken).
+			orderMap.putIfAbsent(filterPredicate.getSearchEnum(), singleEnumAttributePredicates.getOrders());
 		}
 
-		// combine all lists into a single list
-		AttributePredicates totalAps = new AttributePredicates();
-		for (AttributePredicates attributePredicates : attributePredicatesMap.values()) {
-			totalAps.addSelections(attributePredicates.getSelections());
-			totalAps.addPredicates(attributePredicates.getPredicates());
-			// do not copy orders, as only some of them will be needed
-			// and most probably in a different order.
-		}
-
-		// add all needed orders
+		// Add all needed orders.
 		for (FilterOrder filterOrder : searchFilter.getFilterOrders()) {
-			AttributePredicates ap = attributePredicatesMap.get(filterOrder.getSearchFilter());
-			if(ap == null) {
-				// sort was not part of selection fields, must be created now
-				ap = getAttributePredicate(
-						query,
-						new FilterPredicate(filterOrder.getSearchFilter()),
+			var orders = orderMap.get(filterOrder.getSearchEnum());
+
+			if(orders == null) {
+				// Sort was not part of selection fields, must be created now.
+				var singleEnumAttributePredicates = getAttributePredicate(query,
+						new FilterPredicate(filterOrder.getSearchEnum()),
 						expressionMap);
+				orders = singleEnumAttributePredicates != null ? singleEnumAttributePredicates.getOrders() : null;
 			}
-			if (ap != null) {
+
+			if (orders != null) {
 				if (!filterOrder.isAscending()) {
-					// Descending is wanted, so reverese the default, which is ascending.
+					// Descending is wanted, so reverse the default, which is ascending.
 					// Note:
 					// A single searchFilter might produce selections, and therefore orders
 					// for multiple fields. In this case the whole list of orders will be set
@@ -1515,19 +1518,17 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 					// whether multi-select filters will even be used, will be seen.
 					// At the moment all filters produce a single selection, so this all
 					// does not really matter.
-					for (Order order : ap.getOrders()) {
-						order.reverse();
-					}
+					orders.stream().forEach(o -> o.reverse());
 				}
-				// add all orders
-				totalAps.addOrders(ap.getOrders());
+				// Add all orders.
+				attributePredicates.addOrders(orders);
 			} else {
 				LOG.warn("Search filter order predicate was not created by DAO, ignoring order by ''{0}'' {1}.",
-						filterOrder.getSearchFilter(), filterOrder.isAscending() ? "ascending" : "descending");
+						filterOrder.getSearchEnum(), filterOrder.isAscending() ? "ascending" : "descending");
 			}
 		}
 
-		return totalAps;
+		return attributePredicates;
 	}
 
 	/**

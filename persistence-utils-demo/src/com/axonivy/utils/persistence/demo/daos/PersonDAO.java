@@ -113,7 +113,7 @@ public class PersonDAO extends AuditableIdDAO<Person_, Person> implements BaseDA
 	protected AttributePredicates getAttributePredicate(CriteriaQueryGenericContext<Person, ?> query, FilterPredicate filterPredicate, ExpressionMap expressionMap) {
 		AttributePredicates attributePredicate = new AttributePredicates();
 
-		Enum<?> searchFilter = filterPredicate.getSearchFilter();
+		Enum<?> searchFilter = filterPredicate.getSearchEnum();
 
 		if(searchFilter instanceof PersonSearchField) {
 			switch((PersonSearchField)searchFilter) {

@@ -12,42 +12,58 @@ import com.axonivy.utils.persistence.StringUtilities;
  */
 public class FilterPredicate {
 
-	final Enum<?> searchFilter;
-	private final String serializedValue;
+	private Enum<?> searchEnum;
+	private String serializedValue;
+	private SearchFilter searchFilter;
 
 	/**
 	 * Static marker for the special value "NOT NULL".
 	 */
 	public static final String NOT_NULL = "NOT NULL";
 
-	/**
-	 * Construct predicate.
-	 *
-	 * @param searchFilter enumeration to identify filter
-	 * @param value use for queries
-	 */
-	public FilterPredicate(Enum<?> searchFilter, Object value) {
-		this.searchFilter = searchFilter;
-		serializedValue = pack(value);
+	protected FilterPredicate() {
 	}
 
 	/**
 	 * Construct predicate without value.
 	 *
-	 * @param searchFilter enumeration to identify filter
+	 * @param searchEnum enumeration to identify filter
 	 */
-	public FilterPredicate(Enum<?> searchFilter) {
-		this(searchFilter, null);
+	public FilterPredicate(Enum<?> searchEnum) {
+		this(searchEnum, null);
+	}
+
+	/**
+	 * Construct predicate.
+	 *
+	 * @param searchEnum enumeration to identify filter
+	 * @param value use for queries
+	 */
+	public FilterPredicate(Enum<?> searchEnum, Object value) {
+		this.searchEnum = searchEnum;
+		serializedValue = pack(value);
+	}
+
+	/**
+	 * Create a copy.
+	 * 
+	 * @return
+	 */
+	public FilterPredicate copy() {
+		var predicate = new FilterPredicate();
+		predicate.searchEnum = this.searchEnum;
+		predicate.serializedValue = this.serializedValue;
+		return predicate;
 	}
 
 	/**
 	 * Get the filter enumeration.
 	 *
-	 * @return the search filter
+	 * @return the search enum
 	 */
 	@SuppressWarnings("rawtypes")
-	public Enum getSearchFilter() {
-		return searchFilter;
+	public Enum getSearchEnum() {
+		return searchEnum;
 	}
 
 	/**
@@ -87,6 +103,19 @@ public class FilterPredicate {
 	 */
 	public boolean hasValue() {
 		return serializedValue != null;
+	}
+
+	/**
+	 * Get the search filter this predicate is used in.
+	 * 
+	 * @return {@link SearchFilter} or <code>null</code> if unsused in a {@link SearchFilter}.
+	 */
+	public SearchFilter getSearchFilter() {
+		return this.searchFilter;
+	}
+
+	void setSearchFilter(SearchFilter searchFilter) {
+		this.searchFilter = searchFilter;
 	}
 
 	/**
@@ -132,6 +161,6 @@ public class FilterPredicate {
 	 */
 	@Override
 	public String toString() {
-		return "FilterPredicate [searchFilter=" + searchFilter + ", value=" + getSerializedValue() + "]";
+		return "FilterPredicate [searchEnum=%s, value=%s]".formatted(searchEnum, serializedValue);
 	}
 }

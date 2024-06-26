@@ -24,7 +24,7 @@ public class ProductDAO extends AuditableIdDAO<Product_, Product> implements Bas
 
 		AttributePredicates result = new AttributePredicates();
 
-		Enum<?> searchFilter = filterPredicate.getSearchFilter();
+		Enum<?> searchFilter = filterPredicate.getSearchEnum();
 
 		if (searchFilter instanceof ProductSearchField) {
 

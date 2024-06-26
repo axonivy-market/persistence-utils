@@ -77,7 +77,7 @@ public abstract class ToggleableDAO<MetaDataGeneric extends ToggleableEntity_,A 
 			FilterPredicate filterPredicate, ExpressionMap expressionMap) {
 		AttributePredicates result = new AttributePredicates();
 
-		Enum<?> searchFilter = filterPredicate.getSearchFilter();
+		Enum<?> searchFilter = filterPredicate.getSearchEnum();
 		if(searchFilter.getClass().isEnum()) {
 			Enum<?> e = searchFilter;
 			if("STATUS".equals(e.name())){ //comes from OrgUnitSearchFields
