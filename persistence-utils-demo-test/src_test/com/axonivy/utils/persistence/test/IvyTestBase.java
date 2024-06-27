@@ -19,6 +19,7 @@ import com.axonivy.utils.persistence.demo.service.IvyService;
 import com.axonivy.utils.persistence.test.service.LogService;
 
 import ch.ivyteam.ivy.application.IApplication;
+import ch.ivyteam.ivy.db.Database;
 import ch.ivyteam.ivy.db.IExternalDatabase;
 import ch.ivyteam.ivy.db.IExternalDatabaseManager;
 import ch.ivyteam.ivy.environment.AppFixture;
@@ -50,12 +51,17 @@ public class IvyTestBase {
 	 * @return
 	 */
 	public static IExternalDatabase getExternalDatabase(String name) {
-		return IExternalDatabaseManager.instance()
-				.getExternalDatabases(IApplication.current())
-				.stream()
-				.filter(d -> d.getConfiguration().name().equals(name))
-				.findFirst()
-				.orElse(null);
+		// NOTE: the following function is an internal undocumented Ivy function and might change without notice.
+		// Currently we use ch.ivyteam.ivy.db.internal.ExternalDatabaseManager.getExternalDatabase(IApplication currentApplication, Database database, String environment)
+		// which seems to be available in Ivy 10 and Ivy 11:
+		return IExternalDatabaseManager.instance().getExternalDatabase(IApplication.current(), Database.create(name).toDatabase(), "");
+		// No longer available in Ivy 11:
+		//		return IExternalDatabaseManager.instance()
+		//				.getExternalDatabases(IApplication.current())
+		//				.stream()
+		//				.filter(d -> d.getConfiguration().name().equals(name))
+		//				.findFirst()
+		//				.orElse(null);
 	}
 
 	/**
