@@ -5,8 +5,9 @@ package com.axonivy.utils.persistence.search;
  */
 public class FilterOrder {
 
-	private Enum<?> searchFilter;
+	private Enum<?> searchEnum;
 	private boolean ascending;
+	private SearchFilter searchFilter;
 
 	/**
 	 * Constructor
@@ -17,12 +18,24 @@ public class FilterOrder {
 	/**
 	 * Construct order.
 	 *
-	 * @param searchFilter enumeration to identify filter
+	 * @param searchEnum enumeration to identify filter
 	 * @param ascending the new ascending
 	 */
-	public FilterOrder(Enum<?> searchFilter, boolean ascending) {
-		this.searchFilter = searchFilter;
+	public FilterOrder(Enum<?> searchEnum, boolean ascending) {
+		this.searchEnum = searchEnum;
 		this.ascending = ascending;
+	}
+
+	/**
+	 * Create a copy.
+	 * 
+	 * @return
+	 */
+	public FilterOrder copy() {
+		var order = new FilterOrder();
+		order.searchEnum = this.searchEnum;
+		order.ascending = this.ascending;
+		return order;
 	}
 
 	/**
@@ -48,20 +61,20 @@ public class FilterOrder {
 	/**
 	 * Get the filter enumeration.
 	 *
-	 * @return the search filter
+	 * @return the search enum
 	 */
 	@SuppressWarnings("rawtypes")
-	public Enum getSearchFilter() {
-		return searchFilter;
+	public Enum getSearchEnum() {
+		return searchEnum;
 	}
 
 	/**
 	 * Set the filter enumeration.
 	 *
-	 * @param searchFilter the new search filter
+	 * @param searchEnum the new search enum
 	 */
-	public void setSearchFilter(Enum<?> searchFilter) {
-		this.searchFilter = searchFilter;
+	public void setSearchEnum(Enum<?> searchEnum) {
+		this.searchEnum = searchEnum;
 	}
 
 	/**
@@ -83,11 +96,24 @@ public class FilterOrder {
 	}
 
 	/**
+	 * Get the search filter this predicate is used in.
+	 * 
+	 * @return {@link SearchFilter} or <code>null</code> if unsused in a {@link SearchFilter}.
+	 */
+	public SearchFilter getSearchFilter() {
+		return searchFilter;
+	}
+
+	void setSearchFilter(SearchFilter searchFilter) {
+		this.searchFilter = searchFilter;
+	}
+
+	/**
 	 * See {@link Object#toString()}.
 	 *
 	 */
 	@Override
 	public String toString() {
-		return "FilterOrder [searchFilter=" + searchFilter + ", ascending=" + ascending + "]";
+		return "FilterOrder [searchEnum=%s, ascending=%s]".formatted(searchEnum, ascending);
 	}
 }

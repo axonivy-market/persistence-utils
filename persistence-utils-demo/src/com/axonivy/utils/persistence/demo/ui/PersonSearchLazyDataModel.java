@@ -82,7 +82,7 @@ public class PersonSearchLazyDataModel extends LazyDataModel<PersonTuple> {
 		.add(PersonSearchField.BIRTHDATE, filterValue(filterBy.get(PersonSearchField.BIRTHDATE.name())))
 		.add(PersonSearchField.DEPARTMENT_NAME, filterValue(filterBy.get(PersonSearchField.DEPARTMENT_NAME.name())))
 		.add(PersonSearchField.MARITAL_STATUS, filterValue(filterBy.get(PersonSearchField.MARITAL_STATUS.name())))
-		.add(PersonSearchField.MARITAL_STATUS_LIKE, filterValue(filterBy.get(PersonSearchField.MARITAL_STATUS_LIKE.name())))
+		.add(PersonSearchField.MARITAL_STATUS_CONTAINS, filterValue(filterBy.get(PersonSearchField.MARITAL_STATUS_CONTAINS.name())))
 		.add(PersonSearchField.SALARY, filterValue(filterBy.get(PersonSearchField.SALARY.name())))
 		.add(PersonSearchField.SYNC_TO_IVY, filterValue(filterBy.get(PersonSearchField.SYNC_TO_IVY.name())));
 

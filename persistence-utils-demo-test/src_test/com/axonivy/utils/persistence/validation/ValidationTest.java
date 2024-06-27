@@ -20,6 +20,7 @@ import com.axonivy.utils.persistence.demo.service.UiService;
 import com.axonivy.utils.persistence.demo.service.ValidationService;
 import com.axonivy.utils.persistence.test.DemoTestBase;
 import com.axonivy.utils.persistence.test.mock.SimpleFacesContext;
+import com.axonivy.utils.persistence.test.service.LogService;
 import com.axonivy.utils.persistence.validation.groups.Error;
 import com.axonivy.utils.persistence.validation.groups.Warning;
 
@@ -67,7 +68,7 @@ public class ValidationTest extends DemoTestBase {
 
 		Mockito.mockStatic(UiService.class, i -> i.getMethod().getName().equals("findComponent") ? null : i.callRealMethod());
 
-		switchOnLogging(Level.INFO);
+		LogService.get().consoleLog(Level.INFO);
 
 		try(MockedStatic<FacesContext> mocked = Mockito.mockStatic(FacesContext.class)) {
 			SimpleFacesContext facesContext = new SimpleFacesContext();

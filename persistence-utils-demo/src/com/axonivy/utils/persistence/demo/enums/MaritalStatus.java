@@ -1,6 +1,6 @@
 package com.axonivy.utils.persistence.demo.enums;
 
-import com.axonivy.utils.persistence.demo.ivy.HasCmsName;
+import com.axonivy.utils.persistence.enums.HasCmsName;
 
 public enum MaritalStatus implements HasCmsName {
 	SINGLE,

@@ -3,6 +3,7 @@ package com.axonivy.utils.persistence.dao;
 import static com.axonivy.utils.persistence.enums.UpdateType.DELETE;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
@@ -13,12 +14,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -60,6 +61,7 @@ import com.axonivy.utils.persistence.beans.GenericIdEntity_;
 import com.axonivy.utils.persistence.beans.Header;
 import com.axonivy.utils.persistence.beans.Updatable;
 import com.axonivy.utils.persistence.beans.VersionableEntity_;
+import com.axonivy.utils.persistence.enums.HasCmsName;
 import com.axonivy.utils.persistence.enums.UpdateType;
 import com.axonivy.utils.persistence.history.handler.AuditHandler;
 import com.axonivy.utils.persistence.logging.Logger;
@@ -68,6 +70,7 @@ import com.axonivy.utils.persistence.search.FilterOrder;
 import com.axonivy.utils.persistence.search.FilterPredicate;
 import com.axonivy.utils.persistence.search.FindByExample;
 import com.axonivy.utils.persistence.search.SearchFilter;
+import com.axonivy.utils.persistence.service.EnumService;
 
 /**
  * @author Various People
@@ -519,13 +522,13 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 * }
 	 * </pre>
 	 * <p>Note that T is a entity, U is a return object</p>
-	 * @param factory query context
+	 * @param ctx query context
 	 * @param <U> the type of the represented object
 	 * @return list of entities according to specified factory, with applied
 	 *         permissions
 	 */
-	public <U> List<U> findByCriteria(CriteriaQueryGenericContext<T, U> factory) {
-		return factory != null ? findByCriteriaInternal(factory) : new ArrayList<U>();
+	public <U> List<U> findByCriteria(CriteriaQueryGenericContext<T, U> ctx) {
+		return ctx != null ? findByCriteriaInternal(ctx) : new ArrayList<U>();
 	}
 
 	/**
@@ -598,84 +601,68 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 *
 	 * This version does not check permissions.
 	 *
-	 * @param criteriaFactory
+	 * @param ctx
 	 * @return
 	 */
-	private <U> List<U> findByCriteriaInternal(CriteriaQueryGenericContext<T, U> criteriaFactory) {
+	private <U> List<U> findByCriteriaInternal(CriteriaQueryGenericContext<T, U> ctx) {
 		LocalTime startOfMeasurements = LocalTime.now();
 		try (AutoCloseable au = beginSession()) {
 
-			QuerySettings<T> querySettings = criteriaFactory.getQuerySettings();
+			QuerySettings<T> querySettings = ctx.getQuerySettings();
 
-			// add orders
-			criteriaFactory.orderBy(querySettings.getOrders().toArray(new Order[0]));
-			// add orders specified by simple attributes
-			List<SingularAttribute<? super T, ?>> orderAttributes = querySettings.getOrderAttributes();
+			// Add orders.
+			ctx.orderBy(querySettings.getOrders().toArray(new Order[0]));
+			// Add orders specified by simple attributes.
+			var orderAttributes = querySettings.getOrderAttributes();
+			var orders = orderAttributes.stream().map(o -> ctx.asc(o)).toArray(Order[]::new);
+			ctx.orderBy(orders);
 
-			List<Order> order = new ArrayList<>();
+			CriteriaQueryGenericContext.TypedQueryInterceptor<U> tqi = ctx.getTypedQueryInterceptor();
 
-			for (SingularAttribute<? super T, ?> orderAttribute : orderAttributes) {
-				if (orderAttribute == null) {
-					LOG.warn(
-							"DAO {0} was called with a singular order attribute which is null, ignoring it",
-							getClass().getCanonicalName());
-				} else {
-					order.add(criteriaFactory.asc(orderAttribute));
-				}
-			}
+			// Add functionality for a bean hierarchy.
+			manipulateCriteriaFactory(ctx);
 
-			criteriaFactory.orderBy(order.toArray(new Order[0]));
-
-			CriteriaQueryGenericContext.TypedQueryInterceptor<U> tqi = criteriaFactory.getTypedQueryInterceptor();
-
-			// use this function to add functionality for a certain type of bean
-			manipulateCriteriaFactory(criteriaFactory);
-
-			TypedQuery<U> query = getEM().createQuery(criteriaFactory.q);
+			TypedQuery<U> query = getEM().createQuery(ctx.q);
 
 			if (tqi != null) {
 				tqi.beforeGetResultList(query);
 			}
 
-			Integer firstResult = querySettings.getFirstResult();
+			var firstResult = querySettings.getFirstResult();
 			if (firstResult != null && firstResult >= 0) {
 				query.setFirstResult(firstResult);
 			}
 
-			Integer maxResults = querySettings.getMaxResults();
+			var maxResults = querySettings.getMaxResults();
 			if (maxResults != null && maxResults >= 0) {
 				query.setMaxResults(maxResults);
 			}
 
-			handleReadingAudit(criteriaFactory);
+			handleReadingAudit(ctx);
 
+			// Execute the query.
 			List<U> resultList = query.getResultList();
+
+
+
+
 
 			if (tqi != null) {
 				resultList = tqi.afterGetResultList(resultList);
 			}
 
 			if (LOG.isDebugEnabled()) {
-				LocalTime endOfMeasurements = LocalTime.now();
-				double millis = startOfMeasurements.until(endOfMeasurements,
-						ChronoUnit.NANOS) / 1000000.0;
+				double millis = startOfMeasurements.until(LocalTime.now(), ChronoUnit.NANOS) / 1000000.0;
 
-				String criteriaString = criteriaFactory.getQueryString(query);
+				String criteriaString = ctx.getQueryString(query);
 				if (!StringUtils.isBlank(criteriaString)) {
 					criteriaString = ":\n    " + criteriaString;
 				}
 
 				if (millis > 500) {
-					LOG.warn("{0}: find took {2} ms : statement{1}", getType()
-							.getSimpleName(), criteriaString, NumberFormat
-							.getNumberInstance().format(millis));
-					LOG.warn("this query took more than 500 miliseconds");
+					LOG.warn("{0}: Long Query took {2} ms, statement: {1}", getType().getSimpleName(), criteriaString, NumberFormat.getNumberInstance().format(millis));
 				} else {
-					LOG.debug(
-							"{0}: find by criteria took {2} ms : statement{1}",
-							getType().getSimpleName(), criteriaString,
-							NumberFormat.getNumberInstance().format(millis));
-
+					LOG.debug("{0}: Query took {2} ms, statement: {1}",	getType().getSimpleName(), criteriaString, NumberFormat.getNumberInstance().format(millis));
 				}
 			}
 
@@ -1389,7 +1376,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 
 			AttributePredicates totalAps = searchFilterToAttributePredicates(searchFilter, query);
 
-			// build query from all predicates and selections and orders
+			// Build query from all predicates and selections and orders.
 			query.q.where(totalAps.getPredicatesArray());
 			query.q.multiselect(totalAps.getSelectionsArray());
 			query.q.orderBy(totalAps.getOrders());
@@ -1403,47 +1390,59 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	}
 
 	/**
-	 * Perform a search without defined querySettings
-	 * <p>Example:</p>
-	 * <pre>
-	 * {@code
-	 *  SearchFilter searchFilter = new SearchFilter().add(SearchField.FIELD, value); // value search
-	 *  List<Tuple> result = dao.countBySearchFilter(searchFilter);
-	 * }
-	 * </pre>
-	 * <p>Note: SearchField a enumeration for search field</p>
-	 *  
-	 * @param searchFilter a search filter combines {@link FilterPredicate}s and {@link FilterOrder}s
-	 * @return long count of found entries
+	 * Count number of results of {@link SearchFilter}.
+	 * 
+	 * <p>
+	 * Counting is performed non-distinct, without any {@link QuerySettings}.
+	 * </p>
+	 * 
+	 * @param searchFilter
+	 * @return
 	 */
 	public long countBySearchFilter(SearchFilter searchFilter) {
 		return countBySearchFilter(searchFilter, null);
 	}
 
 	/**
-	 * Perform a search by a given {@link SearchFilter} and return the number of
-	 * hits.
+	 * Count number of results of {@link SearchFilter}.
+	 * 
+	 * <p>
+	 * Counting is performed non-distinct.
+	 * </p>
+	 * 
+	 * @param searchFilter
+	 * @param querySettings
+	 * @return
+	 */
+	public long countBySearchFilter(SearchFilter searchFilter, QuerySettings<T> querySettings) {
+		return countBySearchFilter(searchFilter, false, querySettings);
+	}
+
+	/**
+	 * Count number of results of {@link SearchFilter}.
+	 * 
 	 * <p>Example:</p>
 	 * <pre>
 	 * {@code
-	 *   SearchFilter searchFilter = new SearchFilter().add(SearchField.FIELD, value); // value search
-	 *   List<Tuple> result = dao.countBySearchFilter(searchFilter,
-	 *   	new QuerySettings<Product>()
-	 * 		  		.withFirstResult(0)
-	 *   			.withMaxResults(2)
-	 *   			.withMarkers(AuditableMarker.ACTIVE)
-	 *   			.withOrderAttributes(T_.property)));
+	 *   SearchFilter searchFilter = new SearchFilter().add(SearchField.FIELD, value);
+	 *   List<Tuple> result = dao.countBySearchFilter(
+	 *   	searchFilter,
+	 *   	true,
+	 *   	new QuerySettings<MyEntity>().withMarkers(MyMarker.MARK1))
 	 * }
 	 * </pre>
-	 * <p>Note: SearchField a enumeration for search field, T_ is meta model</p>
+	 *
+	 *
+	 * Note: distinct is probably not working as expected, therefore the
+	 * function is private (and cannot be called counting distinct) until
+	 * an intuitive solution is found.
 	 *
 	 * @param searchFilter a search filter combines {@link FilterPredicate}s and {@link FilterOrder}s
+	 * @param distinct do a distinct count
 	 * @param querySettings specify paging, markers,orders...
 	 * @return total records after filter
 	 */
-	public long countBySearchFilter(SearchFilter searchFilter,
-			QuerySettings<T> querySettings) {
-		LOG.debug("find by search filter");
+	private long countBySearchFilter(SearchFilter searchFilter, boolean distinct, QuerySettings<T> querySettings) {
 		try (CriteriaQueryGenericContext<T, Long> query = initializeQuery(getType(), Long.class)) {
 
 			if (querySettings != null) {
@@ -1452,15 +1451,13 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 
 			AttributePredicates totalAps = searchFilterToAttributePredicates(searchFilter, query);
 
-			// build query from all predicates but ignore selections and orders for counting
+			// Build query from all predicates but orders for counting.
 			query.q.where(totalAps.getPredicatesArray());
 
-			LOG.debug("query: {0}", query);
+			var countEx = distinct ? query.c.countDistinct(query.r) : query.c.count(query.r);
+			query.q.multiselect(countEx);
 
-			query.q.multiselect(query.c.count(query.r));
-
-			long result = findByCriteria(query).stream().findFirst().orElse(0L);
-			LOG.debug("counted {0} tuples for given predicates", result);
+			long result = forceSingleResult(findByCriteria(query));
 
 			return result;
 		}
@@ -1476,40 +1473,44 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 * @param query Query context for serializable type T
 	 * @return
 	 */
-	protected AttributePredicates searchFilterToAttributePredicates(
-			SearchFilter searchFilter, CriteriaQueryGenericContext<T, ?> query) {
-		// build and collect all predicates and all selections
-		Map<Enum<?>, AttributePredicates> attributePredicatesMap = new LinkedHashMap<>();
-		ExpressionMap expressionMap = query.getCurrentExpressionMap();
-		for (FilterPredicate filterPredicate : searchFilter.getFilterPredicates()) {
-			LOG.debug("adding filter predicate {0}", filterPredicate);
-			AttributePredicates ap = getAttributePredicate(query, filterPredicate, expressionMap);
-			// remember the produced selections and predicates for this filter
-			attributePredicatesMap.put(filterPredicate.getSearchFilter(), ap);
+	protected AttributePredicates searchFilterToAttributePredicates(SearchFilter searchFilter, CriteriaQueryGenericContext<T, ?> query) {
+
+		// Reset the search filter, so we son't get predicates from a previous search.
+		searchFilter.reset();
+
+		// Build and collect all predicates and all selections.
+		var attributePredicates = searchFilter.getAttributePredicates();
+		var orderMap = new HashMap<Enum<?>, List<Order>>();
+
+		var expressionMap = query.getCurrentExpressionMap();
+		for (var filterPredicate : searchFilter.getFilterPredicates()) {
+			// Create the attributes for a single search enum.
+			LOG.debug("Adding filter predicate {0}.", filterPredicate);
+			var singleEnumAttributePredicates = getAttributePredicate(query, filterPredicate, expressionMap);
+
+			// Add the new selections and predicates to the total collection.
+			attributePredicates.addSelections(singleEnumAttributePredicates.getSelections());
+			attributePredicates.addPredicates(singleEnumAttributePredicates.getPredicates());
+
+			// Remember the orders (if multiple are found, only first one will be taken).
+			orderMap.putIfAbsent(filterPredicate.getSearchEnum(), singleEnumAttributePredicates.getOrders());
 		}
 
-		// combine all lists into a single list
-		AttributePredicates totalAps = new AttributePredicates();
-		for (AttributePredicates attributePredicates : attributePredicatesMap.values()) {
-			totalAps.addSelections(attributePredicates.getSelections());
-			totalAps.addPredicates(attributePredicates.getPredicates());
-			// do not copy orders, as only some of them will be needed
-			// and most probably in a different order.
-		}
-
-		// add all needed orders
+		// Add all needed orders.
 		for (FilterOrder filterOrder : searchFilter.getFilterOrders()) {
-			AttributePredicates ap = attributePredicatesMap.get(filterOrder.getSearchFilter());
-			if(ap == null) {
-				// sort was not part of selection fields, must be created now
-				ap = getAttributePredicate(
-						query,
-						new FilterPredicate(filterOrder.getSearchFilter()),
+			var orders = orderMap.get(filterOrder.getSearchEnum());
+
+			if(orders == null) {
+				// Sort was not part of selection fields, must be created now.
+				var singleEnumAttributePredicates = getAttributePredicate(query,
+						new FilterPredicate(filterOrder.getSearchEnum()),
 						expressionMap);
+				orders = singleEnumAttributePredicates != null ? singleEnumAttributePredicates.getOrders() : null;
 			}
-			if (ap != null) {
+
+			if (orders != null) {
 				if (!filterOrder.isAscending()) {
-					// Descending is wanted, so reverese the default, which is ascending.
+					// Descending is wanted, so reverse the default, which is ascending.
 					// Note:
 					// A single searchFilter might produce selections, and therefore orders
 					// for multiple fields. In this case the whole list of orders will be set
@@ -1517,19 +1518,17 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 					// whether multi-select filters will even be used, will be seen.
 					// At the moment all filters produce a single selection, so this all
 					// does not really matter.
-					for (Order order : ap.getOrders()) {
-						order.reverse();
-					}
+					orders.stream().forEach(o -> o.reverse());
 				}
-				// add all orders
-				totalAps.addOrders(ap.getOrders());
+				// Add all orders.
+				attributePredicates.addOrders(orders);
 			} else {
 				LOG.warn("Search filter order predicate was not created by DAO, ignoring order by ''{0}'' {1}.",
-						filterOrder.getSearchFilter(), filterOrder.isAscending() ? "ascending" : "descending");
+						filterOrder.getSearchEnum(), filterOrder.isAscending() ? "ascending" : "descending");
 			}
 		}
 
-		return totalAps;
+		return attributePredicates;
 	}
 
 	/**
@@ -1564,28 +1563,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	}
 
 	/**
-	 * Helper method for simplifying selection order and predicate calls in
-	 * filterSearch, using like search
-	 * 
-	 * @param query
-	 * @param filterPredicate
-	 * @param attrPredicates
-	 * @param expression
-	 * @return result of add selection operation
-	 */
-	protected boolean addSelectionOrderAndLike(CriteriaQueryGenericContext<T, ?> query, FilterPredicate filterPredicate, AttributePredicates attrPredicates, Expression<String> expression) {
-		boolean res = attrPredicates.addSelection(expression);
-		attrPredicates.addOrder(query.c.asc(expression));
-		String name = filterPredicate.getValue();
-		if (name != null) {
-			attrPredicates.addPredicate(query.c.like(expression, "%" + name + "%"));
-		}
-		return res;
-	}
-
-	/**
-	 * Helper method for simplifying selection order and predicate calls in
-	 * filterSearch, using equals search
+	 * Create selection, filter-predicate and order for a String equal search.
 	 * 
 	 * @param query
 	 * @param filterPredicate
@@ -1594,13 +1572,148 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 * @return result of add selection operation
 	 */
 	protected boolean addSelectionOrderAndEqual(CriteriaQueryGenericContext<T, ?> query, FilterPredicate filterPredicate, AttributePredicates attrPredicates, Expression<String> expression) {
-		boolean res = attrPredicates.addSelection(expression);
+		var res = attrPredicates.addSelection(expression);
 		attrPredicates.addOrder(query.c.asc(expression));
-		String name = filterPredicate.getValue();
+		var name = filterPredicate.getValue();
 		if (name != null) {
 			attrPredicates.addPredicate(query.c.equal(expression, name));
 		}
 		return res;
+	}
+
+	/**
+	 * Create selection, filter-predicate and order for a String like search.
+	 * 
+	 * @param query
+	 * @param filterPredicate
+	 * @param attrPredicates
+	 * @param expression
+	 * @return result of add selection operation
+	 */
+	protected boolean addSelectionOrderAndLike(CriteriaQueryGenericContext<T, ?> query, FilterPredicate filterPredicate, AttributePredicates attrPredicates, Expression<String> expression) {
+		var res = attrPredicates.addSelection(expression);
+		attrPredicates.addOrder(query.c.asc(expression));
+		var name = filterPredicate.getValue();
+		if (name != null) {
+			attrPredicates.addPredicate(query.c.like(expression, "%" + name + "%"));
+		}
+		return res;
+	}
+
+	/**
+	 * Add selection, filter-predicate and order for an enum implementing {@link HasCmsName} which will be filtered by a list of possible values.
+	 *
+	 * <p>
+	 * First all enumeration values will be looked up in CMS and converted to the current language.
+	 * Next this list is sorted and a case query is prepared giving every possible value it's
+	 * sort index. This index will then be used for sorting. In is handled as usually.
+	 * </p>
+	 *
+	 * @param <C>
+	 * @param query
+	 * @param clazz the enumeration which implements HasCmsName
+	 * @param filterPredicate searched with in query
+	 * @param attributePredicate
+	 * @param typeExpression
+	 */
+	@SuppressWarnings("unchecked")
+	protected <C extends HasCmsName> void addCmsEnumSelectionOrderAndIn(CriteriaQueryGenericContext<T, ?> query, Class<C> clazz, FilterPredicate filterPredicate, AttributePredicates attributePredicate, Expression<C> typeExpression) {
+		addCmsEnumSelectionOrderForValueProvider(query, clazz,
+				(filter, entries) -> {
+					// Create the array class of our Enum
+					// and use it to extract an enum array from the filterPredicate.
+					var arrayType = Array.newInstance(clazz, 0).getClass();
+					var values = (Object[])filterPredicate.getValue(arrayType);
+					return values == null || values.length == 0 ? null : (Collection<C>) List.of(values);
+				},
+				filterPredicate, attributePredicate, typeExpression);
+	}
+
+	/**
+	 * Add selection, filter-predicate and order for an enum implementing {@link HasCmsName} which will be filtered by String comtained in the current locales CMS name.
+	 *
+	 * <p>
+	 * First all enumeration values will be looked up in CMS and converted to the current language.
+	 * Next this list is sorted and a case query is prepared giving every possible value it's
+	 * sort index. This index will then be used for sorting. Contains will be performed on the
+	 * CMS entries of the enum and then the resulting enums will be searched.
+	 * </p>
+	 *
+	 * @param <C>
+	 * @param query
+	 * @param clazz the enumeration which implements HasCmsName
+	 * @param filterPredicate searched with in query
+	 * @param attributePredicate
+	 * @param typeExpression
+	 */
+	protected <C extends HasCmsName> void addCmsEnumSelectionOrderAndContains(CriteriaQueryGenericContext<T, ?> query, Class<C> clazz, FilterPredicate filterPredicate, AttributePredicates attributePredicate, Expression<C> typeExpression) {
+		addCmsEnumSelectionOrderForValueProvider(query, clazz,
+				(filter, entries) -> {
+					var value = filterPredicate.getValue(String.class);
+					Collection<C> values = null;
+					// Filter the enum values where cms name contains search text.
+					if (value != null) {
+						final var contained = value.toLowerCase();
+						values = entries.stream()
+								.filter(e -> e.getValue().toLowerCase().contains(contained))
+								.map(e -> e.getKey())
+								.toList();
+					}
+					return values;
+				},
+				filterPredicate, attributePredicate, typeExpression);
+	}
+
+	/**
+	 * Add selection, filter-predicate and order for an enum implementing {@link HasCmsName} which will be filtered by a list of possible values.
+	 *
+	 * <p>
+	 * First all enumeration values will be looked up in CMS and converted to the current language.
+	 * Next this list is sorted and a case query is prepared giving every possible value it's
+	 * sort index. This index will then be used for sorting. Contains will be performed on the
+	 * CMS entries of the enum and then the resulting enums will be searched.
+	 * </p>
+	 * 
+	 * <p>
+	 * Note, this function should probably not be used directly but as a helper to create
+	 * predicates for enum based searches. See examples in this class how to use it.
+	 * </p>
+	 *
+	 * @param <C>
+	 * @param query
+	 * @param clazz the enumeration which implements HasCmsName
+	 * @param valuesProvider function getting a {@link FilterPredicate} and a List of {@link Entry} (key is the enumeration, value is the CMS String), which should return the enum values that should be filtered
+	 * @param filterPredicate searched with in query
+	 * @param attributePredicate
+	 * @param typeExpression
+	 */
+	protected <C extends HasCmsName> void addCmsEnumSelectionOrderForValueProvider(CriteriaQueryGenericContext<T, ?> query, Class<C> clazz, BiFunction<FilterPredicate, List<Map.Entry<C, String>>, Collection<C>> valuesProvider, FilterPredicate filterPredicate, AttributePredicates attributePredicate, Expression<C> typeExpression) {
+		attributePredicate.addSelection(typeExpression);
+
+		// Get a list of CMS entries sorted by the CMS String in the current locale.
+		// Every entry contains the enum as the key and the CMS String as the value.
+		var entries = EnumService.getSortedByCmsName(clazz);
+
+		// Filter the enum values, that match the filter predicate.
+		var values = valuesProvider.apply(filterPredicate, entries);
+
+		if(values != null) {
+			attributePredicate.addPredicate(typeExpression.in(values));
+		}
+
+		// Create a case query that replaces every enum by it's sort index.
+		var caseExpression = query.c.selectCase();
+
+		// Get enum entries sorted by CMS name.
+		var i = 0;
+		for (var entry : entries) {
+			caseExpression = caseExpression.when(query.c.equal(typeExpression, entry.getKey()), i);
+			i++;
+		}
+		caseExpression.otherwise(i);
+
+		// Add order for the sort index.
+		attributePredicate.addOrder(query.c.asc(caseExpression));
 	}
 
 	/**
@@ -1621,30 +1734,43 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	}
 
 	/**
-	 * Get a list result and return the entry.
+	 * Expect a collection containing at maximum a single result and return the single result or <code>null</code> if there is none.
 	 *
-	 * If there is more than one entry, return the first one, but log an error.
+	 * If there is more than one entry, return the first one, but log a warning.
 	 *
-	 * @param resultList list entity
-	 * 
-	 * @return entity
+	 * @param <CT>
+	 * @param results
+	 * @return
 	 */
-	protected T forceSingleResult(List<T> resultList) {
-		T result = null;
+	public <CT> CT forceSingleResult(Collection<CT> results) {
+		CT result = null;
 
-		if(resultList != null) {
-			int entries = resultList.size();
+		if(results != null) {
+			int entries = results.size();
 			if(entries > 0) {
-				result = resultList.get(0);
+				result = results.stream().findFirst().get();
 				if (entries > 1) {
-					LOG.warn("forceSingleResult was called with a list containing {0} entries. The ids are: {1}",
+					LOG.warn("Expected single result but got {0} entries. The ids are: {1}",
 							entries,
-							resultList.stream().map(g -> String.format("%s:%s", g.getClass().getCanonicalName(), g.getId())).collect(Collectors.joining(", "))
-							);
+							results.stream()
+							.map(r -> {
+								String string = "null";
+								if(r != null) {
+									if(r instanceof GenericEntity) {
+										GenericEntity<?> entity = (GenericEntity<?>) r;
+										string = "%s:%s".formatted(entity.getClass(), entity.getId());
+									}
+									else {
+										string = r.toString();
+									}
+								}
+								return string;
+							})
+							.collect(Collectors.joining(", ")));
 				}
 			}
 		} else {
-			LOG.warn("forceSingleResult was called with a null list which is very unusual");
+			LOG.warn("Expected a collection with a single result, but the collection is null (which is very unusual).");
 		}
 
 		return result;

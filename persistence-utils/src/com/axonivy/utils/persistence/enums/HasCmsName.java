@@ -1,8 +1,8 @@
-package com.axonivy.utils.persistence.demo.ivy;
+package com.axonivy.utils.persistence.enums;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.axonivy.utils.persistence.demo.Logger;
+import com.axonivy.utils.persistence.logging.Logger;
 
 import ch.ivyteam.ivy.environment.Ivy;
 
@@ -40,8 +40,8 @@ public interface HasCmsName {
 	 * @return CMS entry
 	 */
 	default String getCms(String entry) {
-		String cmsPath = getEntryPath(entry);
-		String result = Ivy.cms().co(cmsPath);
+		var cmsPath = getEntryPath(entry);
+		var result = Ivy.cms().co(cmsPath);
 		if(StringUtils.isEmpty(result)) {
 			Logger.getLogger(HasCmsName.class).warn("Missing CMS entry for '" + cmsPath + "'");
 			result = name();
@@ -58,8 +58,8 @@ public interface HasCmsName {
 	 * @return
 	 */
 	default String getCmsUrl(String entry) {
-		String cmsPath = getEntryPath(entry);
-		String result = Ivy.cms().cr(cmsPath);
+		var cmsPath = getEntryPath(entry);
+		var result = Ivy.cms().cr(cmsPath);
 		if(StringUtils.isEmpty(result)) {
 			Logger.getLogger(HasCmsName.class).warn("Missing CMS entry for '" + cmsPath + "'");
 			result = name();
@@ -67,12 +67,22 @@ public interface HasCmsName {
 		return result;
 	}
 
+	/**
+	 * Get the base path of the entry.
+	 * 
+	 * @param entry
+	 * @return
+	 */
 	default String getEntryPath(String entry) {
 		return getBasePath() + SLASH + name() + SLASH + entry;
 	}
 
+	/**
+	 * Get the CMS base path of enums.
+	 * 
+	 * @return
+	 */
 	default String getBasePath() {
 		return ENUMS_CMS_BASE + SLASH + getClass().getCanonicalName().replaceAll("[.]", SLASH);
 	}
-
 }

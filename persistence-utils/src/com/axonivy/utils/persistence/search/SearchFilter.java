@@ -2,37 +2,50 @@ package com.axonivy.utils.persistence.search;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Search filter.
  *
  * A search filter combines {@link FilterPredicate}s and {@link FilterOrder}s.
- *
- * @author peter
- *
  */
 public class SearchFilter {
 
 	private final List<FilterPredicate> filterPredicates = new ArrayList<>();
 	private final List<FilterOrder> filterOrders = new ArrayList<>();
-	private final Map<Enum<?>, FilterPredicate> predicateMap = new HashMap<>();
+	private AttributePredicates attributePredicates = new AttributePredicates();
 
 	/**
 	 * Constructor.
 	 */
 	public SearchFilter() {
 		//no init needed
+	}
 
+	/**
+	 * Convenience function to create a search filter.
+	 * 
+	 * @return
+	 */
+	public static SearchFilter create() {
+		return new SearchFilter();
+	}
+
+	/**
+	 * Reset for a new search.
+	 */
+	public void reset() {
+		attributePredicates = new AttributePredicates();
 	}
 
 	/**
 	 * Create filter and add {@link FilterPredicate}s.
 	 *
-	 * @param filterPredicates a single predicate of a filter
+	 * Copies of the original {@link FilterPredicate}s will be used for searches.
+	 *
+	 * @param filterPredicates
 	 */
 	public SearchFilter(FilterPredicate... filterPredicates) {
 		internalAddPredicates(Arrays.asList(filterPredicates));
@@ -41,8 +54,10 @@ public class SearchFilter {
 	/**
 	 * Add {@link FilterPredicate}s.
 	 *
-	 * @param filterPredicates A single predicate of a filter
-	 * @return object
+	 * Copies of the original {@link FilterPredicate}s will be used for searches.
+	 * 
+	 * @param filterPredicates
+	 * @return current {@link SearchFilter} for additional function calls
 	 */
 	public SearchFilter add(FilterPredicate... filterPredicates) {
 		internalAddPredicates(Arrays.asList(filterPredicates));
@@ -50,21 +65,29 @@ public class SearchFilter {
 	}
 
 	/**
-	 * add {@link FilterOrder}s.
+	 * Add {@link FilterOrder}s.
 	 *
-	 * @param filterOrders a single order of a filter.
-	 * @return object
+	 * @param filterOrders
+	 * @return current {@link SearchFilter} for additional function calls
 	 */
 	public SearchFilter add(FilterOrder... filterOrders) {
-		this.filterOrders.addAll(Arrays.asList(filterOrders));
+		internalAddOrders(Arrays.asList(filterOrders));
 		return this;
 	}
 
+	protected void internalAddPredicates(Collection<FilterPredicate> predicates) {
+		for (FilterPredicate predicate : predicates) {
+			var copy = predicate.copy();
+			copy.setSearchFilter(this);
+			filterPredicates.add(copy);
+		}
+	}
 
-	private void internalAddPredicates(List<FilterPredicate> predicates) {
-		filterPredicates.addAll(predicates);
-		for (FilterPredicate filterPredicate : predicates) {
-			predicateMap.put(filterPredicate.getSearchFilter(), filterPredicate);
+	protected void internalAddOrders(Collection<FilterOrder> orders) {
+		for (FilterOrder order : orders) {
+			var copy = order.copy();
+			copy.setSearchFilter(this);
+			filterOrders.add(copy);
 		}
 	}
 
@@ -122,12 +145,30 @@ public class SearchFilter {
 	}
 
 	/**
+	 * Get the current {@link AttributePredicates}.
+	 * 
+	 * While building the query of a filter these will grow and
+	 * access to these current selections and predicates might
+	 * help build very complex queries.
+	 * 
+	 * Changes should not be necessary and might make the filter unusable.
+	 * Reading the current number of selection might help referencing.
+	 * 
+	 * @return
+	 */
+	public AttributePredicates getAttributePredicates() {
+		return attributePredicates;
+	}
+
+	/**
 	 * Get {@link FilterPredicate} by enum value;
 	 *
+	 * @deprecated in future versions using duplicates of filters will be possible, therefore this function would not make sense.
 	 * @param searchFilter enumeration to identify filter
 	 * @return object
 	 */
+	@Deprecated
 	public FilterPredicate getFilterPredicate(Enum<?> searchFilter) {
-		return predicateMap.get(searchFilter);
+		return filterPredicates.stream().filter(p -> p.getSearchEnum().equals(searchFilter)).findFirst().orElse(null);
 	}
 }

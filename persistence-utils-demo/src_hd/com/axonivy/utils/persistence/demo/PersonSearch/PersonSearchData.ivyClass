@@ -4,5 +4,5 @@ personId String #field
 personId PERSISTENT #fieldModifier
 secondSave Boolean #field
 secondSave PERSISTENT #fieldModifier
-personSearchBean com.axonivy.utils.persistence.demo.ui.PersonSearchBean #field
-personSearchBean PERSISTENT #fieldModifier
+ctrl com.axonivy.utils.persistence.demo.ui.PersonSearchCtrl #field
+ctrl PERSISTENT #fieldModifier

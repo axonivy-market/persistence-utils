@@ -3,11 +3,7 @@ package com.axonivy.utils.persistence.demo.daos;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
-import javax.persistence.criteria.CriteriaBuilder.Case;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -26,8 +22,6 @@ import com.axonivy.utils.persistence.demo.entities.Person_;
 import com.axonivy.utils.persistence.demo.enums.AccessRestriction;
 import com.axonivy.utils.persistence.demo.enums.MaritalStatus;
 import com.axonivy.utils.persistence.demo.enums.PersonSearchField;
-import com.axonivy.utils.persistence.demo.ivy.HasCmsName;
-import com.axonivy.utils.persistence.demo.service.EnumService;
 import com.axonivy.utils.persistence.demo.service.IvyService;
 import com.axonivy.utils.persistence.search.AttributePredicates;
 import com.axonivy.utils.persistence.search.FilterPredicate;
@@ -38,7 +32,7 @@ public class PersonDAO extends AuditableIdDAO<Person_, Person> implements BaseDA
 	private static final Logger LOG = Logger.getLogger(PersonDAO.class);
 	private static final PersonDAO instance = new PersonDAO();
 
-	private PersonDAO() {
+	protected PersonDAO() {
 	}
 
 	public static PersonDAO getInstance() {
@@ -119,7 +113,7 @@ public class PersonDAO extends AuditableIdDAO<Person_, Person> implements BaseDA
 	protected AttributePredicates getAttributePredicate(CriteriaQueryGenericContext<Person, ?> query, FilterPredicate filterPredicate, ExpressionMap expressionMap) {
 		AttributePredicates attributePredicate = new AttributePredicates();
 
-		Enum<?> searchFilter = filterPredicate.getSearchFilter();
+		Enum<?> searchFilter = filterPredicate.getSearchEnum();
 
 		if(searchFilter instanceof PersonSearchField) {
 			switch((PersonSearchField)searchFilter) {
@@ -163,75 +157,19 @@ public class PersonDAO extends AuditableIdDAO<Person_, Person> implements BaseDA
 						getExpression(expressionMap, query.r, Person_.lastName));
 				break;
 			case MARITAL_STATUS:
-			{
-				Expression<MaritalStatus> msExpression = getExpression(expressionMap, query.r, Person_.maritalStatus);
-
-				attributePredicate.addSelection(msExpression);
-
-				// get enum entries sorted by CMS name
-				List<Entry<HasCmsName, String>> entries = EnumService.getSortedByCmsName(MaritalStatus.values());
-
-				// filter the enum values where cms name contains search text
-				if(filterPredicate.hasValue()) {
-					MaritalStatus value = MaritalStatus.valueOf(filterPredicate.getValue());
-					attributePredicate.addPredicate(msExpression.in(value));
-				}
-
-				// create an ascending integer for every entry to use for sorting
-				Case<Integer> msCaseExpression = query.c.selectCase();
-
-				int i = 0;
-				for (Entry<HasCmsName, String> entry : entries) {
-					msCaseExpression = msCaseExpression.when(query.c.equal(msExpression, entry.getKey()), i);
-					i++;
-				}
-				msCaseExpression.otherwise(i);
-
-				attributePredicate.addOrder(query.c.asc(msCaseExpression));
-
+				addCmsEnumSelectionOrderAndIn(query,
+						MaritalStatus.class,
+						filterPredicate,
+						attributePredicate,
+						getExpression(expressionMap, query.r, Person_.maritalStatus));
 				break;
-			}
-			case MARITAL_STATUS_LIKE:
-			{
-				Expression<MaritalStatus> msExpression = getExpression(expressionMap, query.r, Person_.maritalStatus);
-
-				attributePredicate.addSelection(msExpression);
-
-				// get enum entries sorted by CMS name
-				List<Entry<HasCmsName, String>> entries = EnumService.getSortedByCmsName(MaritalStatus.values());
-
-				// filter the enum values where cms name contains search text
-				if(filterPredicate.hasValue()) {
-					// search text
-					String value = filterPredicate.getValue();
-					List<HasCmsName> filtered =
-							entries.stream()
-							.filter(e -> e.getValue().contains(value))
-							.map(e -> e.getKey())
-							.collect(Collectors.toList());
-
-					if(filtered.size() > 0) {
-						attributePredicate.addPredicate(msExpression.in(filtered));
-					}
-					else {
-						attributePredicate.addPredicate(query.alwaysFalse());
-					}
-				}
-
-				// create an ascending integer for every entry to use for sorting
-				Case<Integer> msCaseExpression = query.c.selectCase();
-
-				int i = 0;
-				for (Entry<HasCmsName, String> entry : entries) {
-					msCaseExpression = msCaseExpression.when(query.c.equal(msExpression, entry.getKey()), i);
-					i++;
-				}
-				msCaseExpression.otherwise(i);
-
-				attributePredicate.addOrder(query.c.asc(msCaseExpression));
-
+			case MARITAL_STATUS_CONTAINS:
+				addCmsEnumSelectionOrderAndContains(query,
+						MaritalStatus.class,
+						filterPredicate,
+						attributePredicate,
+						getExpression(expressionMap, query.r, Person_.maritalStatus));
 				break;
-			}
 			case SALARY:
 				Expression<BigDecimal> salaryExpresssion = getExpression(expressionMap, query.r, Person_.salary);
 				attributePredicate.addSelection(salaryExpresssion);

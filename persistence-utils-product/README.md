@@ -14,6 +14,19 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 
 ## Release Notes
 
+### 10.0.5
+*Changes*
+
+- [APS-206](https://1ivy.atlassian.net/browse/APS-206) Make forceSingleResult more general
+- [APS-220](https://1ivy.atlassian.net/browse/APS-220) Add convenience functions for search filter implementation
+  - New functions in GenericDAO to help implementing SearchFilters containing enumerations with CMS names.
+  - Access to currently built search query while predicates are built.
+- [APS-222](https://1ivy.atlassian.net/browse/APS-222) Update Logging and DB GUI in Junit tests
+
+*Incompatibilities*
+- `FilterPredicate.getSearchFilter` was renamed to `FilterPredicate.getSearchEnum`
+- `FilterOrder.getSearchFilter` was renamed to `FilterOrder.getSearchEnum`
+
 ### 10.0.4
 *Changes*
 - [APS-156](https://1ivy.atlassian.net/browse/APS-156) Fix handling of session in CriteriaQueryContext

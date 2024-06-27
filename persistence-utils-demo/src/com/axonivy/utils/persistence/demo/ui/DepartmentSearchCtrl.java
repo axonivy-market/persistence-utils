@@ -20,13 +20,13 @@ import com.axonivy.utils.persistence.validation.groups.SaveWarnGroup;
 import com.axonivy.utils.persistence.demo.entities.Department_;
 
 
-public class DepartmentSearchBean {
-	private static final Logger LOG = Logger.getLogger(DepartmentSearchBean.class);
+public class DepartmentSearchCtrl {
+	private static final Logger LOG = Logger.getLogger(DepartmentSearchCtrl.class);
 	private List<Department> departments = new ArrayList<>();
 	private Department department = new Department();
 	private Severity severity = null;
 
-	public DepartmentSearchBean() {
+	public DepartmentSearchCtrl() {
 		refreshDepartments();
 	}
 

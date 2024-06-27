@@ -49,10 +49,10 @@
       "config" : {
         "output" : {
           "code" : [
-            "import com.axonivy.utils.persistence.demo.ui.DepartmentSearchBean;",
+            "import com.axonivy.utils.persistence.demo.ui.DepartmentSearchCtrl;",
             "",
             "",
-            "in.departmentSearchBean = new DepartmentSearchBean();"
+            "in.ctrl = new DepartmentSearchCtrl();"
           ]
         }
       },
@@ -114,7 +114,7 @@
       "name" : "Prepare department",
       "config" : {
         "output" : {
-          "code" : "in.departmentSearchBean.setActiveDepartment(in.departmentId);"
+          "code" : "in.ctrl.setActiveDepartment(in.departmentId);"
         }
       },
       "visual" : {
@@ -142,8 +142,8 @@
         "security" : "system",
         "output" : {
           "code" : [
-            "in.secondSave = in.departmentSearchBean.isSaveViolationMaxWarning();",
-            "in.departmentSearchBean.validateDepartmentForSave(in.secondSave);"
+            "in.secondSave = in.ctrl.isSaveViolationMaxWarning();",
+            "in.ctrl.validateDepartmentForSave(in.secondSave);"
           ]
         }
       },
@@ -158,8 +158,8 @@
       "config" : {
         "output" : {
           "code" : [
-            "in.departmentSearchBean.resetSaveViolation();",
-            "in.departmentSearchBean.hideDepartmentDialog();"
+            "in.ctrl.resetSaveViolation();",
+            "in.ctrl.hideDepartmentDialog();"
           ]
         }
       },
@@ -207,12 +207,12 @@
             "name" : "yes",
             "segment" : 0.08,
             "offset" : { "x" : -2, "y" : -11 }
-          }, "condition" : "in.departmentSearchBean.isNoSaveViolation()" },
+          }, "condition" : "in.ctrl.isNoSaveViolation()" },
         { "id" : "f35", "to" : "f36", "via" : [ { "x" : 352, "y" : 256 } ], "label" : {
             "name" : "max warning",
             "segment" : 1.36,
             "offset" : { "x" : 0, "y" : -11 }
-          }, "condition" : "in.departmentSearchBean.isSaveViolationMaxWarning()" },
+          }, "condition" : "in.ctrl.isSaveViolationMaxWarning()" },
         { "id" : "f37", "to" : "f19", "via" : [ { "x" : 352, "y" : 306 }, { "x" : 864, "y" : 306 }, { "x" : 864, "y" : 192 } ], "label" : {
             "name" : "error or higher",
             "segment" : 1.09,
@@ -226,7 +226,7 @@
       "config" : {
         "security" : "system",
         "output" : {
-          "code" : "in.departmentSearchBean.saveDepartment();"
+          "code" : "in.ctrl.saveDepartment();"
         }
       },
       "visual" : {
@@ -281,7 +281,7 @@
       ],
       "config" : {
         "output" : {
-          "code" : "in.departmentSearchBean.deleteDepartment(in.departmentId);"
+          "code" : "in.ctrl.deleteDepartment(in.departmentId);"
         }
       },
       "visual" : {

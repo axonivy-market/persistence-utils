@@ -31,33 +31,23 @@ import com.axonivy.utils.persistence.logging.Logger;
 import ch.ivyteam.ivy.bpm.error.BpmError;
 
 /**
- * Query context for serializable type T , and resulting object R
+ * Query context for serializable type T, and resulting object R
  *
  * @param <T> root object
  * @param <R> return object
  * @author peter
  */
-public abstract class CriteriaQueryGenericContext<T extends Serializable, R extends Object>
-extends QueryGenericContext<T> {
-
+public abstract class CriteriaQueryGenericContext<T extends Serializable, R extends Object> extends QueryGenericContext<T> {
 	private static final Logger log = Logger.getLogger(CriteriaQueryGenericContext.class);
-	/**
-	 * CriteriaQuery for return type R
-	 */
+	private Root<?> temporaryRoot;
+	private ExpressionMap temporaryExpressionMap;
+	protected QuerySettings<T> querySettings = new QuerySettings<>();
+	protected ExpressionMap expressionMap = null;
+	protected TypedQueryInterceptor<R> typedQueryInterceptor = null;
 	public final CriteriaQuery<R> q;
 
-	private Root<?> temporaryRoot;
-
-	protected QuerySettings<T> querySettings = new QuerySettings<>();
-
-	protected ExpressionMap expressionMap = null;
-
-	private ExpressionMap temporaryExpressionMap;
-
-	protected TypedQueryInterceptor<R> typedQueryInterceptor = null;
-
 	/**
-	 * Inititalize with specified parameters
+	 * Initialize with specified parameters.
 	 * 
 	 * @param cb represents a interface used to construct criteria queries, compound selections, 
 	 * expressions, predicates, orderings
@@ -92,8 +82,8 @@ extends QueryGenericContext<T> {
 	 * @param <R> the type of the represented return object
 	 * @return query context initialized from specified parameters
 	 */
-	public static <T extends Serializable, R extends Object> CriteriaQueryGenericContext<T, R> from(CriteriaBuilder cb,
-			CriteriaQuery<R> query, Root<T> root, Supplier<Void> closeable) {
+	public static <T extends Serializable, R extends Object> CriteriaQueryGenericContext<T, R>
+	from(CriteriaBuilder cb,	CriteriaQuery<R> query, Root<T> root, Supplier<Void> closeable) {
 		return new InternalCriteriaQueryGenericContext<>(cb, query, root, closeable);
 	}
 
@@ -104,8 +94,7 @@ extends QueryGenericContext<T> {
 	 * @param <T> root object
 	 * @param <R> return object
 	 */
-	public static class InternalCriteriaQueryGenericContext<T extends Serializable, R extends Object>
-	extends CriteriaQueryGenericContext<T, R> {
+	public static class InternalCriteriaQueryGenericContext<T extends Serializable, R extends Object> extends CriteriaQueryGenericContext<T, R> {
 		private final Supplier<Void> autoCloseable;
 
 		/**
@@ -118,8 +107,7 @@ extends QueryGenericContext<T> {
 		 * @param root a root type in the from clause
 		 * @param closeable represents a supplier of results
 		 */
-		public InternalCriteriaQueryGenericContext(CriteriaBuilder cb, CriteriaQuery<R> query, Root<T> root,
-				Supplier<Void> closeable) {
+		public InternalCriteriaQueryGenericContext(CriteriaBuilder cb, CriteriaQuery<R> query, Root<T> root, Supplier<Void> closeable) {
 			super(cb, query, root);
 			this.autoCloseable = closeable;
 		}

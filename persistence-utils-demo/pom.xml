@@ -9,7 +9,7 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-jpamodelgen</artifactId>
-      <version>5.4.33.Final</version>
+      <version>5.6.5.Final</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -32,12 +32,11 @@
       <plugin>
         <groupId>com.axonivy.ivy.ci</groupId>
         <artifactId>project-build-plugin</artifactId>
-        <version>10.0.14</version>
+        <version>10.0.16</version>
         <extensions>true</extensions>
         <configuration>
           <compilerOptions>
-            <compilerOption>-XprintProcessorInfo</compilerOption>
-            <compilerOption>-XprintRounds</compilerOption>
+            <compilerOption>-proc:none</compilerOption>
           </compilerOptions>
         </configuration>
       </plugin>

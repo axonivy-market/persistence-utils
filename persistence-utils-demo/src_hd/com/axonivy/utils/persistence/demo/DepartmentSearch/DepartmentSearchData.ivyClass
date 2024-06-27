@@ -4,5 +4,5 @@ departmentId String #field
 departmentId PERSISTENT #fieldModifier
 secondSave Boolean #field
 secondSave PERSISTENT #fieldModifier
-departmentSearchBean com.axonivy.utils.persistence.demo.ui.DepartmentSearchBean #field
-departmentSearchBean PERSISTENT #fieldModifier
+ctrl com.axonivy.utils.persistence.demo.ui.DepartmentSearchCtrl #field
+ctrl PERSISTENT #fieldModifier
