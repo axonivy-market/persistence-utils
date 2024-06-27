@@ -12,10 +12,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.axonivy.utils.persistence.Constants;
 import com.axonivy.utils.persistence.demo.daos.PersonDAO;
 import com.axonivy.utils.persistence.demo.entities.Department;
 import com.axonivy.utils.persistence.demo.entities.Person;
 import com.axonivy.utils.persistence.test.DemoTestBase;
+import com.axonivy.utils.persistence.test.service.LogService;
+import com.axonivy.utils.persistence.test.service.LogService.LoggerLevel;
 
 import ch.ivyteam.ivy.environment.AppFixture;
 import ch.ivyteam.ivy.environment.IvyTest;
@@ -35,7 +38,7 @@ public class PersonDAOTest extends DemoTestBase {
 
 	@Test
 	public void testLoadTestdata() {
-		switchOnLogging(Level.INFO);
+		LogService.get().consoleLog(Level.INFO);
 
 		List<Person> all = personDAO.findAll();
 		assertThat(all).as("Found entries").hasSizeGreaterThan(300);
@@ -49,7 +52,7 @@ public class PersonDAOTest extends DemoTestBase {
 
 	@Test
 	public void testLoadPermissions(AppFixture fixture) {
-		switchOnLogging(Level.INFO, packageLevelCombine(packageLevelHibernateSqlStatements(), packageLevelHibernateSqlParameters()));
+		LogService.get().consoleLog(Level.INFO, LoggerLevel.forPackage(Constants.class, 0, Level.INFO), LoggerLevel.HIBERNATE_SQL_STATEMENTS);
 		createUser(userLeitung, "Hans", "Huber", "password");
 		fixture.loginUser(userLeitung);
 		List<Person> all = personDAO.findAll();

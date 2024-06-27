@@ -10,9 +10,12 @@ import org.dbunit.dataset.DataSetException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.axonivy.utils.persistence.Constants;
 import com.axonivy.utils.persistence.demo.daos.DepartmentDAO;
 import com.axonivy.utils.persistence.demo.entities.Department;
 import com.axonivy.utils.persistence.test.DemoTestBase;
+import com.axonivy.utils.persistence.test.service.LogService;
+import com.axonivy.utils.persistence.test.service.LogService.LoggerLevel;
 
 import ch.ivyteam.ivy.environment.AppFixture;
 import ch.ivyteam.ivy.environment.IvyTest;
@@ -30,7 +33,7 @@ public class DepartmentDAOTest extends DemoTestBase {
 
 	@Test
 	public void testData() throws DataSetException, FileNotFoundException, IOException {
-		switchOnLogging(Level.INFO, packageLevel("com.axonivy", Level.INFO));
+		LogService.get().consoleLog(Level.INFO, LoggerLevel.forPackage(Constants.class, 0, Level.INFO));
 
 		Department einkauf = departmentDAO.findByName("Einkauf");
 		Department leitung = departmentDAO.findByName("Leitung");
