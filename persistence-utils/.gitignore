@@ -11,4 +11,3 @@ hs_err_pid*
 # ivy
 src_dataClasses/
 src_wsproc/
-/.apt_generated/

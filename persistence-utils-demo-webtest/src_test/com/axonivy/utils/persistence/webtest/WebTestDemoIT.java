@@ -1,6 +1,8 @@
 package com.axonivy.utils.persistence.webtest;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.enabled;
+import static com.codeborne.selenide.Condition.hidden;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
@@ -30,7 +32,7 @@ import com.codeborne.selenide.SelenideElement;
  * 
  * NOTE: WebTests must follow this name scheme: WebTest*IT
  */
-@IvyWebTest(headless = true)
+@IvyWebTest(headless = false)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class WebTestDemoIT {
 	private static String marketingDepartmentName;
@@ -111,7 +113,7 @@ public class WebTestDemoIT {
 		$(By.id("personForm:lastName")).shouldBe(enabled).sendKeys(lastName);
 
 		$(By.id("personForm:birthdate_input")).shouldBe(enabled).sendKeys("01.11.1981", Keys.TAB);
-		
+
 		$(By.id("personForm:maritalStatus")).click();
 		$(By.id("personForm:maritalStatus_items")).$$(By.tagName("li")).find(text("married")).click();
 
@@ -184,12 +186,12 @@ public class WebTestDemoIT {
 
 	private static void startLoginAsAdmin(WebAppFixture fixture) {
 		fixture.login("jpa_admin", "jpa_admin");
-		
+
 		open(EngineUrl.base() + "default-workflow/faces/profile.xhtml");
 		SelenideElement lang = $(By.name("profileForm:contentLanguage_editableInput")).shouldBe(enabled);
 		lang.clear();
 		lang.sendKeys("en");
-		
+
 		$(By.id("profileForm:saveBtn")).shouldBe(enabled).click();
 	}
 
