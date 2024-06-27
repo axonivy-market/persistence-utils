@@ -43,7 +43,7 @@
 				<div class="ui-g">
 					<div class="ui-g-12 ui-md-12 ui-lg-12">
 						<p:dataTable id="personTable" widgetVar="personTable"
-							value="#{data.personSearchBean.personSearchLazyDataModel}"
+							value="#{data.ctrl.personSearchLazyDataModel}"
 							var="person" rowKey="#{person.id}"
 							sortMode="multiple" paginator="true" rows="20"
 							paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
@@ -99,8 +99,8 @@
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/maritalStatusLike')}"
-								field="MARITAL_STATUS_LIKE">
-								<h:outputText value="#{person.get('MARITAL_STATUS_LIKE').getCmsName()}" />
+								field="MARITAL_STATUS_CONTAINS">
+								<h:outputText value="#{person.get('MARITAL_STATUS_CONTAINS').getCmsName()}" />
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/salary')}"
@@ -168,7 +168,7 @@
 						</div>
 						<div class="ui-g-12 ui-md-6 ui-lg-3">
 							<p:inputText id="ivyUserName"
-								value="#{data.personSearchBean.person.ivyUserName}" />
+								value="#{data.ctrl.person.ivyUserName}" />
 						</div>
 						<div class="ui-g-12 ui-md-6 ui-lg-2"></div>
 						<div class="ui-g-12 ui-md-6 ui-lg-2">
@@ -177,7 +177,7 @@
 						</div>
 						<div class="ui-g-12 ui-md-6 ui-lg-2">
 							<p:toggleSwitch id="syncToIvy"
-								value="#{data.personSearchBean.person.syncToIvy}" />
+								value="#{data.ctrl.person.syncToIvy}" />
 						</div>
 					</div>
 					<div class="ui-g">
@@ -187,7 +187,7 @@
 						</div>
 						<div class="ui-g-12 ui-md-6 ui-lg-3">
 							<p:inputText id="firstName"
-								value="#{data.personSearchBean.person.firstName}" />
+								value="#{data.ctrl.person.firstName}" />
 						</div>
 					</div>
 					<div class="ui-g">
@@ -197,7 +197,7 @@
 						</div>
 						<div class="ui-g-12 ui-md-6 ui-lg-3">
 							<p:inputText id="lastName"
-								value="#{data.personSearchBean.person.lastName}" />
+								value="#{data.ctrl.person.lastName}" />
 						</div>
 					</div>
 					<div class="ui-g">
@@ -207,8 +207,8 @@
 						</div>
 						<div class="ui-g-12 ui-md-6 ui-lg-3">
 							<p:datePicker id="birthdate"
-								value="#{data.personSearchBean.person.birthdateAsJavaUtilDate}"
-								pattern="dd.MM.yyyy" navigator="true" mindate="01.01.1800"
+								value="#{data.ctrl.person.birthdateAsJavaUtilDate}"
+								pattern="dd.MM.yyyy" mindate="01.01.1800"
 								timeInput="true" />
 						</div>
 					</div>
@@ -219,7 +219,7 @@
 						</div>
 						<div class="ui-g-12 ui-md-6 ui-lg-3">
 							<p:selectOneMenu id="maritalStatus"
-								value="#{data.personSearchBean.person.maritalStatus}"
+								value="#{data.ctrl.person.maritalStatus}"
 								onchange="PF('personTable').filter()">
 								<f:selectItem itemValue="#{null}"
 									itemLabel="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/all')}" />
@@ -235,7 +235,7 @@
 						</div>
 						<div class="ui-g-12 ui-md-6 ui-lg-3">
 							<p:inputNumber id="salary"
-								value="#{data.personSearchBean.person.salary}" />
+								value="#{data.ctrl.person.salary}" />
 						</div>
 					</div>
 					<div class="ui-g">
@@ -245,10 +245,10 @@
 						</div>
 						<div class="ui-g-12 ui-md-6 ui-lg-3">
 							<p:selectOneMenu id="department"
-								value="#{data.personSearchBean.person.department}"
+								value="#{data.ctrl.person.department}"
 								converter="ivy.ListItem">
 								<f:selectItem itemValue="#{null}" itemLabel="" />
-								<f:selectItems value="#{data.personSearchBean.departments}"
+								<f:selectItems value="#{data.ctrl.departments}"
 									var="department" itemLabel="#{department.name}"
 									itemValue="#{department}" />
 							</p:selectOneMenu>
@@ -259,7 +259,7 @@
 							<div class="ui-g-12 ui-md-6 ui-lg-6"></div>
 							<div class="ui-g-12 ui-md-6 ui-lg-6 right">
 								<p:commandButton id="saveButton"
-									value="#{ivy.cms.co(data.personSearchBean.saveViolationMaxWarning ? '/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/saveAnyway' : '/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/save')}"
+									value="#{ivy.cms.co(data.ctrl.saveViolationMaxWarning ? '/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/saveAnyway' : '/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/save')}"
 									actionListener="#{logic.savePerson}"
 									update="mainForm:personTable mainForm:growl dialogButtons" />
 								<p:commandButton value="#{ivy.cms.co('/Labels/cancel')}"

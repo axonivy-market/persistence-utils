@@ -22,14 +22,14 @@ import com.axonivy.utils.persistence.validation.groups.SaveErrorGroup;
 import com.axonivy.utils.persistence.validation.groups.SaveWarnGroup;
 
 
-public class PersonSearchBean {
-	private static final Logger LOG = Logger.getLogger(PersonSearchBean.class);
+public class PersonSearchCtrl {
+	private static final Logger LOG = Logger.getLogger(PersonSearchCtrl.class);
 	private List<Department> departments = new ArrayList<>();
 	private PersonSearchLazyDataModel personSearchLazyDataModel = new PersonSearchLazyDataModel();
 	private Person person = new Person();
 	private Severity severity = null;
 
-	public PersonSearchBean() {
+	public PersonSearchCtrl() {
 		departments = DepartmentDAO.getInstance().findAll(new QuerySettings<Department>().withOrderAttributes(Department_.name));
 	}
 

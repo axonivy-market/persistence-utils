@@ -47,7 +47,7 @@ Dialogs:
               ivyUserName: Ivy Username
               lastName: Nachname
               maritalStatus: Familienstand
-              maritalStatusLike: Familienstand Text
+              maritalStatusContains: Familienstand Text
               person: Person
               personSearch: Personensuche
               salary: Gehalt

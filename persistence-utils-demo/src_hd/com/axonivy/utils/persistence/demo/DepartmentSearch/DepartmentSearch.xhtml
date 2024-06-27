@@ -36,7 +36,7 @@
 				</div>
 				<div class="ui-g">
 					<div class="ui-g-12 ui-md-12 ui-lg-12">
-						<p:dataTable id="departmentTable" value="#{data.departmentSearchBean.departments}" var="department" rowKey="#{department.id}"
+						<p:dataTable id="departmentTable" value="#{data.ctrl.departments}" var="department" rowKey="#{department.id}"
 								sortMode="multiple" paginator="true" rows="20" filterEvent="enter"
 								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 								rowsPerPageTemplate="10,20,50" styleClass="department_search_table" reflow="true" lazy="false">
@@ -75,7 +75,7 @@
 							<p:outputLabel for="departmentName" value="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/DepartmentSearch/name')}"/>
 						</div>
 						<div class="ui-g-12 ui-md-6 ui-lg-3">
-							<p:inputText id="departmentName" value="#{data.departmentSearchBean.department.name}"/>
+							<p:inputText id="departmentName" value="#{data.ctrl.department.name}"/>
 						</div>
 					</div>
 					<h:panelGroup id="dialogButtons">
@@ -83,7 +83,7 @@
 							<div class="ui-g-12 ui-md-6 ui-lg-6">
 							</div>
 							<div class="ui-g-12 ui-md-6 ui-lg-6 right">
-								<p:commandButton id="saveButton" value="#{ivy.cms.co(data.departmentSearchBean.saveViolationMaxWarning ? '/Dialogs/com/axonivy/demo/jpa_demo/core/DepartmentSearch/saveAnyway' : '/Dialogs/com/axonivy/demo/jpa_demo/core/DepartmentSearch/save')}" 
+								<p:commandButton id="saveButton" value="#{ivy.cms.co(data.ctrl.saveViolationMaxWarning ? '/Dialogs/com/axonivy/demo/jpa_demo/core/DepartmentSearch/saveAnyway' : '/Dialogs/com/axonivy/demo/jpa_demo/core/DepartmentSearch/save')}" 
 									actionListener="#{logic.saveDepartment}" update="mainForm:departmentTable mainForm:growl dialogButtons"/>
 								<p:commandButton value="#{ivy.cms.co('/Labels/cancel')}" actionListener="#{logic.cancelDepartment}" oncomplete="PF('departmentDialog').hide()" update="mainForm"/>
 							</div>

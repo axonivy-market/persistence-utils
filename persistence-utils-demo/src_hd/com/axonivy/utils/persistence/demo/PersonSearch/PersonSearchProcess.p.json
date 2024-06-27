@@ -49,10 +49,10 @@
       "config" : {
         "output" : {
           "code" : [
-            "import com.axonivy.utils.persistence.demo.ui.PersonSearchBean;",
+            "import com.axonivy.utils.persistence.demo.ui.PersonSearchCtrl;",
             "",
             "",
-            "in.personSearchBean = new PersonSearchBean();"
+            "in.ctrl = new PersonSearchCtrl();"
           ]
         }
       },
@@ -102,7 +102,7 @@
       ],
       "config" : {
         "output" : {
-          "code" : "in.personSearchBean.deletePerson(in.personId);"
+          "code" : "in.ctrl.deletePerson(in.personId);"
         }
       },
       "visual" : {
@@ -136,7 +136,7 @@
       "name" : "Prepare person",
       "config" : {
         "output" : {
-          "code" : "in.personSearchBean.setActivePerson(in.personId);"
+          "code" : "in.ctrl.setActivePerson(in.personId);"
         }
       },
       "visual" : {
@@ -171,7 +171,7 @@
       "config" : {
         "security" : "system",
         "output" : {
-          "code" : "in.personSearchBean.saveAndSyncPerson();"
+          "code" : "in.ctrl.saveAndSyncPerson();"
         }
       },
       "visual" : {
@@ -186,8 +186,8 @@
         "security" : "system",
         "output" : {
           "code" : [
-            "in.secondSave = in.personSearchBean.isSaveViolationMaxWarning();",
-            "in.personSearchBean.validatePersonForSave(in.secondSave);"
+            "in.secondSave = in.ctrl.isSaveViolationMaxWarning();",
+            "in.ctrl.validatePersonForSave(in.secondSave);"
           ]
         }
       },
@@ -208,12 +208,12 @@
             "name" : "yes",
             "segment" : 0.08,
             "offset" : { "x" : -2, "y" : -11 }
-          }, "condition" : "in.personSearchBean.isNoSaveViolation()" },
+          }, "condition" : "in.ctrl.isNoSaveViolation()" },
         { "id" : "f35", "to" : "f36", "via" : [ { "x" : 352, "y" : 256 } ], "label" : {
             "name" : "max warning",
             "segment" : 1.36,
             "offset" : { "x" : 0, "y" : -11 }
-          }, "condition" : "in.personSearchBean.isSaveViolationMaxWarning()" },
+          }, "condition" : "in.ctrl.isSaveViolationMaxWarning()" },
         { "id" : "f37", "to" : "f13", "via" : [ { "x" : 352, "y" : 306 }, { "x" : 864, "y" : 306 }, { "x" : 864, "y" : 192 } ], "label" : {
             "name" : "error or higher",
             "segment" : 1.09,
@@ -227,8 +227,8 @@
       "config" : {
         "output" : {
           "code" : [
-            "in.personSearchBean.resetSaveViolation();",
-            "in.personSearchBean.hidePersonDialog();"
+            "in.ctrl.resetSaveViolation();",
+            "in.ctrl.hidePersonDialog();"
           ]
         }
       },
