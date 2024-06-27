@@ -22,6 +22,7 @@ import com.axonivy.ivy.webtest.engine.EngineUrl;
 import com.axonivy.ivy.webtest.engine.WebAppFixture;
 import com.axonivy.ivy.webtest.primeui.PrimeUi;
 import com.axonivy.ivy.webtest.primeui.widget.InputNumber;
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 
@@ -50,6 +51,7 @@ public class WebTestDemoIT {
 		firstName = "Peter" + randomNumber;
 		lastName = "S" + randomNumber;
 		ivyUserName = firstName.toLowerCase() + "." + lastName.toLowerCase();
+		Configuration.timeout = 30000;
 	}
 
 
@@ -185,7 +187,7 @@ public class WebTestDemoIT {
 	}
 
 	private static void startLoginAsAdmin(WebAppFixture fixture) {
-		fixture.login("jpa_admin", "jpa_admin");
+		// fixture.login("jpa_admin", "jpa_admin");
 
 		open(EngineUrl.base() + "default-workflow/faces/profile.xhtml");
 		SelenideElement lang = $(By.name("profileForm:contentLanguage_editableInput")).shouldBe(enabled);
