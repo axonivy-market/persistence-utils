@@ -14,6 +14,14 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 
 ## Release Notes
 
+### 10.0.5
+*Changes*
+- [APS-220](https://1ivy.atlassian.net/browse/APS-220) Add convenience functions for search filter implementation
+
+*Incompatibilities*
+- `FilterPredicate.getSearchFilter` was renamed to `FilterPredicate.getSearchEnum`
+- `FilterOrder.getSearchFilter` was renamed to `FilterOrder.getSearchEnum`
+
 ### 10.0.4
 *Changes*
 - [APS-156](https://1ivy.atlassian.net/browse/APS-156) Fix handling of session in CriteriaQueryContext
