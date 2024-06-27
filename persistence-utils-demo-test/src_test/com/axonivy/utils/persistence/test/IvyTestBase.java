@@ -8,14 +8,19 @@ import javax.faces.context.FacesContext;
 import javax.persistence.Tuple;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.Level;
+import org.hsqldb.util.DatabaseManagerSwing;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 
 import com.axonivy.utils.persistence.IvyEntityManager;
 import com.axonivy.utils.persistence.demo.Logger;
 import com.axonivy.utils.persistence.demo.service.IvyService;
+import com.axonivy.utils.persistence.test.service.LogService;
 
 import ch.ivyteam.ivy.application.IApplication;
+import ch.ivyteam.ivy.db.IExternalDatabase;
+import ch.ivyteam.ivy.db.IExternalDatabaseManager;
 import ch.ivyteam.ivy.environment.AppFixture;
 import ch.ivyteam.ivy.security.IRole;
 import ch.ivyteam.ivy.security.ISecurityContext;
@@ -35,6 +40,38 @@ public class IvyTestBase {
 	@AfterAll
 	public static void down() {
 		IvyEntityManager.getInstance().clearThreadlocals();
+		LogService.get().consoleLog(Level.INFO);
+	}
+
+	/**
+	 * Get a configured database from Ivy.
+	 *
+	 * @param name
+	 * @return
+	 */
+	public static IExternalDatabase getExternalDatabase(String name) {
+		return IExternalDatabaseManager.instance()
+				.getExternalDatabases(IApplication.current())
+				.stream()
+				.filter(d -> d.getConfiguration().name().equals(name))
+				.findFirst()
+				.orElse(null);
+	}
+
+	/**
+	 * Start the database manager.
+	 */
+	public static void startDBManager()  {
+		startDBManager("jpa-demo-test");
+	}
+
+	/**
+	 * Start the database manager.
+	 */
+	public static void startDBManager(String databaseName)  {
+		IExternalDatabase database = getExternalDatabase(databaseName);
+		String url = database.getConfiguration().url();
+		DatabaseManagerSwing.main(new String[] {"--url", url, "--noexit" });
 	}
 
 	/**
