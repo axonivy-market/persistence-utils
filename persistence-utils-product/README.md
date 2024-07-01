@@ -14,6 +14,22 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 
 ## Release Notes
 
+### 10.0.7
+*Changes*
+
+- Added missing documentation of 10.0.5
+- Fixed sorting of CMS to locale aware case insensitive
+
+*Incompatibilities*
+- Note: This note was added to 10.0.5: `HasCmsName` is now part of the persistence utils, if you have your own, you need to replace or inherit.
+
+
+### 10.0.6
+*Changes*
+
+- Fixed web test
+
+
 ### 10.0.5
 *Changes*
 
@@ -26,6 +42,7 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 *Incompatibilities*
 - `FilterPredicate.getSearchFilter` was renamed to `FilterPredicate.getSearchEnum`
 - `FilterOrder.getSearchFilter` was renamed to `FilterOrder.getSearchEnum`
+- `HasCmsName` is now part of the persistence utils, if you have your own, you need to replace or inherit.
 
 ### 10.0.4
 *Changes*

@@ -1,8 +1,11 @@
 package com.axonivy.utils.persistence.enums;
 
+import java.util.Comparator;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.axonivy.utils.persistence.logging.Logger;
+import com.axonivy.utils.persistence.service.EnumService;
 
 import ch.ivyteam.ivy.environment.Ivy;
 
@@ -84,5 +87,17 @@ public interface HasCmsName {
 	 */
 	default String getBasePath() {
 		return ENUMS_CMS_BASE + SLASH + getClass().getCanonicalName().replaceAll("[.]", SLASH);
+	}
+
+	/**
+	 * Get the comparator to use for sorting the CMS entries.
+	 * 
+	 * <p>
+	 * Things to consider: case-sensitivity, special characters,... See {@link EnumService} for some predefined comparators.
+	 * </p>
+	 * @return
+	 */
+	default Comparator<String> getCmsComparator() {
+		return EnumService.localeAwareCIComparator();
 	}
 }

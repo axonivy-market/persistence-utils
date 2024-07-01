@@ -1,3 +1,17 @@
+Enums:
+  com:
+    axonivy:
+      utils:
+        persistence:
+          test:
+            service:
+              TestEnum:
+                ONE:
+                  name: eins
+                THREE:
+                  name: drei
+                TWO:
+                  name: Zwei
 Validations:
   com:
     axonivy:
