@@ -33,7 +33,7 @@ import com.codeborne.selenide.SelenideElement;
  * 
  * NOTE: WebTests must follow this name scheme: WebTest*IT
  */
-@IvyWebTest(headless = true)
+@IvyWebTest(headless = false)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class WebTestDemoIT {
 	private static String marketingDepartmentName;
@@ -187,7 +187,7 @@ public class WebTestDemoIT {
 	}
 
 	private static void startLoginAsAdmin(WebAppFixture fixture) {
-		// fixture.login("jpa_admin", "jpa_admin");
+		fixture.login("jpa_admin", "jpa_admin");
 
 		open(EngineUrl.base() + "default-workflow/faces/profile.xhtml");
 		SelenideElement lang = $(By.name("profileForm:contentLanguage_editableInput")).shouldBe(enabled);
