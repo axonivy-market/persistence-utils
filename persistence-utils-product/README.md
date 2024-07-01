@@ -42,6 +42,7 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 *Incompatibilities*
 - `FilterPredicate.getSearchFilter` was renamed to `FilterPredicate.getSearchEnum`
 - `FilterOrder.getSearchFilter` was renamed to `FilterOrder.getSearchEnum`
+- `HasCmsName` is now part of the persistence utils, if you have your own, you need to replace or inherit.
 
 ### 10.0.4
 *Changes*
