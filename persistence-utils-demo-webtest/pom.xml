@@ -40,6 +40,9 @@
         <artifactId>project-build-plugin</artifactId>
         <version>10.0.16</version>
         <extensions>true</extensions>
+        <configuration>
+        	<ivyVersion>10.0.16</ivyVersion>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
