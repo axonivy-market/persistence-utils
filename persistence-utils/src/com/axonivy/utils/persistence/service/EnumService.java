@@ -32,13 +32,13 @@ public class EnumService {
 	}
 
 	/**
-	 * A comparator comparing two Strings in the session locale.
+	 * A comparator comparing two Strings null-safe in the session locale.
 	 * 
 	 * @return
 	 */
 	public static Comparator<String> localeAwareCIComparator() {
 		Collator collator = Collator.getInstance(Ivy.session().getContentLocale());
-		return (left, right) -> collator.compare(left, right);
+		return (left, right) -> collator.compare(nullToEmpty(left), nullToEmpty(right));
 	}
 
 	/**

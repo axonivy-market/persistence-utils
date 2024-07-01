@@ -2,6 +2,7 @@ package com.axonivy.utils.persistence.test.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map.Entry;
@@ -46,7 +47,6 @@ public class EnumServiceTest extends DemoTestBase {
 
 	@Test
 	public void testSortingUmlaut() {
-
 		try (LocaleSetter localeSetter = LocaleSetter.set(Locale.GERMAN)) {
 			List<String> list = List.of(SS, UEs, "d", OEs, "B", AEs + "B", "c", AE, AEs, OE, UE, "A");
 			List<String> sorted = list.stream().sorted(EnumService.localeAwareCIComparator()).toList();
@@ -54,4 +54,15 @@ public class EnumServiceTest extends DemoTestBase {
 		}
 	}
 
+	@Test
+	public void testSortingMissingValues() {
+		try (LocaleSetter localeSetter = LocaleSetter.set(Locale.GERMAN)) {
+			var list = new ArrayList<String>();
+			list.add("First");
+			list.add("Second");
+			list.add(null);
+			List<String> sorted = list.stream().sorted(EnumService.localeAwareCIComparator()).toList();
+			assertThat(sorted).containsExactly(null, "First", "Second");
+		}
+	}
 }
