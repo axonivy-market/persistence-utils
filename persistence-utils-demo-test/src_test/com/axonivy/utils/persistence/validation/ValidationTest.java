@@ -21,7 +21,6 @@ import com.axonivy.utils.persistence.demo.service.ValidationService;
 import com.axonivy.utils.persistence.test.DemoTestBase;
 import com.axonivy.utils.persistence.test.mock.SimpleFacesContext;
 import com.axonivy.utils.persistence.test.service.LogService;
-import com.axonivy.utils.persistence.validation.groups.Error;
 import com.axonivy.utils.persistence.validation.groups.Warning;
 
 import ch.ivyteam.ivy.environment.AppFixture;
@@ -33,10 +32,10 @@ public class ValidationTest extends DemoTestBase {
 	private static final Logger LOG = Logger.getLogger(ValidationTest.class);
 
 	public interface Step1WarnGroup extends Warning {}
-	public interface Step1ErrorGroup extends Error {}
+	public interface Step1ErrorGroup extends com.axonivy.utils.persistence.validation.groups.Error {}
 
 	public interface Step2WarnGroup extends Warning {}
-	public interface Step2ErrorGroup extends Error {}
+	public interface Step2ErrorGroup extends com.axonivy.utils.persistence.validation.groups.Error {}
 
 
 	class Test1 {
