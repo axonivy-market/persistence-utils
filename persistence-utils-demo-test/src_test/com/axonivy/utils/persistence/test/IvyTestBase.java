@@ -51,11 +51,8 @@ public class IvyTestBase {
 	 */
 	public static IExternalDatabase getExternalDatabase(String name) {
 		return IExternalDatabaseManager.instance()
-				.getExternalDatabases(IApplication.current())
-				.stream()
-				.filter(d -> d.getConfiguration().name().equals(name))
-				.findFirst()
-				.orElse(null);
+				.getExternalDatabaseApplicationContext(IApplication.current())
+				.getExternalDatabase(name);
 	}
 
 	/**
