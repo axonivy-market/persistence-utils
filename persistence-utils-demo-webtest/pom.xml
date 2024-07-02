@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.axonivy.utils.persistence</groupId>
 	<artifactId>persistence-utils-demo-webtest</artifactId>
-	<version>10.0.8-SNAPSHOT</version>
+	<version>10.0.9-SNAPSHOT</version>
 	<packaging>iar-integration-test</packaging>
 	<description>Web Test project of the persistence utils demo project.</description>
 	<properties>
