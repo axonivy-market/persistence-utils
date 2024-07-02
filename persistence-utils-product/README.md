@@ -14,6 +14,13 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 
 ## Release Notes
 
+### 10.0.8
+*Changes*
+
+- [APS-224](https://1ivy.atlassian.net/browse/APS-224) Fix handling of empty lists or null values in enum SearchFilters
+- [APS-226](https://1ivy.atlassian.net/browse/APS-226) Fix fetching of external database to method compatible with Ivy 10 and Ivy 11
+
+
 ### 10.0.7
 *Changes*
 

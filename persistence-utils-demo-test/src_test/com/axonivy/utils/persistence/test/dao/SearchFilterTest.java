@@ -107,7 +107,7 @@ public class SearchFilterTest extends DemoTestBase {
 		try (SessionLocale sessionLocale = SessionLocale.get(Locale.GERMAN)) {
 			var tuples = personDAO.findBySearchFilter(filter);
 
-			Set<Object> set = tuples.stream().map(t -> t.get(1)).collect(Collectors.toSet());
+			var set = tuples.stream().map(t -> t.get(1)).collect(Collectors.toSet());
 			assertThat(set).containsOnly(MaritalStatus.MARRIED, MaritalStatus.PARTNERSHIP);
 		}
 	}
@@ -125,7 +125,7 @@ public class SearchFilterTest extends DemoTestBase {
 		try (SessionLocale sessionLocale = SessionLocale.get(Locale.GERMAN)) {
 			var tuples = personDAO.findBySearchFilter(filter);
 
-			Set<Object> set = tuples.stream().map(t -> t.get(1)).collect(Collectors.toSet());
+			var set = tuples.stream().map(t -> t.get(1)).collect(Collectors.toSet());
 			assertThat(set).containsOnly(MaritalStatus.PARTNER_PASSED_AWAY, MaritalStatus.PARTNERSHIP, MaritalStatus.PARTNERSHIP_CANCELED);
 		}
 	}
@@ -174,7 +174,7 @@ public class SearchFilterTest extends DemoTestBase {
 	public void testSearchFilterAccess() {
 		LogService.get().consoleLog(Level.INFO, LoggerLevel.forPackage(Constants.class, 0, Level.INFO), LoggerLevel.HIBERNATE_SQL_STATEMENTS);
 
-		LOG.info("Test ascending sort of enum");
+		LOG.info("Test access to search filter.");
 		var filter = SearchFilter.create()
 				.add(PersonSearchField.ID)
 				.add(PersonSearchField.DEPARTMENT_NAME, "Marketing")
@@ -185,7 +185,72 @@ public class SearchFilterTest extends DemoTestBase {
 
 		var dao = new SearchFilterTestDAO();
 
-		var tuples = dao.findBySearchFilter(filter);
+		// tests are inside the DAO
+		dao.findBySearchFilter(filter);
+	}
+
+	private List<MaritalStatus> uniqueMaritalStatus(Collection<Tuple> tuples) {
+		return tuples.stream().map(t -> (MaritalStatus)t.get(0)).distinct().sorted().toList();
+	}
+
+	@Test
+	public void testEnumList() {
+		var filter = SearchFilter.create()
+				.add(PersonSearchField.MARITAL_STATUS);
+
+		LogService.get().consoleLog(Level.INFO, LoggerLevel.forPackage(Constants.class, 0, Level.INFO), LoggerLevel.HIBERNATE_SQL_STATEMENTS);
+		var result = uniqueMaritalStatus(personDAO.findBySearchFilter(filter));
+		assertThat(result).hasSizeBetween(1, MaritalStatus.values().length);
+	}
+
+	@Test
+	public void testEnumContains() {
+		var filter = SearchFilter.create()
+				.add(PersonSearchField.MARITAL_STATUS_CONTAINS);
+
+		LogService.get().consoleLog(Level.INFO, LoggerLevel.forPackage(Constants.class, 0, Level.INFO), LoggerLevel.HIBERNATE_SQL_STATEMENTS);
+		var result = uniqueMaritalStatus(personDAO.findBySearchFilter(filter));
+		assertThat(result).hasSizeBetween(1, MaritalStatus.values().length);
+	}
+
+	@Test
+	public void testEnumListEmpty() {
+		var filter = SearchFilter.create()
+				.add(PersonSearchField.MARITAL_STATUS, new MaritalStatus[] {});
+
+		LogService.get().consoleLog(Level.INFO, LoggerLevel.forPackage(Constants.class, 0, Level.INFO), LoggerLevel.HIBERNATE_SQL_STATEMENTS);
+		var result = uniqueMaritalStatus(personDAO.findBySearchFilter(filter));
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	public void testEnumListNull() {
+		var filter = SearchFilter.create()
+				.add(PersonSearchField.MARITAL_STATUS, (MaritalStatus[])null);
+
+		LogService.get().consoleLog(Level.INFO, LoggerLevel.forPackage(Constants.class, 0, Level.INFO), LoggerLevel.HIBERNATE_SQL_STATEMENTS);
+		var result = uniqueMaritalStatus(personDAO.findBySearchFilter(filter));
+		assertThat(result).hasSizeBetween(1, MaritalStatus.values().length);
+	}
+
+	@Test
+	public void testEnumContainsNot() {
+		var filter = SearchFilter.create()
+				.add(PersonSearchField.MARITAL_STATUS_CONTAINS, "xxx");
+
+		LogService.get().consoleLog(Level.INFO, LoggerLevel.forPackage(Constants.class, 0, Level.INFO), LoggerLevel.HIBERNATE_SQL_STATEMENTS);
+		var result = uniqueMaritalStatus(personDAO.findBySearchFilter(filter));
+		assertThat(result).isEmpty();
+	}
+
+	@Test
+	public void testEnumContainsNull() {
+		var filter = SearchFilter.create()
+				.add(PersonSearchField.MARITAL_STATUS_CONTAINS, (String)null);
+
+		LogService.get().consoleLog(Level.INFO, LoggerLevel.forPackage(Constants.class, 0, Level.INFO), LoggerLevel.HIBERNATE_SQL_STATEMENTS);
+		var result = uniqueMaritalStatus(personDAO.findBySearchFilter(filter));
+		assertThat(result).hasSizeBetween(1, MaritalStatus.values().length);
 	}
 
 	static class SearchFilterTestDAO extends PersonDAO {

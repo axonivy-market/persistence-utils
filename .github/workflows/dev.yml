@@ -11,4 +11,4 @@ jobs:
     uses: axonivy-market/github-workflows/.github/workflows/dev.yml@v2
     with:
       mvnArgs: -Dwebtester.version=11.2.0-SNAPSHOT
-      ivyVersion: 10.0.15
+      # ivyVersion: 10.0.15
