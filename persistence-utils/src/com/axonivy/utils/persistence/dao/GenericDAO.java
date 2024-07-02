@@ -1610,21 +1610,21 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 * </p>
 	 *
 	 * @param <C>
-	 * @param query
+	 * @param ctx
 	 * @param clazz the enumeration which implements HasCmsName
 	 * @param filterPredicate searched with in query
 	 * @param attributePredicate
 	 * @param typeExpression
 	 */
 	@SuppressWarnings("unchecked")
-	protected <C extends HasCmsName> void addCmsEnumSelectionOrderAndIn(CriteriaQueryGenericContext<T, ?> query, Class<C> clazz, FilterPredicate filterPredicate, AttributePredicates attributePredicate, Expression<C> typeExpression) {
-		addCmsEnumSelectionOrderForValueProvider(query, clazz,
+	protected <C extends HasCmsName> void addCmsEnumSelectionOrderAndIn(CriteriaQueryGenericContext<T, ?> ctx, Class<C> clazz, FilterPredicate filterPredicate, AttributePredicates attributePredicate, Expression<C> typeExpression) {
+		addCmsEnumSelectionOrderForValueProvider(ctx, clazz,
 				(filter, entries) -> {
 					// Create the array class of our Enum
 					// and use it to extract an enum array from the filterPredicate.
 					var arrayType = Array.newInstance(clazz, 0).getClass();
 					var values = (Object[])filterPredicate.getValue(arrayType);
-					return values == null || values.length == 0 ? null : (Collection<C>) List.of(values);
+					return values == null ? null : (Collection<C>) List.of(values);
 				},
 				filterPredicate, attributePredicate, typeExpression);
 	}
@@ -1640,14 +1640,14 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 * </p>
 	 *
 	 * @param <C>
-	 * @param query
+	 * @param ctx
 	 * @param clazz the enumeration which implements HasCmsName
 	 * @param filterPredicate searched with in query
 	 * @param attributePredicate
 	 * @param typeExpression
 	 */
-	protected <C extends HasCmsName> void addCmsEnumSelectionOrderAndContains(CriteriaQueryGenericContext<T, ?> query, Class<C> clazz, FilterPredicate filterPredicate, AttributePredicates attributePredicate, Expression<C> typeExpression) {
-		addCmsEnumSelectionOrderForValueProvider(query, clazz,
+	protected <C extends HasCmsName> void addCmsEnumSelectionOrderAndContains(CriteriaQueryGenericContext<T, ?> ctx, Class<C> clazz, FilterPredicate filterPredicate, AttributePredicates attributePredicate, Expression<C> typeExpression) {
+		addCmsEnumSelectionOrderForValueProvider(ctx, clazz,
 				(filter, entries) -> {
 					var value = filterPredicate.getValue(String.class);
 					Collection<C> values = null;
@@ -1680,14 +1680,14 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 * </p>
 	 *
 	 * @param <C>
-	 * @param query
+	 * @param ctx
 	 * @param clazz the enumeration which implements HasCmsName
 	 * @param valuesProvider function getting a {@link FilterPredicate} and a List of {@link Entry} (key is the enumeration, value is the CMS String), which should return the enum values that should be filtered
 	 * @param filterPredicate searched with in query
 	 * @param attributePredicate
 	 * @param typeExpression
 	 */
-	protected <C extends HasCmsName> void addCmsEnumSelectionOrderForValueProvider(CriteriaQueryGenericContext<T, ?> query, Class<C> clazz, BiFunction<FilterPredicate, List<Map.Entry<C, String>>, Collection<C>> valuesProvider, FilterPredicate filterPredicate, AttributePredicates attributePredicate, Expression<C> typeExpression) {
+	protected <C extends HasCmsName> void addCmsEnumSelectionOrderForValueProvider(CriteriaQueryGenericContext<T, ?> ctx, Class<C> clazz, BiFunction<FilterPredicate, List<Map.Entry<C, String>>, Collection<C>> valuesProvider, FilterPredicate filterPredicate, AttributePredicates attributePredicate, Expression<C> typeExpression) {
 		attributePredicate.addSelection(typeExpression);
 
 		// Get a list of CMS entries sorted by the CMS String in the current locale.
@@ -1698,22 +1698,28 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 		var values = valuesProvider.apply(filterPredicate, entries);
 
 		if(values != null) {
-			attributePredicate.addPredicate(typeExpression.in(values));
+			if(values.size() > 0) {
+				attributePredicate.addPredicate(typeExpression.in(values));
+			}
+			else {
+				// empty list
+				attributePredicate.addPredicate(ctx.alwaysFalse());
+			}
 		}
 
 		// Create a case query that replaces every enum by it's sort index.
-		var caseExpression = query.c.selectCase();
+		var caseExpression = ctx.c.selectCase();
 
 		// Get enum entries sorted by CMS name.
 		var i = 0;
 		for (var entry : entries) {
-			caseExpression = caseExpression.when(query.c.equal(typeExpression, entry.getKey()), i);
+			caseExpression = caseExpression.when(ctx.c.equal(typeExpression, entry.getKey()), i);
 			i++;
 		}
 		caseExpression.otherwise(i);
 
 		// Add order for the sort index.
-		attributePredicate.addOrder(query.c.asc(caseExpression));
+		attributePredicate.addOrder(ctx.c.asc(caseExpression));
 	}
 
 	/**
