@@ -1,5 +1,5 @@
 {
-  "format" : "10.0.0",
+  "$schema" : "https://json-schema.axonivy.com/process/11.3.0/process.json",
   "id" : "173A425FAB8461C1",
   "config" : {
     "data" : "com.axonivy.utils.persistence.demo.tool.Data"
@@ -9,17 +9,22 @@
       "type" : "RequestStart",
       "name" : "testTasks.ivp",
       "config" : {
-        "callSignature" : "testTasks",
-        "responsible" : "Administrator",
-        "outLink" : "testTasks.ivp",
-        "wfuser" : "1",
-        "startName" : "Execute test tasks"
+        "signature" : "testTasks",
+        "request" : {
+          "name" : "Execute test tasks"
+        },
+        "permission" : {
+          "anonymous" : false,
+          "role" : "Administrator"
+        }
       },
       "visual" : {
         "at" : { "x" : 96, "y" : 64 },
         "labelOffset" : { "x" : 28, "y" : 37 }
       },
-      "connect" : { "id" : "f3", "to" : "f2" }
+      "connect" : [
+        { "id" : "f3", "to" : "f2" }
+      ]
     }, {
       "id" : "f1",
       "type" : "TaskEnd",
@@ -31,12 +36,13 @@
       "type" : "DialogCall",
       "name" : "TestTasks",
       "config" : {
-        "dialogId" : "com.axonivy.utils.persistence.demo.tool.TestTasks",
-        "startMethod" : "start()"
+        "dialog" : "com.axonivy.utils.persistence.demo.tool.TestTasks:start()"
       },
       "visual" : {
         "at" : { "x" : 224, "y" : 64 }
       },
-      "connect" : { "id" : "f4", "to" : "f1" }
+      "connect" : [
+        { "id" : "f4", "to" : "f1" }
+      ]
     } ]
 }

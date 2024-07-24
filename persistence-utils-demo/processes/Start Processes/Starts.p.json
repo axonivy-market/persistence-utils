@@ -1,5 +1,5 @@
 {
-  "format" : "10.0.0",
+  "$schema" : "https://json-schema.axonivy.com/process/11.3.0/process.json",
   "id" : "173A4BC5D38BAD52",
   "config" : {
     "data" : "com.axonivy.utils.persistence.demo.Data"
@@ -9,17 +9,24 @@
       "type" : "RequestStart",
       "name" : "personSearch.ivp",
       "config" : {
-        "callSignature" : "personSearch",
-        "outLink" : "personSearch.ivp",
-        "wfuser" : "1",
-        "startName" : "<%=ivy.cms.co(\"/Processes/Names/personSearch\")%>",
-        "tags" : "demo"
+        "signature" : "personSearch",
+        "request" : {
+          "name" : "<%=ivy.cms.co(\"/Processes/Names/personSearch\")%>"
+        },
+        "permission" : {
+          "anonymous" : false
+        }
       },
+      "tags" : [
+        "demo"
+      ],
       "visual" : {
         "at" : { "x" : 96, "y" : 128 },
         "labelOffset" : { "x" : 41, "y" : 37 }
       },
-      "connect" : { "id" : "f4", "to" : "f3" }
+      "connect" : [
+        { "id" : "f4", "to" : "f3" }
+      ]
     }, {
       "id" : "f1",
       "type" : "TaskEnd",
@@ -31,13 +38,14 @@
       "type" : "DialogCall",
       "name" : "PersonSearch",
       "config" : {
-        "dialogId" : "com.axonivy.utils.persistence.demo.PersonSearch",
-        "startMethod" : "start()"
+        "dialog" : "com.axonivy.utils.persistence.demo.PersonSearch:start()"
       },
       "visual" : {
         "at" : { "x" : 224, "y" : 128 }
       },
-      "connect" : { "id" : "f2", "to" : "f1" }
+      "connect" : [
+        { "id" : "f2", "to" : "f1" }
+      ]
     }, {
       "id" : "f5",
       "type" : "ProcessAnnotation",
@@ -54,17 +62,24 @@
       "type" : "RequestStart",
       "name" : "departmentSearch.ivp",
       "config" : {
-        "callSignature" : "departmentSearch",
-        "outLink" : "departmentSearch.ivp",
-        "wfuser" : "1",
-        "startName" : "<%=ivy.cms.co(\"/Processes/Names/departmentSearch\")%>",
-        "tags" : "demo"
+        "signature" : "departmentSearch",
+        "request" : {
+          "name" : "<%=ivy.cms.co(\"/Processes/Names/departmentSearch\")%>"
+        },
+        "permission" : {
+          "anonymous" : false
+        }
       },
+      "tags" : [
+        "demo"
+      ],
       "visual" : {
         "at" : { "x" : 96, "y" : 320 },
         "labelOffset" : { "x" : 30, "y" : 34 }
       },
-      "connect" : { "id" : "f9", "to" : "f8" }
+      "connect" : [
+        { "id" : "f9", "to" : "f8" }
+      ]
     }, {
       "id" : "f7",
       "type" : "ProcessAnnotation",
@@ -81,13 +96,14 @@
       "type" : "DialogCall",
       "name" : "DepartmentSearch",
       "config" : {
-        "dialogId" : "com.axonivy.utils.persistence.demo.DepartmentSearch",
-        "startMethod" : "start()"
+        "dialog" : "com.axonivy.utils.persistence.demo.DepartmentSearch:start()"
       },
       "visual" : {
         "at" : { "x" : 224, "y" : 320 }
       },
-      "connect" : { "id" : "f11", "to" : "f10" }
+      "connect" : [
+        { "id" : "f11", "to" : "f10" }
+      ]
     }, {
       "id" : "f10",
       "type" : "TaskEnd",
@@ -111,7 +127,9 @@
       "visual" : {
         "at" : { "x" : 224, "y" : 480 }
       },
-      "connect" : { "id" : "f15", "to" : "f13" }
+      "connect" : [
+        { "id" : "f15", "to" : "f13" }
+      ]
     }, {
       "id" : "f13",
       "type" : "TaskEnd",
@@ -123,17 +141,24 @@
       "type" : "RequestStart",
       "name" : "raiseSalary.ivp",
       "config" : {
-        "callSignature" : "raiseSalary",
-        "outLink" : "raiseSalary.ivp",
-        "wfuser" : "1",
-        "startName" : "<%=ivy.cms.co(\"/Processes/Names/raiseSalaries\")%>",
-        "tags" : "demo"
+        "signature" : "raiseSalary",
+        "request" : {
+          "name" : "<%=ivy.cms.co(\"/Processes/Names/raiseSalaries\")%>"
+        },
+        "permission" : {
+          "anonymous" : false
+        }
       },
+      "tags" : [
+        "demo"
+      ],
       "visual" : {
         "at" : { "x" : 96, "y" : 480 },
         "labelOffset" : { "x" : 32, "y" : 37 }
       },
-      "connect" : { "id" : "f16", "to" : "f12" }
+      "connect" : [
+        { "id" : "f16", "to" : "f12" }
+      ]
     } ],
   "layout" : {
     "lanes" : [ {

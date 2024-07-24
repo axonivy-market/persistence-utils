@@ -189,7 +189,7 @@ public class WebTestDemoIT {
 	private static void startLoginAsAdmin(WebAppFixture fixture) {
 		fixture.login("jpa_admin", "jpa_admin");
 
-		open(EngineUrl.base() + "default-workflow/faces/profile.xhtml");
+		open(EngineUrl.base() + "dev-workflow-ui/faces/profile.xhtml");
 		SelenideElement lang = $(By.name("profileForm:contentLanguage_editableInput")).shouldBe(enabled);
 		lang.clear();
 		lang.sendKeys("en");
