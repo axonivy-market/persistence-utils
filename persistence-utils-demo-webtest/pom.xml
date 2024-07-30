@@ -8,7 +8,7 @@
   <description>Web Test project of the persistence utils demo project.</description>
   <properties>
     <project.build.plugin.version>11.3.0</project.build.plugin.version>
-    <webtester.version>11.3.0</webtester.version>
+    <tester.version>11.3.0</tester.version>
   </properties>
   <dependencies>
     <dependency>
@@ -20,7 +20,7 @@
     <dependency>
       <groupId>com.axonivy.ivy.webtest</groupId>
       <artifactId>web-tester</artifactId>
-      <version>${webtester.version}</version>
+      <version>${tester.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
