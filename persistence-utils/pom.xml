@@ -76,10 +76,16 @@
         <executions>
           <execution>
             <id>jdoc</id>
-            <phase>package</phase>
+            <phase>test</phase>
             <goals>
-              <goal>javadoc-no-fork</goal>
+              <goal>javadoc</goal>
             </goals>
+            <configuration>
+            <!-- <additionalJOptions>
+              <additionalJOption>-J-cp ${ivy.engine.classpath}</additionalJOption>
+          </additionalJOptions> -->
+              <!-- <bootclasspath></bootclasspath> -->
+            </configuration>
           </execution>
         </executions>
       </plugin>
