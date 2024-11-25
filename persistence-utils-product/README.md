@@ -3,7 +3,7 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 - Allows robust and complex database access based on the [JPA 2.2 standard](https://www.oracle.com/java/technologies/persistence-jsp.html).
 - Helps you create DAO classes for your entities with direct access to databases using standard APIs
 - Simplifies the creation of typical entity classes
-- Supports you with an easy-to-copy demo implementation to reduce your integration effort.
+- Supports you with a demo implementation
 - Shows example usage of some optional related technologies
 
 ## Projects
