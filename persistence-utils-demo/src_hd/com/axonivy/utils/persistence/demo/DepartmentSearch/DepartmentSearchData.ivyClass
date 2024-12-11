@@ -1,8 +1,0 @@
-DepartmentSearchData #class
-com.axonivy.utils.persistence.demo.DepartmentSearch #namespace
-departmentId String #field
-departmentId PERSISTENT #fieldModifier
-secondSave Boolean #field
-secondSave PERSISTENT #fieldModifier
-ctrl com.axonivy.utils.persistence.demo.ui.DepartmentSearchCtrl #field
-ctrl PERSISTENT #fieldModifier
