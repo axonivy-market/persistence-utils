@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -193,6 +194,24 @@ public class SearchFilterTest extends DemoTestBase {
 		return tuples.stream().map(t -> (MaritalStatus)t.get(0)).distinct().sorted().toList();
 	}
 
+	@Test
+	public void testSortingAsc() {
+		var ascIvyUserFilter = SearchFilter.create()
+		.add(PersonSearchField.IVY_USER_NAME)
+		.addSort(PersonSearchField.IVY_USER_NAME, true);
+		var asc = PersonDAO.getInstance().findBySearchFilter(ascIvyUserFilter);
+		assertThat(asc.stream().map(t -> t.get(0, String.class))).isSorted();
+	}
+	
+	@Test
+	public void testSortingDesc() {
+		var descIvyUserFilter = SearchFilter.create()
+		.add(PersonSearchField.IVY_USER_NAME)
+		.addSort(PersonSearchField.IVY_USER_NAME, false);
+		var desc = PersonDAO.getInstance().findBySearchFilter(descIvyUserFilter);
+		assertThat(desc.stream().map(t -> t.get(0, String.class))).isSortedAccordingTo(Comparator.reverseOrder());
+	}
+	
 	@Test
 	public void testEnumList() {
 		var filter = SearchFilter.create()

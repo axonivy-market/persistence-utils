@@ -16,6 +16,11 @@ Axon Ivy's JPA Persistence Lib unterstützt dich dabei, Prozessautomatisierungsi
 
 ## Release Notes
 
+### 11.3.2-SNAPSHOT
+*Änderungen*
+
+- [APS-231](https://1ivy.atlassian.net/browse/APS-231) Fix GitHub issue 73 (SearchFilter descending sort)
+
 ### 10.0.8
 *Änderungen*
 - [APS-224](https://1ivy.atlassian.net/browse/APS-224) Behebung des Handlings von leeren Listen oder Null-Werten in Enum-Suchfiltern.
