@@ -1497,7 +1497,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 		}
 
 		// Add all needed orders.
-		for (FilterOrder filterOrder : searchFilter.getFilterOrders()) {
+		for (var filterOrder : searchFilter.getFilterOrders()) {
 			var orders = orderMap.get(filterOrder.getSearchEnum());
 
 			if(orders == null) {
@@ -1518,7 +1518,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 					// whether multi-select filters will even be used, will be seen.
 					// At the moment all filters produce a single selection, so this all
 					// does not really matter.
-					orders.stream().forEach(o -> o.reverse());
+					orders = orders.stream().map(Order::reverse).toList();
 				}
 				// Add all orders.
 				attributePredicates.addOrders(orders);
