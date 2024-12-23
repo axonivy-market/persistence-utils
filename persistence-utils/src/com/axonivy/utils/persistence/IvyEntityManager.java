@@ -159,10 +159,10 @@ public class IvyEntityManager {
 			// get a real entity manager from the ivy entity manager
 			session = (Session) ivyEntityManager.createEntityManager(emProperties);
 			if (oldSession == null) {
-				LOG.debug("thread {0} created entity manager: {1}", Thread.currentThread().getId(), session);
+				LOG.debug("thread {0} created entity manager: {1}", Thread.currentThread().threadId(), session);
 			} else {
 				LOG.debug("thread {0} recreated entity manager: {1} because the old entity manager: {2} was not open.",
-						Thread.currentThread().getId(), session, oldSession);
+						Thread.currentThread().threadId(), session, oldSession);
 			}
 			persistentContext.setHibernateSession(session);
 		}
@@ -187,7 +187,7 @@ public class IvyEntityManager {
 			count = 0;
 		}
 		sessions.set(++count);
-		LOG.debug("thread {0} began a new session, nesting count is now {1}", Thread.currentThread().getId(), count);
+		LOG.debug("thread {0} began a new session, nesting count is now {1}", Thread.currentThread().threadId(), count);
 		return () -> closeSession(); // call closeSession automatically when invoked via try with resources call ,
 										// e.g. try( AutoCloseTransaction autoclose = beginSession) {...
 	}
@@ -208,7 +208,7 @@ public class IvyEntityManager {
 		if (count <= 0) {
 			if (count < 0) {
 				LOG.warn("thread {0} closed a session which was not opened, count is {1}",
-						Thread.currentThread().getId(), count);
+						Thread.currentThread().threadId(), count);
 			}
 
 			Map<String, PersistenceContext> persistenceContexts = threadLocalPersistenceContexts.get();
@@ -223,7 +223,7 @@ public class IvyEntityManager {
 					}
 					persistenceContext.setHibernateSession(null);
 					LOG.debug("thread {0} context {1} closed entity manager: {2} because session nesting count was 0",
-							Thread.currentThread().getId(), entry.getKey(), session);
+							Thread.currentThread().threadId(), entry.getKey(), session);
 					closedEm = true;
 				}
 			}
@@ -233,7 +233,7 @@ public class IvyEntityManager {
 			sessions.set(count);
 		}
 
-		LOG.debug("thread {0} closed a session, nesting count is now {1} {2}", Thread.currentThread().getId(), count,
+		LOG.debug("thread {0} closed a session, nesting count is now {1} {2}", Thread.currentThread().threadId(), count,
 				closedEm ? "(the entity manager was closed)" : "");
 	}
 	

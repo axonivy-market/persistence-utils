@@ -1056,7 +1056,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 			throw new PersistenceException(message, e);
 		}
 
-		LOG.debug("{0}({1}): merge execution time: {2}", getType(),	tmpBean.getId(), sw.getTime());
+		LOG.debug("{0}({1}): merge execution time: {2}", getType(),	tmpBean.getId(), sw.getDuration());
 		updateEvent(tmpBean, type);
 
 		return tmpBean;
@@ -1785,6 +1785,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	/**
 	 * Information need to find out about an update operation.
 	 */
+	@SuppressWarnings("rawtypes")
 	public static class UpdateInformation {
 		UpdateType type = null;
 		String className = null;

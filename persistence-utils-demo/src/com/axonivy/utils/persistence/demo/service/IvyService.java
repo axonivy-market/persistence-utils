@@ -348,7 +348,7 @@ public class IvyService {
 	 * @param data
 	 */
 	public static void sendSignal(String signalCode, String signalData) {
-		Ivy.wf().signals().send(new SignalCode(signalCode), signalData);
+		Ivy.wf().signals().create().data(signalData).makeCurrentTaskPersistent().send(signalCode);
 	}
 
 	/**
