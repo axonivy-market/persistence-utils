@@ -1,8 +1,0 @@
-PersonSearchData #class
-com.axonivy.utils.persistence.demo.PersonSearch #namespace
-personId String #field
-personId PERSISTENT #fieldModifier
-secondSave Boolean #field
-secondSave PERSISTENT #fieldModifier
-ctrl com.axonivy.utils.persistence.demo.ui.PersonSearchCtrl #field
-ctrl PERSISTENT #fieldModifier
