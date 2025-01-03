@@ -1520,7 +1520,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 					// whether multi-select filters will even be used, will be seen.
 					// At the moment all filters produce a single selection, so this all
 					// does not really matter.
-					orders.stream().forEach(o -> o.reverse());
+					orders = orders.stream().map(Order::reverse).collect(Collectors.toList());
 				}
 				// Add all orders.
 				attributePredicates.addOrders(orders);
