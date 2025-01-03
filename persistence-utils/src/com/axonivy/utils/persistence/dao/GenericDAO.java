@@ -44,6 +44,7 @@ import javax.transaction.TransactionRolledbackException;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.hibernate.Filter;
@@ -614,7 +615,8 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 			ctx.orderBy(querySettings.getOrders().toArray(new Order[0]));
 			// Add orders specified by simple attributes.
 			var orderAttributes = querySettings.getOrderAttributes();
-			var orders = orderAttributes.stream().map(o -> ctx.asc(o)).toArray(Order[]::new);
+			var orders = orderAttributes.stream().filter(ObjectUtils::isNotEmpty).map(o -> ctx.asc(o))
+					.toArray(Order[]::new);
 			ctx.orderBy(orders);
 
 			CriteriaQueryGenericContext.TypedQueryInterceptor<U> tqi = ctx.getTypedQueryInterceptor();
