@@ -1,0 +1,20 @@
+.department_search_table tr td {
+	padding: 0.2em 0.2em 0.2em 0.2em !important;
+}
+
+.right {
+	text-align: right;
+}
+
+.edit-delete-column {
+	width: 4em;
+	text-align: center;
+}
+
+.p-10 {
+	padding: 10px;
+}
+
+.department-name {
+	width: 30em;
+}
