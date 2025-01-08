@@ -53,7 +53,7 @@ Dialogs:
               salary: Gehalt
               save: Speichern
               saveAnyway: Trotzdem speichern
-              syncToIvy: Is Ivy User
+              syncToIvy: Ivy User
             components:
               Info:
                 info: Info

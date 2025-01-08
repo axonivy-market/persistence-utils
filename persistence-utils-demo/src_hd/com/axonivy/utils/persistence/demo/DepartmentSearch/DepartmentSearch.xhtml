@@ -17,7 +17,7 @@
 						<ic:com.axonivy.utils.persistence.demo.components.Info header="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/DepartmentSearch/infoHeader')}" 
 								value="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/DepartmentSearch/info')}" />
 					</div>
-					<div class="ui-g-12 ui-md-12 ui-lg-10 right">
+					<div class="ui-g-12 ui-md-12 ui-lg-10 text-right">
 						<p:commandButton id="addButton" actionListener="#{logic.editDepartment(null)}" update="departmentDialog" 
 								oncomplete="PF('departmentDialog').show()" icon="fa fa-plus" 
 								value="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/DepartmentSearch/addDepartment')}" />
@@ -49,7 +49,7 @@
 					</div>
 				</div>
 				<div class="ui-g">
-					<div class="ui-g-12 ui-md-12 ui-lg-12 right">
+					<div class="ui-g-12 ui-md-12 ui-lg-12 text-right">
 						<p:commandButton value="#{ivy.cms.co('/Labels/back')}" actionListener="#{logic.close}" />
 					</div>
 				</div>
@@ -71,7 +71,7 @@
 						<div class="ui-g">
 							<div class="ui-g-12 ui-md-6 ui-lg-6">
 							</div>
-							<div class="ui-g-12 ui-md-6 ui-lg-6 right">
+							<div class="ui-g-12 ui-md-6 ui-lg-6 text-right">
 								<p:commandButton id="saveButton" value="#{ivy.cms.co(data.ctrl.saveViolationMaxWarning ? '/Dialogs/com/axonivy/demo/jpa_demo/core/DepartmentSearch/saveAnyway' : '/Dialogs/com/axonivy/demo/jpa_demo/core/DepartmentSearch/save')}" 
 									actionListener="#{logic.saveDepartment}" update="mainForm:departmentTable mainForm:growl dialogButtons"/>
 								<p:commandButton value="#{ivy.cms.co('/Labels/cancel')}" actionListener="#{logic.cancelDepartment}" oncomplete="PF('departmentDialog').hide()" update="mainForm"/>

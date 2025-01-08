@@ -14,12 +14,12 @@
 			<h:form id="mainForm">
 				<p:growl id="growl" showDetail="true" sticky="true" escape="false" />
 				<div class="ui-g">
-					<div class="ui-g-12 ui-md-12 ui-lg-2 left">
+					<div class="ui-g-12 ui-md-12 ui-lg-2 text-left">
 						<ic:com.axonivy.utils.persistence.demo.components.Info
 							header="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/infoHeader')}"
 							value="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/info')}" />
 					</div>
-					<div class="ui-g-12 ui-md-12 ui-lg-10 right">
+					<div class="ui-g-12 ui-md-12 ui-lg-10 text-right">
 						<p:commandButton id="addButton"
 							actionListener="#{logic.editPerson(null)}" update="personDialog"
 							oncomplete="PF('personDialog').show()" icon="fa fa-plus"
@@ -80,7 +80,7 @@
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/salary')}"
-								field="SALARY" styleClass="right">
+								field="SALARY" styleClass="text-right">
 								<h:outputText value="#{person.get('SALARY')}" />
 							</p:column>
 							<p:column
@@ -100,7 +100,7 @@
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/edit')}"
-								styleClass="center" width="4%">
+								styleClass="text-center" width="4%">
 								<p:commandLink id="editButton"
 									actionListener="#{logic.editPerson(person.id)}"
 									update="personDialog" oncomplete="PF('personDialog').show()">
@@ -109,7 +109,7 @@
 							</p:column>
 							<p:column
 								headerText="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/delete')}"
-								styleClass="center" width="4%">
+								styleClass="text-center" width="4%">
 								<p:commandLink id="deleteButton"
 									actionListener="#{logic.deletePerson(person.id)}"
 									update="mainForm">
@@ -124,7 +124,7 @@
 					</div>
 				</div>
 				<div class="ui-g">
-					<div class="ui-g-12 ui-md-12 ui-lg-12 right">
+					<div class="ui-g-12 ui-md-12 ui-lg-12 text-right">
 						<p:commandButton value="#{ivy.cms.co('/Labels/back')}"
 							actionListener="#{logic.close}" />
 					</div>
@@ -226,7 +226,7 @@
 					<h:panelGroup id="dialogButtons">
 						<div class="ui-g">
 							<div class="ui-g-12 ui-md-6 ui-lg-6"></div>
-							<div class="ui-g-12 ui-md-6 ui-lg-6 right">
+							<div class="ui-g-12 ui-md-6 ui-lg-6 text-right">
 								<p:commandButton id="saveButton"
 									value="#{ivy.cms.co(data.ctrl.saveViolationMaxWarning ? '/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/saveAnyway' : '/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/save')}"
 									actionListener="#{logic.savePerson}"
