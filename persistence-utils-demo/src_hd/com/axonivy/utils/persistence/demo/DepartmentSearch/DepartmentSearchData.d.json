@@ -13,7 +13,6 @@
     "modifiers" : [ "PERSISTENT" ]
   }, {
     "name" : "ctrl",
-    "type" : "com.axonivy.utils.persistence.demo.ui.DepartmentSearchCtrl",
-    "modifiers" : [ "PERSISTENT" ]
+    "type" : "com.axonivy.utils.persistence.demo.ui.DepartmentSearchCtrl"
   } ]
 }

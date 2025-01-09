@@ -8,6 +8,7 @@
   <description>Web Test project of the persistence utils demo project.</description>
   <properties>
     <project.build.plugin.version>12.0.0</project.build.plugin.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <tester.version>12.0.1</tester.version>
   </properties>
   <dependencies>
