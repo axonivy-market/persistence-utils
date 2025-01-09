@@ -44,6 +44,7 @@ import javax.transaction.TransactionRolledbackException;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.hibernate.Filter;
@@ -614,7 +615,8 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 			ctx.orderBy(querySettings.getOrders().toArray(new Order[0]));
 			// Add orders specified by simple attributes.
 			var orderAttributes = querySettings.getOrderAttributes();
-			var orders = orderAttributes.stream().map(o -> ctx.asc(o)).toArray(Order[]::new);
+			var orders = orderAttributes.stream().filter(ObjectUtils::isNotEmpty).map(o -> ctx.asc(o))
+					.toArray(Order[]::new);
 			ctx.orderBy(orders);
 
 			CriteriaQueryGenericContext.TypedQueryInterceptor<U> tqi = ctx.getTypedQueryInterceptor();
@@ -1056,7 +1058,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 			throw new PersistenceException(message, e);
 		}
 
-		LOG.debug("{0}({1}): merge execution time: {2}", getType(),	tmpBean.getId(), sw.getTime());
+		LOG.debug("{0}({1}): merge execution time: {2}", getType(),	tmpBean.getId(), sw.getDuration());
 		updateEvent(tmpBean, type);
 
 		return tmpBean;
@@ -1518,7 +1520,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 					// whether multi-select filters will even be used, will be seen.
 					// At the moment all filters produce a single selection, so this all
 					// does not really matter.
-					orders = orders.stream().map(Order::reverse).toList();
+					orders = orders.stream().map(Order::reverse).collect(Collectors.toList());
 				}
 				// Add all orders.
 				attributePredicates.addOrders(orders);
@@ -1785,6 +1787,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	/**
 	 * Information need to find out about an update operation.
 	 */
+	@SuppressWarnings("rawtypes")
 	public static class UpdateInformation {
 		UpdateType type = null;
 		String className = null;

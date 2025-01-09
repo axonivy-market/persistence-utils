@@ -11,8 +11,8 @@ import ch.ivyteam.ivy.environment.Ivy;
 public class ConfigurationService {
 	static final Logger LOGGER = Logger.getLogger(ConfigurationService.class);
 	public static final String COM_AXONIVY_DEMO_JPA_DEMO_CORE_RAISE_SALARY_CRON = "com_axonivy_demo_jpa_demo_core_raise_salary_cron";
-	public static final String COM_AXONIVY_DEMO_JPA_DEMO_CORE_RAISE_SALARY_PERCENTAGE = "com_axonivy_demo_jpa_demo_core_raise_salary_percentage";
-	public static final String COM_AXONIVY_DEMO_JPA_DEMO_CORE_RAISE_SALARY_PROBABILITY = "com_axonivy_demo_jpa_demo_core_raise_salary_probability";
+	public static final String COM_AXONIVY_DEMO_JPA_DEMO_CORE_RAISE_SALARY_PERCENTAGE = "raise.salary.percentage";
+	public static final String COM_AXONIVY_DEMO_JPA_DEMO_CORE_RAISE_SALARY_PROBABILITY = "raise.salary.probability";
 
 	private ConfigurationService() {
 	}

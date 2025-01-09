@@ -1,0 +1,18 @@
+{
+  "$schema" : "https://json-schema.axonivy.com/data-class/12.0.0/data-class.json",
+  "simpleName" : "PersonSearchData",
+  "namespace" : "com.axonivy.utils.persistence.demo.PersonSearch",
+  "isBusinessCaseData" : false,
+  "fields" : [ {
+    "name" : "personId",
+    "type" : "String",
+    "modifiers" : [ "PERSISTENT" ]
+  }, {
+    "name" : "secondSave",
+    "type" : "Boolean",
+    "modifiers" : [ "PERSISTENT" ]
+  }, {
+    "name" : "ctrl",
+    "type" : "com.axonivy.utils.persistence.demo.ui.PersonSearchCtrl"
+  } ]
+}

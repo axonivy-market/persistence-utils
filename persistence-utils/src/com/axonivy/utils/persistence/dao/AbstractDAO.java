@@ -216,7 +216,7 @@ public abstract class AbstractDAO implements BaseDAO {
 		 */
 		public void begin() throws TransactionRolledbackException {
 			LOG.debug("transaction begin (nesting: {0} active: {1} thread: {2})", count + 1, isActive,
-					Thread.currentThread().getId());
+					Thread.currentThread().threadId());
 			if (count > 0 && !isActive) {
 				throw new TransactionRolledbackException("Transaction was rolled back");
 			}
@@ -235,12 +235,12 @@ public abstract class AbstractDAO implements BaseDAO {
 		 */
 		public int commit() throws TransactionRolledbackException {
 			LOG.debug("transaction commit (nesting: {0} active: {1} thread: {2})", count, isActive,
-					Thread.currentThread().getId());
+					Thread.currentThread().threadId());
 			if (count > 0 && !isActive) {
 				throw new TransactionRolledbackException("Transaction was rolled back");
 			}
 			if (--count <= 0) {
-				LOG.debug("committing to database {0}", Thread.currentThread().getId());
+				LOG.debug("committing to database {0}", Thread.currentThread().threadId());
 				transaction.commit();
 				isActive = false;
 			}
@@ -252,7 +252,7 @@ public abstract class AbstractDAO implements BaseDAO {
 		 */
 		public void rollback() {
 			LOG.debug("transaction rollback (nesting: {0} active: {1} thread: {2})", count, isActive,
-					Thread.currentThread().getId());
+					Thread.currentThread().threadId());
 			count = 0;
 			if (isActive) {
 				transaction.rollback();
