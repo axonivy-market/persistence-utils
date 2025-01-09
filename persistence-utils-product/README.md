@@ -14,6 +14,11 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 
 ## Release Notes
 
+### 11.3.2-SNAPSHOT
+*Changes*
+
+- [APS-232](https://1ivy.atlassian.net/browse/APS-232) Fix GitHub issue 73 (SearchFilter descending sort)
+
 ### 10.0.8
 *Changes*
 

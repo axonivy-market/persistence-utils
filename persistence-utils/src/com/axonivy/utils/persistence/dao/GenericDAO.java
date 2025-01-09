@@ -1499,7 +1499,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 		}
 
 		// Add all needed orders.
-		for (FilterOrder filterOrder : searchFilter.getFilterOrders()) {
+		for (var filterOrder : searchFilter.getFilterOrders()) {
 			var orders = orderMap.get(filterOrder.getSearchEnum());
 
 			if(orders == null) {
