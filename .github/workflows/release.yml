@@ -4,7 +4,4 @@ on: workflow_dispatch
 
 jobs:
   build:
-    uses: axonivy-market/github-workflows/.github/workflows/release.yml@v2
-    # Disable Web Tests
-    # with:
-    #   mvnArgs: -PnoWebTest
+    uses: axonivy-market/github-workflows/.github/workflows/release.yml@v5
