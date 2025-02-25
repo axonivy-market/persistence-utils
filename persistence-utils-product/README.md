@@ -29,6 +29,11 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 
 - [Issue 73](https://github.com/axonivy-market/persistence-utils/issues/73) [APS-232](https://1ivy.atlassian.net/browse/APS-232) Fixed SearchFilter descending sort
 
+### 10.0.9
+*Changes*
+
+- [Issue 82](https://github.com/axonivy-market/persistence-utils/issues/82) Fixed ClassCastException when accessing joinable objects directly in getExpression
+
 ### 10.0.8
 *Changes*
 
