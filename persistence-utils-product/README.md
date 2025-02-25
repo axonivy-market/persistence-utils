@@ -17,7 +17,7 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 ### 12.0.1
 *Changes*
 
-- [Issue 82](https://github.com/axonivy-market/persistence-utils/issues/82) Bug when accessing joinable objects directly in getExpression
+- [Issue 82](https://github.com/axonivy-market/persistence-utils/issues/82) Fixed ClassCastException when accessing joinable objects directly in getExpression
 
 ### 11.3.2-SNAPSHOT
 *Changes*
