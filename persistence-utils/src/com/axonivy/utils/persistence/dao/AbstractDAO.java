@@ -26,13 +26,14 @@ import javax.persistence.Version;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.Attribute;
-import javax.persistence.metamodel.Attribute.PersistentAttributeType;
+import javax.persistence.metamodel.CollectionAttribute;
 import javax.persistence.metamodel.ListAttribute;
+import javax.persistence.metamodel.MapAttribute;
 import javax.persistence.metamodel.PluralAttribute;
+import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.transaction.TransactionRolledbackException;
 
@@ -1476,71 +1477,38 @@ public abstract class AbstractDAO implements BaseDAO {
 	 * @param attributes
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private static Expression<?> getExpressionInternal(ExpressionMap expressionMap, boolean create, From<?, ?> from,
-			Attribute<?, ?>... attributes) {
-		Path<?> tmpPath = from;
-		String key = tmpPath.getJavaType().getCanonicalName();
-		Expression result = tmpPath;
+	private static Expression<?> getExpressionInternal(ExpressionMap expressionMap, boolean create, From<?, ?> from, Attribute<?, ?>... attributes) {
+		Path path = from;
+		var key = path.getJavaType().getCanonicalName();
 
-		for (int i = 0; i < attributes.length; i++) {
-			boolean last = i == attributes.length - 1;
-			Attribute<?, ?> attribute = attributes[i];
+		for (var i = 0; i < attributes.length; i++) {
+			var attribute = attributes[i];
 
 			key += "." + attribute.getName();
 
-			LOG.debug("expression key: {0}", key);
+			LOG.debug("Working on expression with key: {0}", key);
 
-			if (!last) {
-				Path cachedPath = null;
+			Path cachedPath = expressionMap != null ? (Path)expressionMap.get(key) : null;
 
-				if (expressionMap != null) {
-					cachedPath = (Path) expressionMap.get(key);
-				}
-				if (cachedPath == null) {
-					if (create) {
-						LOG.debug("creating new expression");
-						tmpPath = getNextAttribute(tmpPath, attribute);
+			if (cachedPath == null) {
+				if (create) {
+					LOG.debug("Creating new expression for key: {0}", key);
+					path = getNextAttribute(path, attribute);
 
-						if (expressionMap != null) {
-							// cache for future calls
-							expressionMap.put(key, tmpPath);
-						}
-					} else {
-						tmpPath = null;
+					if (expressionMap != null) {
+						// Cache for future calls.
+						expressionMap.put(key, path);
 					}
 				} else {
-					tmpPath = cachedPath;
-					LOG.debug("re-using join");
+					path = null;
 				}
 			} else {
-				Expression cachedExpression = null;
-				if (expressionMap != null) {
-					cachedExpression = expressionMap.get(key);
-				}
-				if (cachedExpression == null) {
-					if (create) {
-						LOG.debug("creating new expression");
-						if (attribute instanceof SingularAttribute) {
-							result = tmpPath.get((SingularAttribute) attribute);
-						} else if (attribute instanceof ListAttribute) {
-							result = tmpPath.get((ListAttribute) attribute);
-						}
-
-						if (expressionMap != null) {
-							// cache for future calls
-							expressionMap.put(key, result);
-						}
-					} else {
-						result = null;
-					}
-				} else {
-					result = cachedExpression;
-					LOG.debug("re-using expression");
-				}
+				LOG.debug("Re-using path for key: {0}", key);
+				path = cachedPath;
 			}
 		}
 
-		return result;
+		return path;
 	}
 
 	/**
@@ -1552,26 +1520,30 @@ public abstract class AbstractDAO implements BaseDAO {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private static Path<?> getNextAttribute(Path<?> path, Attribute<?, ?> attribute) {
-		Path<?> resultPath = path;
-		PersistentAttributeType aType = attribute.getPersistentAttributeType();
-		if (attribute instanceof SingularAttribute) {
-			if (aType == PersistentAttributeType.EMBEDDED) {
-				resultPath = path.get((SingularAttribute) attribute);
-			} else {
-				if (!(path instanceof From)) {
-					LOG.error("When building the JPA expression for a singular attribute " + attribute
-							+ " , a Path was needed but instead " + path + " was found, query build will fail");
-				}
-				resultPath = ((From) path).join((SingularAttribute) attribute, JoinType.LEFT);
+		var resultPath = path;
+
+		if(path instanceof From from && attribute.isAssociation()) {
+			if(attribute instanceof SingularAttribute single) {
+				resultPath = from.join(single);
 			}
-		} else if (attribute instanceof ListAttribute) {
-			if (!(path instanceof From)) {
-				LOG.error("When building the JPA expression for a list attribute " + attribute
-						+ " , a Path was needed but instead " + path + " was found, query build will fail");
+			else if(attribute instanceof ListAttribute list) {
+				resultPath = from.join(list);
 			}
-			resultPath = ((From) path).join((ListAttribute) attribute, JoinType.LEFT);
-		} else {
-			LOG.error("When building the JPA expression unhandled attribute " + attribute + " was found.");
+			else if(attribute instanceof SetAttribute set) {
+				resultPath = from.join(set);
+			}
+			else if(attribute instanceof MapAttribute map) {
+				resultPath = from.join(map);
+			}
+			else if(attribute instanceof CollectionAttribute collection) {
+				resultPath = from.join(collection);
+			}
+			else {
+				LOG.error("Attribute type {0} is currently not supported.", path != null ? path.getClass() : null);
+			}
+		}
+		else {
+			resultPath = path.get((SingularAttribute) attribute);
 		}
 		return resultPath;
 	}

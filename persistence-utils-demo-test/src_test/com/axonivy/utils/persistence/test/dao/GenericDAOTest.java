@@ -93,6 +93,7 @@ public class GenericDAOTest extends DemoTestBase {
 		var entity = testDAO.findSingle();
 		assertThat(entity).isNotNull();
 	}
+	
 
 	// Dummy class for testing
 	public static class TestEntity {
