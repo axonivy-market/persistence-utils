@@ -26,6 +26,7 @@ import javax.persistence.Version;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.Attribute;
@@ -1524,19 +1525,19 @@ public abstract class AbstractDAO implements BaseDAO {
 
 		if(path instanceof From from && attribute.isAssociation()) {
 			if(attribute instanceof SingularAttribute single) {
-				resultPath = from.join(single);
+				resultPath = from.join(single, JoinType.LEFT);
 			}
 			else if(attribute instanceof ListAttribute list) {
-				resultPath = from.join(list);
+				resultPath = from.join(list, JoinType.LEFT);
 			}
 			else if(attribute instanceof SetAttribute set) {
-				resultPath = from.join(set);
+				resultPath = from.join(set, JoinType.LEFT);
 			}
 			else if(attribute instanceof MapAttribute map) {
-				resultPath = from.join(map);
+				resultPath = from.join(map, JoinType.LEFT);
 			}
 			else if(attribute instanceof CollectionAttribute collection) {
-				resultPath = from.join(collection);
+				resultPath = from.join(collection, JoinType.LEFT);
 			}
 			else {
 				LOG.error("Attribute type {0} is currently not supported.", path != null ? path.getClass() : null);
