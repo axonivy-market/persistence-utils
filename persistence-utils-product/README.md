@@ -14,6 +14,11 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 
 ## Release Notes
 
+### 10.0.9
+*Changes*
+
+- [Issue 82](https://github.com/axonivy-market/persistence-utils/issues/82) Fix getExpression of whole objects
+
 ### 10.0.8
 *Changes*
 
