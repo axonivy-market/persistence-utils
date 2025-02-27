@@ -14,6 +14,8 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 
 ## Release Notes
 
+***For newer versions, please see the changelog in the Axon Ivy Market!***
+
 ### 12.0.1
 *Changes*
 
