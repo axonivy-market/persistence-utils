@@ -30,168 +30,171 @@ import com.axonivy.utils.persistence.beans.GenericEntity;
 import com.axonivy.utils.persistence.beans.GenericEntity_;
 import com.axonivy.utils.persistence.dao.GenericDAO;
 
+
 public abstract class TestDAO extends GenericDAO<GenericEntity_, GenericEntity<String>> {
 
-  @Override
-  protected Class<GenericEntity<String>> getType() {
-    return null;
-  }
+	@Override
+	protected Class<GenericEntity<String>> getType() {
+		return null;
+	}
 
-  /**
-   * Function needed mainly for testing or showing system information.
-   * @param propertyKey
-   *
-   * @return value of the key in the emf properties map
-   */
-  @Override
-  public Object getEntityManagerProperty(String propertyKey) {
-    return getEM().getEntityManagerFactory().getProperties().get(propertyKey);
-  }
+	/**
+	 * Function needed mainly for testing or showing system information.
+	 * @param propertyKey
+	 *
+	 * @return value of the key in the emf properties map
+	 */
+	@Override
+	public Object getEntityManagerProperty(String propertyKey) {
+		return getEM().getEntityManagerFactory().getProperties().get(propertyKey);
+	}
 
-  /**
-   * Get a DBUnit {@link DatabaseConnection} for the persistence unit related to the DAO.
-   *
-   * Use auto-commit
-   *
-   * @return
-   */
-  public DatabaseConnection getDatabaseConnection() {
-    return getDatabaseConnection(true);
-  }
 
-  /**
-   * Get a DBUnit {@link DatabaseConnection} for the persistence unit related to the DAO.
-   *
-   * @param autoCommit
-   * @return
-   */
-  public DatabaseConnection getDatabaseConnection(boolean autoCommit) {
-    Connection connection;
-    try {
-      connection = ((JdbcSessionOwner) getEM()).getJdbcConnectionAccess().obtainConnection();
-      connection.setAutoCommit(autoCommit);
-      DatabaseConnection conn = new DatabaseConnection(connection);
-      configureDatabaseConnection(conn);
-      return conn;
-    } catch (SQLException | DatabaseUnitException e) {
-      throw new RuntimeException("Cannot get database conection", e);
-    }
-  }
+	/**
+	 * Get a DBUnit {@link DatabaseConnection} for the persistence unit related to the DAO.
+	 * 
+	 * Use auto-commit
+	 * 
+	 * @return
+	 */
+	public DatabaseConnection getDatabaseConnection() {
+		return getDatabaseConnection(true);
+	}
 
-  /**
-   * Set features of database connection used by DBUnit.
-   *
-   * Override this function in you test if you need to change the configuration.
-   *
-   * @param conn
-   */
-  public void configureDatabaseConnection(DatabaseConnection conn) {
-    DatabaseConfig config = conn.getConfig();
+	/**
+	 * Get a DBUnit {@link DatabaseConnection} for the persistence unit related to the DAO.
+	 * 
+	 * @param autoCommit
+	 * @return
+	 */
+	public DatabaseConnection getDatabaseConnection(boolean autoCommit) {
+		Connection connection;
+		try {
+			connection = ((JdbcSessionOwner) getEM()).getJdbcConnectionAccess().obtainConnection();
+			connection.setAutoCommit(autoCommit);
+			DatabaseConnection conn = new DatabaseConnection(connection);
+			configureDatabaseConnection(conn);
+			return conn;
+		} catch (SQLException | DatabaseUnitException e) {
+			throw new RuntimeException("Cannot get database conection", e);
+		}
+	}
 
-    config.setProperty(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, true);
-    config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new HsqldbDataTypeFactory());
-  }
+	/**
+	 * Set features of database connection used by DBUnit.
+	 * 
+	 * Override this function in you test if you need to change the configuration.
+	 * 
+	 * @param conn
+	 */
+	public void configureDatabaseConnection(DatabaseConnection conn) {
+		DatabaseConfig config = conn.getConfig();
 
-  /**
-   * Export one or more tables to Excel.
-   *
-   * @param oStream output stream
-   * @param tables table name (i.e. typically {@link Class#getSimpleName()}
-   * @throws DataSetException
-   * @throws FileNotFoundException
-   * @throws IOException
-   */
-  public void exportTablesToExcel(OutputStream oStream, String... tables) throws DataSetException, FileNotFoundException, IOException {
-    DatabaseConnection connection = getDatabaseConnection();
-    connection.getConfig().setProperty(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, true);
+		config.setProperty(DatabaseConfig.FEATURE_ALLOW_EMPTY_FIELDS, true);
+		config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new HsqldbDataTypeFactory());
+	}
 
-    QueryDataSet dataSet = new QueryDataSet(connection);
-    for (String table : tables) {
-      dataSet.addTable(table);
-    }
+	/**
+	 * Export one or more tables to Excel.
+	 * 
+	 * @param oStream output stream
+	 * @param tables table name (i.e. typically {@link Class#getSimpleName()}
+	 * @throws DataSetException
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public void exportTablesToExcel(OutputStream oStream, String...tables) throws DataSetException, FileNotFoundException, IOException {
+		DatabaseConnection connection = getDatabaseConnection();
+		connection.getConfig().setProperty(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, true);
 
-    XlsDataSet.write(dataSet, oStream);
-  }
+		QueryDataSet dataSet = new QueryDataSet(connection);
+		for (String table : tables) {
+			dataSet.addTable(table);
+		}
 
-  /**
-   * Export one or more tables to Excel.
-   *
-   * @param fileName Excel filename, extension xls
-   * @param tables table name (i.e. typically {@link Class#getSimpleName()}
-   * @throws DataSetException
-   * @throws FileNotFoundException
-   * @throws IOException
-   */
-  public void exportTablesToExcel(String fileName, String... tables) throws DataSetException, FileNotFoundException, IOException {
-    DatabaseConnection connection = getDatabaseConnection();
-    connection.getConfig().setProperty(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, true);
+		XlsDataSet.write(dataSet, oStream);
+	}
 
-    QueryDataSet dataSet = new QueryDataSet(connection);
-    for (String table : tables) {
-      dataSet.addTable(table);
-    }
+	/**
+	 * Export one or more tables to Excel.
+	 * 
+	 * @param fileName Excel filename, extension xls
+	 * @param tables table name (i.e. typically {@link Class#getSimpleName()}
+	 * @throws DataSetException
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public void exportTablesToExcel(String fileName, String...tables) throws DataSetException, FileNotFoundException, IOException {
+		DatabaseConnection connection = getDatabaseConnection();
+		connection.getConfig().setProperty(DatabaseConfig.FEATURE_QUALIFIED_TABLE_NAMES, true);
 
-    XlsDataSet.write(dataSet, new FileOutputStream(fileName));
-  }
+		QueryDataSet dataSet = new QueryDataSet(connection);
+		for (String table : tables) {
+			dataSet.addTable(table);
+		}
 
-  /**
-   * Import tables from resources.
-   *
-   * @param clean
-   * @param resources
-   * @throws SQLException
-   * @throws DatabaseUnitException
-   * @throws IOException
-   */
-  public void importTablesFromExcelResources(boolean clean, String... resources) throws SQLException, DatabaseUnitException, IOException {
-    for (String resource : resources) {
-      importTablesFromExcelResource(clean, resource);
-    }
+		XlsDataSet.write(dataSet, new FileOutputStream(fileName));
+	}
 
-    getDatabaseConnection().getConnection().commit();
-  }
+	/**
+	 * Import tables from resources.
+	 * 
+	 * @param clean
+	 * @param resources
+	 * @throws SQLException
+	 * @throws DatabaseUnitException
+	 * @throws IOException
+	 */
+	public void importTablesFromExcelResources(boolean clean, String...resources) throws SQLException, DatabaseUnitException, IOException {
+		for (String resource : resources) {
+			importTablesFromExcelResource(clean, resource);
+		}
 
-  /**
-   * Import specified tables from an Excel dataset.
-   *
-   * @param clean
-   * @param resource
-   * @param tableNames if empty, then all tables will be imported
-   * @throws SQLException
-   * @throws DatabaseUnitException
-   * @throws IOException
-   */
-  public void importTablesFromExcelResource(boolean clean, String resource, String... tableNames) throws SQLException, DatabaseUnitException, IOException {
-    DatabaseConnection connection = getDatabaseConnection();
-    DatabaseOperation dbOp = clean ? DatabaseOperation.CLEAN_INSERT : DatabaseOperation.INSERT;
-    InputStream stream = getClass().getResourceAsStream(resource);
-    if (stream == null) {
-      throw new RuntimeException("Could not load resource from path: " + resource);
-    }
-    IDataSet importDataSet = new XlsDataSet(stream);
-    if (tableNames.length > 0) {
-      importDataSet = new FilteredDataSet(tableNames, importDataSet);
-    }
-    dbOp.execute(connection, importDataSet);
+		getDatabaseConnection().getConnection().commit();
+	}
 
-    connection.getConnection().commit();
-  }
+	/**
+	 * Import specified tables from an Excel dataset.
+	 * 
+	 * @param clean
+	 * @param resource
+	 * @param tableNames if empty, then all tables will be imported
+	 * @throws SQLException
+	 * @throws DatabaseUnitException
+	 * @throws IOException
+	 */
+	public void importTablesFromExcelResource(boolean clean, String resource, String...tableNames) throws SQLException, DatabaseUnitException, IOException {
+		DatabaseConnection connection = getDatabaseConnection();
+		DatabaseOperation dbOp = clean ? DatabaseOperation.CLEAN_INSERT : DatabaseOperation.INSERT;
+		InputStream stream = getClass().getResourceAsStream(resource);
+		if(stream == null) {
+			throw new RuntimeException("Could not load resource from path: " + resource);
+		}
+		IDataSet importDataSet = new XlsDataSet(stream);
+		if(tableNames.length > 0) {
+			importDataSet = new FilteredDataSet(tableNames, importDataSet);
+		}
+		dbOp.execute(connection, importDataSet);
 
-  public void shutDown() throws Exception {
-    Connection connection = getDatabaseConnection().getConnection();
+		connection.getConnection().commit();
+	}
 
-    Statement statement = connection.createStatement();
-    statement.execute("SHUTDOWN");
-  }
+	public void shutDown() throws Exception {
+		Connection connection = getDatabaseConnection().getConnection();
 
-  public void truncateTables(String... tableNames) throws AmbiguousTableNameException, DatabaseUnitException, SQLException {
-    ITable[] tables = Stream.of(tableNames).map(DefaultTable::new).toArray(ITable[]::new);
-    DatabaseOperation.TRUNCATE_TABLE.execute(
-        getDatabaseConnection(),
-        new DefaultDataSet(tables));
-  }
+		Statement statement = connection.createStatement();
+		statement.execute("SHUTDOWN");
+	}
 
-  public String[] objectTablenames(Class<?> objects) {
-    return Stream.of(objects).map(Class::getSimpleName).toArray(String[]::new);
-  }
+	public void truncateTables(String...tableNames) throws AmbiguousTableNameException, DatabaseUnitException, SQLException {
+		ITable[] tables = Stream.of(tableNames).map(t -> new DefaultTable(t)).toArray(ITable[]::new);
+		DatabaseOperation.TRUNCATE_TABLE.execute(
+				getDatabaseConnection(),
+				new DefaultDataSet(tables));
+	}
+
+	public String[] objectTablenames(Class<?> objects) {
+		return Stream.of(objects).map(o -> o.getSimpleName()).toArray(String[]::new);
+	}
 }
+
