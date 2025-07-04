@@ -3,9 +3,9 @@ package com.axonivy.utils.persistence.dao;
 import java.io.Serializable;
 import java.time.Instant;
 
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Predicate;
 
 import com.axonivy.utils.persistence.beans.ToggleableEntity;
 import com.axonivy.utils.persistence.beans.ToggleableEntity_;

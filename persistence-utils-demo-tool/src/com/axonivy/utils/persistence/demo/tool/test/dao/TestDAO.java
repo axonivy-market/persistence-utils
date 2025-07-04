@@ -24,7 +24,7 @@ import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.excel.XlsDataSet;
 import org.dbunit.ext.hsqldb.HsqldbDataTypeFactory;
 import org.dbunit.operation.DatabaseOperation;
-import org.hibernate.internal.SessionImpl;
+import org.hibernate.resource.jdbc.spi.JdbcSessionOwner;
 
 import com.axonivy.utils.persistence.beans.GenericEntity;
 import com.axonivy.utils.persistence.beans.GenericEntity_;
@@ -70,7 +70,7 @@ public abstract class TestDAO extends GenericDAO<GenericEntity_, GenericEntity<S
 	public DatabaseConnection getDatabaseConnection(boolean autoCommit) {
 		Connection connection;
 		try {
-			connection = ((SessionImpl) getEM()).connection();
+			connection = ((JdbcSessionOwner) getEM()).getJdbcConnectionAccess().obtainConnection();
 			connection.setAutoCommit(autoCommit);
 			DatabaseConnection conn = new DatabaseConnection(connection);
 			configureDatabaseConnection(conn);

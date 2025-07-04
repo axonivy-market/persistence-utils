@@ -1,6 +1,6 @@
 package com.axonivy.utils.persistence.daos;
 
-import javax.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Expression;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

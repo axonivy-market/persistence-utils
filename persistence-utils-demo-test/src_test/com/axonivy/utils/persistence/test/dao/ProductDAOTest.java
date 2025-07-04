@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Tuple;
-import javax.persistence.criteria.Expression;
-import javax.transaction.TransactionRolledbackException;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.criteria.Expression;
+import jakarta.transaction.TransactionRolledbackException;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

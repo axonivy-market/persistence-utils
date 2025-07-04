@@ -2,7 +2,7 @@ package com.axonivy.utils.persistence;
 
 import java.io.Serializable;
 
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 
 import com.axonivy.utils.persistence.beans.GenericEntity;
 /**
