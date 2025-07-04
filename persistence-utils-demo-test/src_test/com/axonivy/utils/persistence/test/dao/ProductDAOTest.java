@@ -5,10 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Tuple;
-import jakarta.persistence.criteria.Expression;
-import jakarta.transaction.TransactionRolledbackException;
-
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -23,12 +20,21 @@ import com.axonivy.utils.persistence.search.SearchFilter;
 import com.axonivy.utils.persistence.test.DemoTestBase;
 
 import ch.ivyteam.ivy.environment.IvyTest;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.criteria.Expression;
+import jakarta.transaction.TransactionRolledbackException;
 
 
 @IvyTest
 public class ProductDAOTest extends DemoTestBase {
 
 	private static ProductDAO productDAO = new ProductDAO();
+	
+	@AfterEach
+	void afterEach() {
+		var products = productDAO.findAll();
+		productDAO.deleteAll(products);
+	}
 
 	@Test
 	public void testSaveProduct() {
@@ -375,18 +381,22 @@ public class ProductDAOTest extends DemoTestBase {
 				CriteriaQueryGenericContext<Product, Long> countQueryContext = productDAO.initializeQuery(Product.class,
 						Long.class);) {
 
-			Expression<String> path = ProductDAO.getExpression(null, q.r, Product_.name);
-			q.q.where(q.c.like(path, "%Samsung%"));
-			q.q.multiselect(path);
+			whereNameLikeSamsung(q);
 			List<Tuple> tuples = productDAO.findByCriteria(q);
 
-			countQueryContext.where(q.q.getRestriction());
+			whereNameLikeSamsung(countQueryContext);
 			Long count = productDAO.countByCriteria(countQueryContext);
 
 			assertThat(tuples).isNotNull();
 			assertThat(tuples).as("Compare size to count").hasSize(count.intValue());
 		}
 		productDAO.deleteAll(products);
+	}
+
+	private void whereNameLikeSamsung(CriteriaQueryGenericContext<Product, ?> q) {
+		Expression<String> path = ProductDAO.getExpression(null, q.r, Product_.name);
+		q.q.where(q.c.like(path, "%Samsung%"));
+		q.q.multiselect(path);
 	}
 
 	@Test
