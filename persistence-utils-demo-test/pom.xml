@@ -10,12 +10,12 @@
   </parent>
   <groupId>com.axonivy.utils.persistence</groupId>
   <artifactId>persistence-utils-demo-test</artifactId>
-  <version>12.0.3-SNAPSHOT</version>
+  <version>13.2.0-SNAPSHOT</version>
   <packaging>iar</packaging>
   <description>Test project of the persistence utils demo project. Note, that this project is currently also used to test some aspects of the persistence library.</description>
   <properties>
-    <tester.version>12.0.1</tester.version>
-    <project.build.plugin.version>12.0.0</project.build.plugin.version>
+    <tester.version>13.2.0</tester.version>
+    <project.build.plugin.version>13.1.1</project.build.plugin.version>
   </properties>
   <pluginRepositories>
     <pluginRepository>
