@@ -2,10 +2,10 @@ package com.axonivy.utils.persistence.test.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import javax.persistence.Tuple;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Path;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Path;
 
 import org.apache.logging.log4j.Level;
 import org.junit.jupiter.api.Test;

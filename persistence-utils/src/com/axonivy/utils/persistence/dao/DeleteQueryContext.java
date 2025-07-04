@@ -3,10 +3,10 @@ package com.axonivy.utils.persistence.dao;
 import java.io.Serializable;
 import java.util.function.Supplier;
 
-import javax.persistence.PersistenceException;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.PersistenceException;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaDelete;
+import jakarta.persistence.criteria.Root;
 
 import com.axonivy.utils.persistence.logging.Logger;
 

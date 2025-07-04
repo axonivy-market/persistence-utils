@@ -6,8 +6,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.criteria.Predicate;
-import javax.persistence.metamodel.Attribute;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.metamodel.Attribute;
 
 import com.axonivy.utils.persistence.beans.AuditableEntity;
 import com.axonivy.utils.persistence.beans.AuditableEntity_;

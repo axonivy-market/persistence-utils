@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
-import javax.persistence.PersistenceException;
-import javax.transaction.TransactionRolledbackException;
+import jakarta.persistence.PersistenceException;
+import jakarta.transaction.TransactionRolledbackException;
 
 import org.apache.logging.log4j.Level;
 import org.junit.jupiter.api.Assertions;

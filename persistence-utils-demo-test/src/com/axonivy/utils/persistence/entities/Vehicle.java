@@ -1,7 +1,7 @@
 package com.axonivy.utils.persistence.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 
 import com.axonivy.utils.persistence.beans.AuditableIdEntity;
 

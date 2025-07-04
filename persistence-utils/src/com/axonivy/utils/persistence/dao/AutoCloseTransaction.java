@@ -2,7 +2,7 @@ package com.axonivy.utils.persistence.dao;
 
 import java.io.Closeable;
 
-import javax.transaction.TransactionRolledbackException;
+import jakarta.transaction.TransactionRolledbackException;
 
 /**
  * Interface marking a object which support auto commit of transactions

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.persistence.criteria.Path;
+import jakarta.persistence.criteria.Path;
 
 import org.apache.commons.collections.CollectionUtils;
 

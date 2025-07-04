@@ -3,8 +3,8 @@ package com.axonivy.utils.persistence.history.beans;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 /**
  * History entity, default schema must be defined in the application

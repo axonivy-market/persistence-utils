@@ -2,8 +2,8 @@ package com.axonivy.utils.persistence.dao;
 
 import java.util.HashMap;
 
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Join;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Join;
 
 /**
  * Class used to store all {@link Join}s of a query.
