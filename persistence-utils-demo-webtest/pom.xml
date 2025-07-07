@@ -13,10 +13,6 @@
   <version>13.2.0-SNAPSHOT</version>
   <packaging>iar-integration-test</packaging>
   <description>Web Test project of the persistence utils demo project.</description>
-  <properties>
-    <tester.version>13.2.0</tester.version>
-    <project.build.plugin.version>13.1.1</project.build.plugin.version>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>com.axonivy.utils.persistence</groupId>
