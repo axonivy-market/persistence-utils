@@ -42,13 +42,6 @@
       <snapshots>
         <updatePolicy>always</updatePolicy>
       </snapshots>
-      <id>sonatype</id>
-      <url>https://central.sonatype.com/repository/maven-snapshots</url>
-    </repository>
-    <repository>
-      <snapshots>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
       <id>maven.axonivy.com</id>
       <url>https://maven.axonivy.com</url>
     </repository>
