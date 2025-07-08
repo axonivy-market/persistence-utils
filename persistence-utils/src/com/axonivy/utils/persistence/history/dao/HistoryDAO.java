@@ -3,7 +3,7 @@ package com.axonivy.utils.persistence.history.dao;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Expression;
 
 import com.axonivy.utils.persistence.dao.CriteriaQueryContext;
 import com.axonivy.utils.persistence.dao.GenericDAO;

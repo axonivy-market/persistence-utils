@@ -10,10 +10,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.Tuple;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Predicate;
-import javax.transaction.TransactionRolledbackException;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.transaction.TransactionRolledbackException;
 
 import org.junit.jupiter.api.Test;
 

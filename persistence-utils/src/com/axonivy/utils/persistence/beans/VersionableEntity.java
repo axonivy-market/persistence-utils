@@ -2,9 +2,9 @@ package com.axonivy.utils.persistence.beans;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Version;
 
 @MappedSuperclass
 public abstract class VersionableEntity<ID extends Serializable> extends GenericEntity<ID> {

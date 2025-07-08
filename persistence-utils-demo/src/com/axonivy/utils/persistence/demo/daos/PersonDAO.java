@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Subquery;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 
 import com.axonivy.utils.persistence.dao.AuditableIdDAO;
 import com.axonivy.utils.persistence.dao.CriteriaQueryContext;

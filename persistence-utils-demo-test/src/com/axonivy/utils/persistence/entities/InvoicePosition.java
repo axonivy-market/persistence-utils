@@ -1,8 +1,8 @@
 package com.axonivy.utils.persistence.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 
 import com.axonivy.utils.persistence.beans.GenericIdEntity;
 
