@@ -10,7 +10,7 @@
   </parent>
   <groupId>com.axonivy.utils.persistence</groupId>
   <artifactId>persistence-utils-demo-test</artifactId>
-  <version>13.2.0-SNAPSHOT</version>
+  <version>13.1.1-SNAPSHOT</version>
   <packaging>iar</packaging>
   <description>Test project of the persistence utils demo project. Note, that this project is currently also used to test some aspects of the persistence library.</description>
   <dependencies>
@@ -28,7 +28,7 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-jpamodelgen</artifactId>
-      <version>7.0.3.Final</version>
+      <version>7.0.6.Final</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
