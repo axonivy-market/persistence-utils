@@ -1,11 +1,10 @@
 package com.axonivy.utils.persistence.demo.ui;
 
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-
 import com.axonivy.utils.persistence.demo.enums.MaritalStatus;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 
-@ManagedBean(name = "enums")
+@Named("enums")
 @ApplicationScoped
 public class EnumsBean {
 

@@ -47,6 +47,12 @@
       <groupId>com.axonivy.ivy.api</groupId>
       <artifactId>ivy-api</artifactId>
     </dependency>
+	<dependency>
+		<groupId>org.glassfish</groupId>
+		<artifactId>jakarta.faces</artifactId>
+		<version>4.0.1</version>
+		<scope>provided</scope>
+	</dependency>
   </dependencies>
   <repositories>
     <repository>
@@ -71,11 +77,25 @@
         <groupId>com.axonivy.ivy.ci</groupId>
         <artifactId>project-build-plugin</artifactId>
         <extensions>true</extensions>
-        <configuration>
-          <compilerOptions>
-            <compilerOption>-proc:none</compilerOption>
-          </compilerOptions>
-        </configuration>
+      </plugin>
+            <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.4.0</version>
+        <executions>
+          <execution>
+            <id>add-generated-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src_generated</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

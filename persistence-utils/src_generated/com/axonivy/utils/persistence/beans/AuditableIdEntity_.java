@@ -1,16 +1,33 @@
 package com.axonivy.utils.persistence.beans;
 
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
+import jakarta.persistence.metamodel.MappedSuperclassType;
 import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;
 
-@Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
+/**
+ * Static metamodel for {@link com.axonivy.utils.persistence.beans.AuditableIdEntity}
+ **/
 @StaticMetamodel(AuditableIdEntity.class)
-public abstract class AuditableIdEntity_ extends com.axonivy.utils.persistence.beans.AuditableEntity_ {
+@Generated("org.hibernate.processor.HibernateProcessor")
+public abstract class AuditableIdEntity_ extends AuditableEntity_ {
 
-	public static volatile SingularAttribute<AuditableIdEntity, String> id;
-
+	
+	/**
+	 * @see #id
+	 **/
 	public static final String ID = "id";
+
+	
+	/**
+	 * Static metamodel type for {@link com.axonivy.utils.persistence.beans.AuditableIdEntity}
+	 **/
+	public static volatile MappedSuperclassType<AuditableIdEntity> class_;
+	
+	/**
+	 * Static metamodel for attribute {@link com.axonivy.utils.persistence.beans.AuditableIdEntity#id}
+	 **/
+	public static volatile SingularAttribute<AuditableIdEntity, String> id;
 
 }
 

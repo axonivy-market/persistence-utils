@@ -4,17 +4,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Predicate;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.html.HtmlOutputLabel;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitResult;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.FacesMessage.Severity;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.component.html.HtmlOutputLabel;
+import jakarta.faces.component.visit.VisitCallback;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.component.visit.VisitResult;
+import jakarta.faces.context.FacesContext;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.primefaces.PF;
 import org.primefaces.PrimeFaces;
 
 import ch.ivyteam.ivy.environment.Ivy;
@@ -31,6 +32,7 @@ public class UiService {
 	 * @param detail
 	 */
 	public static void addExceptionFacesMessage(Throwable t) {
+		Ivy.log().info( PF.current().isFacesRequest()); 
 		try {
 			addFacesMessage(FacesMessage.SEVERITY_FATAL, "",
 					Ivy.cms().co("/Labels/exceptionSummary"),

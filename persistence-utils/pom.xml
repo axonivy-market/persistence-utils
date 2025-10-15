@@ -23,6 +23,13 @@
       <groupId>com.axonivy.ivy.api</groupId>
       <artifactId>ivy-api</artifactId>
     </dependency>
+	<dependency>
+		<groupId>jakarta.platform</groupId>
+		<artifactId>jakarta.jakartaee-api</artifactId>
+		<version>10.0.0</version>
+		<scope>provided</scope>
+	</dependency>
+	
   </dependencies>
   <repositories>
     <repository>
@@ -44,14 +51,28 @@
     <sourceDirectory>src</sourceDirectory>
     <plugins>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.4.0</version>
+        <executions>
+          <execution>
+            <id>add-generated-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src_generated</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>com.axonivy.ivy.ci</groupId>
         <artifactId>project-build-plugin</artifactId>
         <extensions>true</extensions>
-        <configuration>
-          <compilerOptions>
-            <compilerOption>-proc:none</compilerOption>
-          </compilerOptions>
-        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-source-plugin</artifactId>

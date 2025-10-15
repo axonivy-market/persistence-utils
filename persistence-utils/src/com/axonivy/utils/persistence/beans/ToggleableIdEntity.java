@@ -7,7 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UuidGenerator;
 
 import ch.ivyteam.ivy.environment.Ivy;
 
@@ -23,7 +23,7 @@ public abstract class ToggleableIdEntity extends ToggleableEntity<String> {
 	@Id
 	@Column(length = 32, nullable = false)
 	@GeneratedValue(generator="system-uuid")
-	@GenericGenerator(name="system-uuid", strategy = "uuid")
+	@UuidGenerator
 	@Access(AccessType.PROPERTY)
 	protected String id;
 

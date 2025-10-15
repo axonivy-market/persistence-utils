@@ -5,7 +5,7 @@
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
-		<classpathentry kind="src" path="src_wsproc">
+	<classpathentry kind="src" path="src_wsproc">
 		<attributes>
 			<attribute name="optional" value="true"/>
 		</attributes>
@@ -55,6 +55,15 @@
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="test" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/ttan/.m2/repository/jakarta/platform/jakarta.jakartaee-api/10.0.0/jakarta.jakartaee-api-10.0.0.jar" sourcepath="C:/Users/ttan/.m2/repository/jakarta/platform/jakarta.jakartaee-api/10.0.0/jakarta.jakartaee-api-10.0.0-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="jakarta.platform"/>
+			<attribute name="maven.artifactId" value="jakarta.jakartaee-api"/>
+			<attribute name="maven.version" value="10.0.0"/>
+			<attribute name="maven.scope" value="provided"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>

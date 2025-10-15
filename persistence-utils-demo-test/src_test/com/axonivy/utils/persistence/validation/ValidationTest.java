@@ -5,10 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Set;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
-import javax.faces.context.FacesContext;
-import javax.validation.ConstraintViolation;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.FacesMessage.Severity;
+import jakarta.faces.context.FacesContext;
+import jakarta.validation.ConstraintViolation;
 
 import org.apache.logging.log4j.Level;
 import org.junit.jupiter.api.Test;
@@ -39,10 +39,10 @@ public class ValidationTest extends DemoTestBase {
 
 
 	class Test1 {
-		@IvyNotNull(groups = {Step1WarnGroup.class, Step2ErrorGroup.class})
+		@IvyNotNull(groups = {Step1WarnGroup.class, Step2ErrorGroup.class}, message = "Field1 cannot be null", payload = {})
 		private String field1;
 
-		@IvyNotNull(groups = {Step1WarnGroup.class, Step2ErrorGroup.class})
+		@IvyNotNull(groups = {Step1WarnGroup.class, Step2ErrorGroup.class}, message = "Field2 cannot be null", payload = {})
 		private String field2;
 
 		public String getField1() {

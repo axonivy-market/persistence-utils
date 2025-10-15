@@ -3,8 +3,8 @@ package com.axonivy.utils.persistence.demo.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.FacesMessage.Severity;
 
 import org.apache.commons.lang.StringUtils;
 import org.primefaces.PrimeFaces;
@@ -51,6 +51,9 @@ public class PersonSearchCtrl {
 	 * @return the person
 	 */
 	public Person getPerson() {
+		if (person == null) {
+			person = new Person();
+		}
 		return person;
 	}
 
@@ -59,7 +62,8 @@ public class PersonSearchCtrl {
 			person = new Person();
 		}
 		else {
-			person = PersonDAO.getInstance().findById(personId);
+			Person found = PersonDAO.getInstance().findById(personId);
+			person = (found != null) ? found : new Person();
 		}
 	}
 

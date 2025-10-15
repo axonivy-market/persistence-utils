@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.sql.Clob;
 import java.sql.SQLException;
 
+import javax.sql.rowset.serial.SerialClob;
 import javax.sql.rowset.serial.SerialException;
 
 import org.apache.commons.io.IOUtils;
@@ -35,7 +36,7 @@ public class ClobUtil {
 	public static Clob convertObjectToClobData(Object object) {
 		Clob clobData = null;
 		try {
-			clobData = new javax.sql.rowset.serial.SerialClob(fromObjectToJSON(object).toCharArray());
+			clobData = new SerialClob(fromObjectToJSON(object).toCharArray());
 		} catch (SerialException e) {
 			LOG.error(e);
 		} catch (SQLException e) {

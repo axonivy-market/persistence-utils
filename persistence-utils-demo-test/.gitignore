@@ -18,3 +18,4 @@ src_dataClasses/
 src_wsproc/
 logs/
 /src_generated_tests/
+/src_generated/

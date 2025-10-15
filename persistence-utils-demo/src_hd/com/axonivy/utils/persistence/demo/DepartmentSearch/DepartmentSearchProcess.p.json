@@ -155,8 +155,11 @@
       "config" : {
         "output" : {
           "code" : [
+            "import jakarta.faces.context.FacesContext;",
+            "FacesContext.getCurrentInstance().addMessage(null, null);",
             "in.secondSave = in.ctrl.isSaveViolationMaxWarning();",
-            "in.ctrl.validateDepartmentForSave(in.secondSave);"
+            "in.ctrl.validateDepartmentForSave(in.secondSave);",
+            "FacesContext.getCurrentInstance().addMessage(null, null);"
           ]
         },
         "sudo" : true

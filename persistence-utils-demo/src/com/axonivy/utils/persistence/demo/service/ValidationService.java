@@ -10,14 +10,14 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
-import javax.faces.component.UIComponent;
-import javax.faces.component.html.HtmlOutputLabel;
-import javax.faces.context.FacesContext;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.FacesMessage.Severity;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.html.HtmlOutputLabel;
+import jakarta.faces.context.FacesContext;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.PrimeFaces;
@@ -292,8 +292,16 @@ public class ValidationService {
 		if(component != null) {
 			String clientId = component.getClientId();
 			String clientId4Css = clientId;
-			if(component instanceof InputNumber) {
-				clientId4Css = ((InputNumber)component).getInputClientId();
+			if(component.getClass().getName().equals("org.primefaces.component.inputnumber.InputNumber")) {
+				try {
+					java.lang.reflect.Method getInputClientIdMethod = component.getClass().getMethod("getInputClientId");
+					Object result = getInputClientIdMethod.invoke(component);
+					if(result instanceof String) {
+						clientId4Css = (String) result;
+					}
+				} catch (Exception e) {
+					clientId4Css = clientId;
+				}
 			}
 			if(StringUtils.isNotBlank(clientId4Css)) {
 				UiService.addCssClass(clientId4Css, severityMap.get(severity).getFieldCssClass());

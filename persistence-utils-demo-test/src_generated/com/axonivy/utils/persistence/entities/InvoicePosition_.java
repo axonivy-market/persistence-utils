@@ -1,18 +1,44 @@
 package com.axonivy.utils.persistence.entities;
 
-import javax.annotation.Generated;
+import com.axonivy.utils.persistence.beans.GenericIdEntity_;
+import jakarta.annotation.Generated;
+import jakarta.persistence.metamodel.EntityType;
 import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;
 
-@Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
+/**
+ * Static metamodel for {@link com.axonivy.utils.persistence.entities.InvoicePosition}
+ **/
 @StaticMetamodel(InvoicePosition.class)
-public abstract class InvoicePosition_ extends com.axonivy.utils.persistence.beans.GenericIdEntity_ {
+@Generated("org.hibernate.processor.HibernateProcessor")
+public abstract class InvoicePosition_ extends GenericIdEntity_ {
 
-	public static volatile SingularAttribute<InvoicePosition, String> description;
-	public static volatile SingularAttribute<InvoicePosition, Invoice> invoice;
-
+	
+	/**
+	 * @see #description
+	 **/
 	public static final String DESCRIPTION = "description";
+	
+	/**
+	 * @see #invoice
+	 **/
 	public static final String INVOICE = "invoice";
+
+	
+	/**
+	 * Static metamodel type for {@link com.axonivy.utils.persistence.entities.InvoicePosition}
+	 **/
+	public static volatile EntityType<InvoicePosition> class_;
+	
+	/**
+	 * Static metamodel for attribute {@link com.axonivy.utils.persistence.entities.InvoicePosition#description}
+	 **/
+	public static volatile SingularAttribute<InvoicePosition, String> description;
+	
+	/**
+	 * Static metamodel for attribute {@link com.axonivy.utils.persistence.entities.InvoicePosition#invoice}
+	 **/
+	public static volatile SingularAttribute<InvoicePosition, Invoice> invoice;
 
 }
 

@@ -3,8 +3,8 @@ package com.axonivy.utils.persistence.demo.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.FacesMessage.Severity;
 
 import org.apache.commons.lang.StringUtils;
 import org.primefaces.PrimeFaces;
@@ -32,12 +32,14 @@ public class DepartmentSearchCtrl {
 
 	protected void refreshDepartments() {
 		try {
-			departments = DepartmentDAO.getInstance()
+			List<Department> result = DepartmentDAO.getInstance()
 					.findAll(new QuerySettings<Department>()
 							.withMarkers(AuditableMarker.ALL)
 							.withOrderAttributes(Department_.name));
+			departments = (result != null) ? result : new ArrayList<>();
 		} catch (Exception e) {
 			LOG.error("Error when refreshing Departments", e);
+			departments = new ArrayList<>();
 		}
 	}
 
@@ -52,6 +54,9 @@ public class DepartmentSearchCtrl {
 	 * @return the department
 	 */
 	public Department getDepartment() {
+		if (department == null) {
+			department = new Department();
+		}
 		return department;
 	}
 
@@ -60,7 +65,8 @@ public class DepartmentSearchCtrl {
 			department = new Department();
 		}
 		else {
-			department = DepartmentDAO.getInstance().findById(departmentId);
+			Department found = DepartmentDAO.getInstance().findById(departmentId);
+			department = (found != null) ? found : new Department();
 		}
 	}
 

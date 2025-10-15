@@ -32,18 +32,18 @@ public class Person extends AuditableIdEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Column(length = 32)
-	@IvySizeMax(max = 32, groups = {SaveErrorGroup.class})
-	@IvyNotBlank(groups = {SaveWarnGroup.class})
+	@IvySizeMax(max = 32, groups = {SaveErrorGroup.class}, message = "First name must not exceed 32 characters", payload = {})
+	@IvyNotBlank(groups = {SaveWarnGroup.class}, message = "First name should not be blank", payload = {})
 	private String firstName;
 
 	@Column(length = 64)
-	@IvySizeMax(max = 64, groups = {SaveErrorGroup.class})
-	@IvyNotBlank(groups = {SaveWarnGroup.class})
+	@IvySizeMax(max = 64, groups = {SaveErrorGroup.class}, message = "Last name must not exceed 64 characters", payload = {})
+	@IvyNotBlank(groups = {SaveWarnGroup.class}, message = "Last name should not be blank", payload = {})
 	private String lastName;
 
 	@Column(length = 32)
-	@IvySizeMax(max = 32, groups = {SaveErrorGroup.class})
-	@IvyNotBlank(groups = {SaveErrorGroup.class})
+	@IvySizeMax(max = 32, groups = {SaveErrorGroup.class}, message = "Ivy user name must not exceed 32 characters", payload = {})
+	@IvyNotBlank(groups = {SaveErrorGroup.class}, message = "Ivy user name is required", payload = {})
 	private String ivyUserName;
 
 	private boolean syncToIvy = false;
@@ -53,7 +53,7 @@ public class Person extends AuditableIdEntity {
 	 * Could also use Temporal annotation.
 	 */
 	@Column
-	@IvyNotNull(groups = {SaveWarnGroup.class})
+	@IvyNotNull(groups = {SaveWarnGroup.class}, message = "Birth date should not be null", payload = {})
 	private Date birthdate;
 
 	@Column(length = 32)

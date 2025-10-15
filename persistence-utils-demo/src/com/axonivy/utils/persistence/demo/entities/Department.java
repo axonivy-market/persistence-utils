@@ -20,8 +20,8 @@ public class Department extends AuditableIdEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Column(length = 64)
-	@IvySizeMax(max = 32, clientId="departmentName", groups = {SaveErrorGroup.class})
-	@IvyNotBlank(clientId="departmentName", groups = {SaveErrorGroup.class})
+	@IvySizeMax(max = 32, clientId="departmentName", groups = {SaveErrorGroup.class}, message = "Department name must not exceed 32 characters", payload = {})
+	@IvyNotBlank(clientId="departmentName", groups = {SaveErrorGroup.class}, message = "Department name is required", payload = {})
 	private String name;
 
 	@OneToMany(mappedBy = "department")
