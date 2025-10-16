@@ -73,7 +73,7 @@
         <extensions>true</extensions>
         <configuration>
           <compilerOptions>
-            <compilerOption>-proc:none</compilerOption>
+            <compilerOption>-XprintProcessorInfo</compilerOption>
           </compilerOptions>
         </configuration>
       </plugin>
