@@ -6,9 +6,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.metamodel.Attribute;
-
 import com.axonivy.utils.persistence.beans.AuditableEntity;
 import com.axonivy.utils.persistence.beans.AuditableEntity_;
 import com.axonivy.utils.persistence.beans.Header_;
@@ -16,6 +13,8 @@ import com.axonivy.utils.persistence.dao.markers.AuditableMarker;
 import com.axonivy.utils.persistence.enums.AuditableStatus;
 
 import ch.ivyteam.ivy.environment.Ivy;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.metamodel.Attribute;
 
 /**
  * Dao for auditable entities
@@ -140,7 +139,7 @@ public abstract class AuditableDAO<MetaDataGeneric extends AuditableEntity_, A e
 	}
 
 	/**
-	 * Perfom auditable filtering.
+	 * Perform auditable filtering.
 	 *
 	 * @param all represents a collection of a Java
 	 * @param <A> the type of elements in this collection
@@ -150,7 +149,6 @@ public abstract class AuditableDAO<MetaDataGeneric extends AuditableEntity_, A e
 		return filter(all, DEFAULT_AUDITABLE_STATUS);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected A removeBean(A oldBean) {
 		A bean = oldBean;

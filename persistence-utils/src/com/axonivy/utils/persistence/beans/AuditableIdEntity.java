@@ -1,15 +1,14 @@
 package com.axonivy.utils.persistence.beans;
 
+import org.hibernate.annotations.UuidGenerator;
+
+import ch.ivyteam.ivy.environment.Ivy;
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-
-import org.hibernate.annotations.GenericGenerator;
-
-import ch.ivyteam.ivy.environment.Ivy;
 
 /**
  * Auditable entity class which allows header manipulation
@@ -22,8 +21,8 @@ public abstract class AuditableIdEntity extends AuditableEntity<String> {
 
 	@Id
 	@Column(length = 32, nullable = false)
-	@GeneratedValue(generator="system-uuid")
-	@GenericGenerator(name="system-uuid", strategy = "uuid")
+	@GeneratedValue
+	@UuidGenerator
 	@Access(AccessType.PROPERTY)
 	protected String id;
 
