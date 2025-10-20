@@ -125,7 +125,6 @@ public class WebTestDemoIT {
 		$(By.id("personForm:department")).click();
 		$(By.id("personForm:department_items")).$$(By.tagName("li")).find(text(productionDepartmentName)).click();
 
-
 		clickOnSavePersonButton();
 
 		assertPersonTableShouldHaveText(ivyUserName);
@@ -145,10 +144,6 @@ public class WebTestDemoIT {
 		inputNumber.setValue("1112000");
 
 		selectMaritalStatus("widowed");
-
-		inputBirthdate("02.12.1982");
-		
-		$(By.id("personForm:ivyUserName")).shouldBe(enabled).click();
 
 		clickOnSavePersonButton();
 	}
