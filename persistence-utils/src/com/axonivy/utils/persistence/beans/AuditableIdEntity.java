@@ -20,7 +20,7 @@ public abstract class AuditableIdEntity extends AuditableEntity<String> {
 	private static final long serialVersionUID = 8298601078993069192L;
 
 	@Id
-	@Column(length = 32, nullable = false)
+	@Column(length = 36, nullable = false)
 	@GeneratedValue
 	@UuidGenerator
 	@Access(AccessType.PROPERTY)

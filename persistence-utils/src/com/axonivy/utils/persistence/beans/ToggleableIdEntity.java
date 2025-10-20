@@ -20,7 +20,7 @@ public abstract class ToggleableIdEntity extends ToggleableEntity<String> {
 	private static final long serialVersionUID = -8780884685375253549L;
 
 	@Id
-	@Column(length = 32, nullable = false)
+	@Column(length = 36, nullable = false)
 	@GeneratedValue
 	@UuidGenerator
 	@Access(AccessType.PROPERTY)

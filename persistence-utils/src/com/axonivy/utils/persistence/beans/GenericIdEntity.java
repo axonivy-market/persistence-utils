@@ -20,7 +20,7 @@ public abstract class GenericIdEntity extends VersionableEntity<String> implemen
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(length = 32, nullable = false)
+	@Column(length = 36, nullable = false)
 	@GeneratedValue
 	@UuidGenerator
 	@Access(AccessType.PROPERTY)
