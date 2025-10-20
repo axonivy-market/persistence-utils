@@ -1,16 +1,32 @@
 package com.axonivy.utils.persistence.entities.family;
 
-import javax.annotation.Generated;
+import com.axonivy.utils.persistence.beans.GenericIdEntity_;
+import jakarta.persistence.metamodel.EntityType;
 import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;
 
-@Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
+/**
+ * Static metamodel for {@link com.axonivy.utils.persistence.entities.family.GrandParentTestEntity}
+ **/
 @StaticMetamodel(GrandParentTestEntity.class)
-public abstract class GrandParentTestEntity_ extends com.axonivy.utils.persistence.beans.GenericIdEntity_ {
+public abstract class GrandParentTestEntity_ extends GenericIdEntity_ {
 
-	public static volatile SingularAttribute<GrandParentTestEntity, String> name;
-
+	
+	/**
+	 * @see #name
+	 **/
 	public static final String NAME = "name";
+
+	
+	/**
+	 * Static metamodel type for {@link com.axonivy.utils.persistence.entities.family.GrandParentTestEntity}
+	 **/
+	public static volatile EntityType<GrandParentTestEntity> class_;
+	
+	/**
+	 * Static metamodel for attribute {@link com.axonivy.utils.persistence.entities.family.GrandParentTestEntity#name}
+	 **/
+	public static volatile SingularAttribute<GrandParentTestEntity, String> name;
 
 }
 
