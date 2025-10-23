@@ -33,7 +33,7 @@ import com.codeborne.selenide.SelenideElement;
  * 
  * NOTE: WebTests must follow this name scheme: WebTest*IT
  */
-@IvyWebTest
+@IvyWebTest(headless = false)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class WebTestDemoIT {
 	private static final String DEPARTMENT_NAME_ID = "departmentForm:departmentName";
@@ -193,7 +193,7 @@ public class WebTestDemoIT {
 	private void selectMaritalStatus(String status) {
 		$(By.id("personForm:maritalStatus")).click();
 		$(By.id("personForm:maritalStatus_items")).$$(By.tagName("li")).find(text(status)).click();
-		$(By.id("personForm:maritalStatus")).click();
+		$(By.id("personForm:maritalStatus_items")).shouldBe(hidden);
 	}
 
 	private void clickOnAddButton() {
