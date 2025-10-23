@@ -33,7 +33,7 @@ import com.codeborne.selenide.SelenideElement;
  * 
  * NOTE: WebTests must follow this name scheme: WebTest*IT
  */
-@IvyWebTest(headless = false)
+@IvyWebTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class WebTestDemoIT {
 	private static final String DEPARTMENT_NAME_ID = "departmentForm:departmentName";
