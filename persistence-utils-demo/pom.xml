@@ -19,6 +19,12 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-jpamodelgen</artifactId>
+      <version>7.1.4.Final</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>com.axonivy.ivy.api</groupId>
       <artifactId>ivy-api</artifactId>
     </dependency>
@@ -47,7 +53,7 @@
         <extensions>true</extensions>
         <configuration>
           <compilerOptions>
-            <compilerOption>-proc:none</compilerOption>
+            <compilerOption>-XprintProcessorInfo</compilerOption>
           </compilerOptions>
         </configuration>
       </plugin>

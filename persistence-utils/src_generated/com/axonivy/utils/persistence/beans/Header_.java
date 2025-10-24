@@ -1,41 +1,92 @@
 package com.axonivy.utils.persistence.beans;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.Date;
-import javax.annotation.Generated;
+import jakarta.persistence.metamodel.EmbeddableType;
 import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;
+import java.time.Instant;
 
-@Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
+/**
+ * Static metamodel for {@link com.axonivy.utils.persistence.beans.Header}
+ **/
 @StaticMetamodel(Header.class)
 public abstract class Header_ {
 
-	public static volatile SingularAttribute<Header, String> createdByUserName;
-	public static volatile SingularAttribute<Header, Instant> createdDate;
-	public static volatile SingularAttribute<Header, String> modifiedByUserName;
-	public static volatile SingularAttribute<Header, LocalDateTime> createdDateAsLocalDateTime;
-	public static volatile SingularAttribute<Header, Date> modifiedDateAsDate;
-	public static volatile SingularAttribute<Header, LocalDateTime> modifiedDateAsLocalDateTime;
-	public static volatile SingularAttribute<Header, Date> flaggedDeletedDateAsDate;
-	public static volatile SingularAttribute<Header, String> flaggedDeletedByUserName;
-	public static volatile SingularAttribute<Header, Instant> modifiedDate;
-	public static volatile SingularAttribute<Header, Instant> flaggedDeletedDate;
-	public static volatile SingularAttribute<Header, LocalDateTime> flaggedDeletedDateAsLocalDateTime;
-	public static volatile SingularAttribute<Header, Date> createdDateAsDate;
-
-	public static final String CREATED_BY_USER_NAME = "createdByUserName";
+	
+	/**
+	 * @see #HEADERINITIALIZER
+	 **/
+	public static final String _HEADERINITIALIZER = "HEADERINITIALIZER";
+	
+	/**
+	 * @see #createdDate
+	 **/
 	public static final String CREATED_DATE = "createdDate";
-	public static final String MODIFIED_BY_USER_NAME = "modifiedByUserName";
-	public static final String CREATED_DATE_AS_LOCAL_DATE_TIME = "createdDateAsLocalDateTime";
-	public static final String MODIFIED_DATE_AS_DATE = "modifiedDateAsDate";
-	public static final String MODIFIED_DATE_AS_LOCAL_DATE_TIME = "modifiedDateAsLocalDateTime";
-	public static final String FLAGGED_DELETED_DATE_AS_DATE = "flaggedDeletedDateAsDate";
-	public static final String FLAGGED_DELETED_BY_USER_NAME = "flaggedDeletedByUserName";
+	
+	/**
+	 * @see #modifiedDate
+	 **/
 	public static final String MODIFIED_DATE = "modifiedDate";
+	
+	/**
+	 * @see #flaggedDeletedDate
+	 **/
 	public static final String FLAGGED_DELETED_DATE = "flaggedDeletedDate";
-	public static final String FLAGGED_DELETED_DATE_AS_LOCAL_DATE_TIME = "flaggedDeletedDateAsLocalDateTime";
-	public static final String CREATED_DATE_AS_DATE = "createdDateAsDate";
+	
+	/**
+	 * @see #createdByUserName
+	 **/
+	public static final String CREATED_BY_USER_NAME = "createdByUserName";
+	
+	/**
+	 * @see #modifiedByUserName
+	 **/
+	public static final String MODIFIED_BY_USER_NAME = "modifiedByUserName";
+	
+	/**
+	 * @see #flaggedDeletedByUserName
+	 **/
+	public static final String FLAGGED_DELETED_BY_USER_NAME = "flaggedDeletedByUserName";
+
+	
+	/**
+	 * Static metamodel type for {@link com.axonivy.utils.persistence.beans.Header}
+	 **/
+	public static volatile EmbeddableType<Header> class_;
+	
+	/**
+	 * Static metamodel for attribute {@link com.axonivy.utils.persistence.beans.Header#HEADERINITIALIZER}
+	 **/
+	public static volatile SingularAttribute<Header, Integer> HEADERINITIALIZER;
+	
+	/**
+	 * Static metamodel for attribute {@link com.axonivy.utils.persistence.beans.Header#createdDate}
+	 **/
+	public static volatile SingularAttribute<Header, Instant> createdDate;
+	
+	/**
+	 * Static metamodel for attribute {@link com.axonivy.utils.persistence.beans.Header#modifiedDate}
+	 **/
+	public static volatile SingularAttribute<Header, Instant> modifiedDate;
+	
+	/**
+	 * Static metamodel for attribute {@link com.axonivy.utils.persistence.beans.Header#flaggedDeletedDate}
+	 **/
+	public static volatile SingularAttribute<Header, Instant> flaggedDeletedDate;
+	
+	/**
+	 * Static metamodel for attribute {@link com.axonivy.utils.persistence.beans.Header#createdByUserName}
+	 **/
+	public static volatile SingularAttribute<Header, String> createdByUserName;
+	
+	/**
+	 * Static metamodel for attribute {@link com.axonivy.utils.persistence.beans.Header#modifiedByUserName}
+	 **/
+	public static volatile SingularAttribute<Header, String> modifiedByUserName;
+	
+	/**
+	 * Static metamodel for attribute {@link com.axonivy.utils.persistence.beans.Header#flaggedDeletedByUserName}
+	 **/
+	public static volatile SingularAttribute<Header, String> flaggedDeletedByUserName;
 
 }
 

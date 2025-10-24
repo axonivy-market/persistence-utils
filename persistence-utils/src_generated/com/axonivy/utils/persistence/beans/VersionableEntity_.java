@@ -1,16 +1,31 @@
 package com.axonivy.utils.persistence.beans;
 
-import javax.annotation.Generated;
+import jakarta.persistence.metamodel.MappedSuperclassType;
 import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.persistence.metamodel.StaticMetamodel;
 
-@Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
+/**
+ * Static metamodel for {@link com.axonivy.utils.persistence.beans.VersionableEntity}
+ **/
 @StaticMetamodel(VersionableEntity.class)
-public abstract class VersionableEntity_ extends com.axonivy.utils.persistence.beans.GenericEntity_ {
+public abstract class VersionableEntity_ extends GenericEntity_ {
 
-	public static volatile SingularAttribute<VersionableEntity, Integer> version;
-
+	
+	/**
+	 * @see #version
+	 **/
 	public static final String VERSION = "version";
+
+	
+	/**
+	 * Static metamodel type for {@link com.axonivy.utils.persistence.beans.VersionableEntity}
+	 **/
+	public static volatile MappedSuperclassType<VersionableEntity> class_;
+	
+	/**
+	 * Static metamodel for attribute {@link com.axonivy.utils.persistence.beans.VersionableEntity#version}
+	 **/
+	public static volatile SingularAttribute<VersionableEntity, Integer> version;
 
 }
 

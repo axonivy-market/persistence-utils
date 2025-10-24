@@ -1,15 +1,14 @@
 package com.axonivy.utils.persistence.beans;
 
+import org.hibernate.annotations.UuidGenerator;
+
+import ch.ivyteam.ivy.environment.Ivy;
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-
-import org.hibernate.annotations.GenericGenerator;
-
-import ch.ivyteam.ivy.environment.Ivy;
 
 /**
  * Generic entity used as a base for all persistent objects with a technical key.
@@ -21,9 +20,9 @@ public abstract class GenericIdEntity extends VersionableEntity<String> implemen
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(length = 32, nullable = false)
-	@GeneratedValue(generator="system-uuid")
-	@GenericGenerator(name="system-uuid", strategy = "uuid")
+	@Column(length = 36, nullable = false)
+	@GeneratedValue
+	@UuidGenerator
 	@Access(AccessType.PROPERTY)
 	protected String id;
 

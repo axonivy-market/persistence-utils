@@ -16,7 +16,7 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-jpamodelgen</artifactId>
-      <version>7.0.3.Final</version>
+      <version>7.1.4.Final</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -49,7 +49,7 @@
         <extensions>true</extensions>
         <configuration>
           <compilerOptions>
-            <compilerOption>-proc:none</compilerOption>
+            <compilerOption>-XprintProcessorInfo</compilerOption>
           </compilerOptions>
         </configuration>
       </plugin>

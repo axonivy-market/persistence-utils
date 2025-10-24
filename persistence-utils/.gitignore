@@ -10,4 +10,5 @@ hs_err_pid*
 
 # ivy
 src_dataClasses/
+src_generated/
 src_wsproc/

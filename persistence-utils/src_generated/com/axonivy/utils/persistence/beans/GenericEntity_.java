@@ -1,13 +1,20 @@
 package com.axonivy.utils.persistence.beans;
 
-import javax.annotation.Generated;
+import jakarta.persistence.metamodel.MappedSuperclassType;
 import jakarta.persistence.metamodel.StaticMetamodel;
 
-@Generated(value = "org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor")
+/**
+ * Static metamodel for {@link com.axonivy.utils.persistence.beans.GenericEntity}
+ **/
 @StaticMetamodel(GenericEntity.class)
 public abstract class GenericEntity_ {
 
 
+	
+	/**
+	 * Static metamodel type for {@link com.axonivy.utils.persistence.beans.GenericEntity}
+	 **/
+	public static volatile MappedSuperclassType<GenericEntity> class_;
 
 }
 

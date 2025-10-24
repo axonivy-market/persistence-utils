@@ -33,9 +33,11 @@ import com.codeborne.selenide.SelenideElement;
  * 
  * NOTE: WebTests must follow this name scheme: WebTest*IT
  */
-@IvyWebTest(headless = true)
+@IvyWebTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class WebTestDemoIT {
+	private static final String DEPARTMENT_NAME_ID = "departmentForm:departmentName";
+	private static final String DEPARTMENT_TABLE_ID = "mainForm:departmentTable";
 	private static String marketingDepartmentName;
 	private static String productionDepartmentName;
 	private static String firstName;
@@ -54,14 +56,13 @@ public class WebTestDemoIT {
 		Configuration.timeout = 30000;
 	}
 
-
 	@Test
 	@Order(1)
 	public void testAddNewDepartment(WebAppFixture fixture) {
 		startLoginAsAdmin(fixture); //re-login
 		addNewDepartment(marketingDepartmentName);
 
-		$(By.id("mainForm:departmentTable_data")).shouldHave(text(marketingDepartmentName));
+		assertDepartmentTableShouldHaveData(marketingDepartmentName);
 	}
 
 	@Test
@@ -69,19 +70,19 @@ public class WebTestDemoIT {
 	public void testEditDepartment() {
 		startProcessDepartmentSearch();
 
-		$(By.id("mainForm:departmentTable_data")).shouldHave(text(marketingDepartmentName));
+		assertDepartmentTableShouldHaveData(marketingDepartmentName);
 
-		int index = indexOf("mainForm:departmentTable", marketingDepartmentName);
-		$(By.id("mainForm:departmentTable:" + index + ":editButton")).shouldBe(enabled).click();
+		int index = indexOf(DEPARTMENT_TABLE_ID, marketingDepartmentName);
+		$(By.id(DEPARTMENT_TABLE_ID + ":" + index + ":editButton")).shouldBe(enabled).click();
 
-		SelenideElement depNameField = $(By.id("departmentForm:departmentName"));
+		SelenideElement depNameField = $(By.id(DEPARTMENT_NAME_ID));
 		depNameField.shouldBe(enabled).click();
 		depNameField.sendKeys(Keys.END, "2");
 		marketingDepartmentName += "2";
 
-		$(By.id("departmentForm:saveButton")).shouldBe(enabled).click();
+		clickOnSaveDepartmentButton();
 
-		$(By.id("mainForm:departmentTable_data")).shouldHave(text(marketingDepartmentName));
+		assertDepartmentTableShouldHaveData(marketingDepartmentName);
 	}
 
 	@Test
@@ -89,14 +90,15 @@ public class WebTestDemoIT {
 	public void testDeleteDepartment() {
 		startProcessDepartmentSearch();
 
-		$(By.id("mainForm:departmentTable_data")).shouldHave(text(marketingDepartmentName));
+		assertDepartmentTableShouldHaveData(marketingDepartmentName);
 
-		int index = indexOf("mainForm:departmentTable", marketingDepartmentName);
-		$(By.id("mainForm:departmentTable:" + index + ":deleteButton")).shouldBe(enabled).click();
+		int index = indexOf(DEPARTMENT_TABLE_ID, marketingDepartmentName);
+		var deleteDepartmentButtonId = "mainForm:departmentTable:" + index + ":deleteButton";
+		$(By.id(deleteDepartmentButtonId)).shouldBe(enabled).click();
 
-		$(By.id("okButton")).shouldBe(enabled).click();
+		clickOnOkButtonOfDialog();
 
-		$(By.id("mainForm:departmentTable:" + index + ":deleteButton")).shouldBe(hidden);
+		$(By.id(deleteDepartmentButtonId)).shouldBe(hidden);
 	}
 
 	@Test
@@ -106,7 +108,7 @@ public class WebTestDemoIT {
 
 		startProcessPersonSearch();
 
-		$(By.id("mainForm:addButton")).shouldBe(enabled).click();
+		clickOnAddButton();
 
 		$(By.id("personForm:ivyUserName")).shouldBe(enabled).sendKeys(ivyUserName);
 
@@ -114,20 +116,18 @@ public class WebTestDemoIT {
 
 		$(By.id("personForm:lastName")).shouldBe(enabled).sendKeys(lastName);
 
-		$(By.id("personForm:birthdate_input")).shouldBe(enabled).sendKeys("01.11.1981", Keys.TAB);
+		inputBirthdate("01.11.1981");
 
-		$(By.id("personForm:maritalStatus")).click();
-		$(By.id("personForm:maritalStatus_items")).$$(By.tagName("li")).find(text("married")).click();
+		selectMaritalStatus("married");
 
 		$(By.id("personForm:salary_input")).shouldBe(enabled).sendKeys("1111900");
 
 		$(By.id("personForm:department")).click();
 		$(By.id("personForm:department_items")).$$(By.tagName("li")).find(text(productionDepartmentName)).click();
 
+		clickOnSavePersonButton();
 
-		$(By.id("personForm:saveButton")).shouldBe(enabled).click();
-
-		$(By.id("mainForm:personTable_data")).shouldHave(text(ivyUserName));
+		assertPersonTableShouldHaveText(ivyUserName);
 	}
 
 	@Test
@@ -135,7 +135,7 @@ public class WebTestDemoIT {
 	public void testEditPerson() {
 		startProcessPersonSearch();
 
-		$(By.id("mainForm:personTable_data")).shouldHave(text(ivyUserName));
+		assertPersonTableShouldHaveText(ivyUserName);
 
 		int index = indexOf("mainForm:personTable", ivyUserName);
 		$(By.id("mainForm:personTable:" + index + ":editButton")).shouldBe(enabled).click();
@@ -143,14 +143,9 @@ public class WebTestDemoIT {
 		InputNumber inputNumber = PrimeUi.inputNumber(By.id("personForm:salary"));
 		inputNumber.setValue("1112000");
 
-		$(By.id("personForm:maritalStatus")).click();
-		$(By.id("personForm:maritalStatus_items")).$$(By.tagName("li")).find(text("widowed")).click();
-		$(By.id("personForm:maritalStatus")).click();
+		selectMaritalStatus("widowed");
 
-		$(By.id("personForm:birthdate_input")).shouldBe(enabled).clear();
-		$(By.id("personForm:birthdate_input")).shouldBe(enabled).sendKeys("02.12.1982", Keys.TAB);
-
-		$(By.id("personForm:saveButton")).shouldBe(enabled).click();
+		clickOnSavePersonButton();
 	}
 
 	@Test
@@ -158,23 +153,58 @@ public class WebTestDemoIT {
 	public void testDeletePerson() {
 		startProcessPersonSearch();
 
-		$(By.id("mainForm:personTable_data")).shouldHave(text(ivyUserName));
+		assertPersonTableShouldHaveText(ivyUserName);
 
 		int index = indexOf("mainForm:personTable", ivyUserName);
 		$(By.id("mainForm:personTable:" + index + ":deleteButton")).shouldBe(enabled).click();
 
-		$(By.id("okButton")).shouldBe(enabled).click();
+		clickOnOkButtonOfDialog();
 
 		$(By.id("mainForm:personTable_data")).shouldNotHave(text(ivyUserName));
+	}
+
+	private void assertPersonTableShouldHaveText(String verifyText) {
+		$(By.id("mainForm:personTable_data")).shouldHave(text(verifyText));
+	}
+
+	private void clickOnOkButtonOfDialog() {
+		$(By.id("okButton")).shouldBe(enabled).click();
+	}
+
+	private void assertDepartmentTableShouldHaveData(String verifyText) {
+		$(By.id("mainForm:departmentTable_data")).shouldHave(text(verifyText));
 	}
 
 	private void addNewDepartment(String departmentName) {
 		startProcessDepartmentSearch();
 
+		clickOnAddButton();
+
+		$(By.id(DEPARTMENT_NAME_ID)).shouldBe(enabled).sendKeys(departmentName);
+
+		clickOnSaveDepartmentButton();
+	}
+
+	private void inputBirthdate(String dateAsString) {
+		$(By.id("personForm:birthdate_input")).shouldBe(enabled).clear();
+		$(By.id("personForm:birthdate_input")).shouldBe(enabled).sendKeys(dateAsString, Keys.TAB);
+	}
+
+	private void selectMaritalStatus(String status) {
+		$(By.id("personForm:maritalStatus")).click();
+		$(By.id("personForm:maritalStatus_items")).$$(By.tagName("li")).find(text(status)).click();
+		$(By.id("personForm:maritalStatus_items")).shouldBe(hidden);
+	}
+
+	private void clickOnAddButton() {
 		$(By.id("mainForm:addButton")).shouldBe(enabled).click();
+	}
 
-		$(By.id("departmentForm:departmentName")).shouldBe(enabled).sendKeys(departmentName);
+	private void clickOnSavePersonButton() {
+		$(By.id("personForm:saveButton")).shouldBe(enabled).click();
+	}
 
+	private void clickOnSaveDepartmentButton() {
 		$(By.id("departmentForm:saveButton")).shouldBe(enabled).click();
 	}
 
@@ -189,7 +219,7 @@ public class WebTestDemoIT {
 	private static void startLoginAsAdmin(WebAppFixture fixture) {
 		fixture.login("jpa_admin", "jpa_admin");
 
-		open(EngineUrl.base() + "dev-workflow-ui/faces/profile.xhtml");
+		open(EngineUrl.base() + "/dev-workflow-ui/faces/profile.xhtml");
 		SelenideElement lang = $(By.name("profileForm:contentLanguage_editableInput")).shouldBe(enabled);
 		lang.clear();
 		lang.sendKeys("en");
