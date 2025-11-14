@@ -21,8 +21,8 @@
       <type>iar</type>
     </dependency>
     <dependency>
-      <groupId>com.axonivy.ivy.test</groupId>
-      <artifactId>unit-tester</artifactId>
+      <groupId>com.axonivy.ivy.api.test</groupId>
+      <artifactId>ivy-test-api</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -34,7 +34,6 @@
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
-      <version>2.7.4</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -46,6 +45,10 @@
     <dependency>
       <groupId>com.axonivy.ivy.api</groupId>
       <artifactId>ivy-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-compress</artifactId>
     </dependency>
   </dependencies>
   <repositories>
