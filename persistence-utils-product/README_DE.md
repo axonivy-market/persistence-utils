@@ -1,278 +1,287 @@
-# Beharrlichkeit Utils
-#Axon Efeus JPA Beharrlichkeit Lib Nutzen hilft du beschleunigst Arbeitsgang
-Automatisierung Initiativen hereinbringen mal eine Abstraktion DAO Auflage.
-Dieser Nutzen:
-- Erlaubt stabile und vielschichtige Datenbank Zugang gegründet weiter den [JPA
-  2.2 tariflich](https://www.oracle.com/java/technologies/persistence-jsp.html).
-- Hilft du schaffst DAO Klassen für eure Entitäten mit direkt Zugang zu
-  Datenbanken benutzend tariflich APIs
-- Vereinfacht die Kreation von typisch Entität Klassen
-- Unterstützt du mit eine Demo Ausführung
-- Zeigt Beispiel Gebrauch von manche optionale verwandte Technologien
+# Persistence-Utilities
+Das JPA Persistence Lib-Dienstprogramm von Axon Ivy hilft Ihnen dabei,
+Initiativen zur Prozessautomatisierung durch die Einführung einer
+Abstraktions-DAO-Schicht zu beschleunigen. Dieses Dienstprogramm:
+- Ermöglicht einen robusten und komplexen Datenbankzugriff auf Basis des [JPA
+  2.2-Standards](https://www.oracle.com/java/technologies/persistence-jsp.html).
+- Hilft Ihnen beim Erstellen von DAO-Klassen für Ihre Entitäten mit direktem
+  Zugriff auf Datenbanken unter Verwendung von Standard-APIs.
+- Vereinfacht die Erstellung typischer Entitätsklassen.
+- Unterstützt Sie mit einer Demo-Implementierung.
+- Zeigt Anwendungsbeispiele für einige optionale verwandte Technologien.
 
 ## Projekte
-- *Beharrlichkeit-utils-Demo* das Demo Projekt
-- *Beharrlichkeit-utils-Demo-Tool* Tool tp generiert Klausur #Daten für das Demo
-  Projekt
-- *Beharrlichkeit-utils-Klausur* JUnit Klausuren für die Beharrlichkeit
-  Bibliothek und das Demo Projekt
-- *Beharrlichkeit-utils-Demo* JUnit Web Klausur Demo
+- *persistence-utils-demo* das Demo-Projekt
+- *persistence-utils-demo-tool* Tool zum Generieren von Testdaten für das
+  Demo-Projekt
+- *persistence-utils-test* JUnit-Tests für die Persistenz-Bibliothek und das
+  Demo-Projekt
+- *persistence-utils-demo* JUnit-Webtest-Demo
 
-## #Befreien Beachtet
+## Versionshinweise
 
-**Für neuer Versionen, bitte sehen die changelog in den #Axon Efeu Vermarktet!**
+***Informationen zu neueren Versionen finden Sie im Changelog im Axon Ivy
+Market!***
 
 ### 12.0.1
 *Änderungen*
 
-- [Gib heraus 82](https://github.com/axonivy-market/persistence-utils/issues/82)
-  Bring an getExpression von ganz Objekte
+- [Problem 82](https://github.com/axonivy-market/persistence-utils/issues/82)
+  Fix getExpression ganzer Objekte
 
-### 11.3.2-SCHNAPPSCHUSS
+### 11.3.2-SNAPSHOT
 *Änderungen*
 
-- [APS-232](https://1ivy.atlassian.net/browse/APS-232) Bring an GitHub
-  Sachverhalt 73 (SearchFilter #absteigend Sorte)
+- [APS-232](https://1ivy.atlassian.net/browse/APS-232) GitHub-Problem 73 beheben
+  (SearchFilter absteigende Sortierung)
 
 ### 10.0.8
 *Änderungen*
 
-- [APS-224](https://1ivy.atlassian.net/browse/APS-224) Klemme bedienen von leer
-  Listen oder nichtige Werte herein enum SearchFilters
-- [APS-226](https://1ivy.atlassian.net/browse/APS-226) Klemme holen von extern
-  Datenbank zu Methode vereinbar mit Efeu 10 und Efeu 11
+- [APS-224](https://1ivy.atlassian.net/browse/APS-224) Behandlung von leeren
+  Listen oder Nullwerten in enum SearchFilters korrigiert
+- [APS-226](https://1ivy.atlassian.net/browse/APS-226) Das Abrufen externer
+  Datenbanken wurde an die Methoden Ivy 10 und Ivy 11 angepasst.
 
 ### 10.0.7
 *Änderungen*
 
-- Zugefügt fehlen Dokumentation von 10.0.5
-- Fest ordnen von CMS zu Schauplatz bewussten Fall empfindungslos
+- Fehlende Dokumentation zu 10.0.5 hinzugefügt.
+- Sortierung des CMS nach Sprachumgebung ohne Berücksichtigung der
+  Groß-/Kleinschreibung korrigiert
 
-*Unverträglichkeiten*
-- Note: Diese Note war zugefügt zu 10.0.5: `HasCmsName` Ist jetzt Teil von der
-  Beharrlichkeit utils, ob du hast eure eigenes, du brauchst zu austauschen oder
-  erben.
+*Inkompatibilitäten*
+- Hinweis: Dieser Hinweis wurde zu 10.0.5 hinzugefügt: `HasCmsName` ist jetzt
+  Teil der Persistenz-Utilities. Wenn Sie eigene haben, müssen Sie diese
+  ersetzen oder vererben.
 
 ### 10.0.6
 *Änderungen*
 
-- Feste Web Klausur
+- Fester Webtest
 
 ### 10.0.5
 *Änderungen*
 
-- [APS-206](https://1ivy.atlassian.net/browse/APS-206) Mach forceSingleResult
-  More General
-- [APS-220](https://1ivy.atlassian.net/browse/APS-220) Fügen zu Annehmlichkeit
-  Aufgaben für Suche Filter Ausführung
-  - Neue Aufgaben herein GenericDAO zu Hilfe implementierend SearchFilters
-    zügelnd Aufzählungen mit CMS Namen.
-  - Zugang zu zurzeit #errichtet Suche Anfrage Weile Satzaussagen sind gebaut.
-- [APS-222](https://1ivy.atlassian.net/browse/APS-222) Update #Loggen und DB
-  #grafische Benutzeroberfläche herein Junit Klausuren
+- [APS-206](https://1ivy.atlassian.net/browse/APS-206) Make forceSingleResult
+  allgemeiner gestalten
+- [APS-220](https://1ivy.atlassian.net/browse/APS-220) Komfortfunktionen für die
+  Implementierung von Suchfiltern hinzufügen
+  - Neue Funktionen in GenericDAO zur Unterstützung der Implementierung von
+    Suchfiltern, die Aufzählungen mit CMS-Namen enthalten.
+  - Zugriff auf aktuell erstellte Suchanfragen, während Prädikate erstellt
+    werden.
+- [APS-222](https://1ivy.atlassian.net/browse/APS-222) Aktualisierung der
+  Protokollierung und der DB-GUI in Junit-Tests
 
-*Unverträglichkeiten*
-- `FilterPredicate.getSearchFilter` War umbenannt zu
+*Inkompatibilitäten*
+- `FilterPredicate.getSearchFilter` wurde umbenannt in
   `FilterPredicate.getSearchEnum`
-- `FilterOrder.getSearchFilter` War umbenannt zu `FilterOrder.getSearchEnum`
-- `HasCmsName` Ist jetzt Teil von der Beharrlichkeit utils, ob du hast eure
-  eigenes, du brauchst zu austauschen oder erben.
+- `FilterOrder.getSearchFilter` wurde umbenannt in `FilterOrder.getSearchEnum`
+- `HasCmsName` ist jetzt Teil der Persistenz-Utilities. Wenn Sie Ihre eigenen
+  haben, müssen Sie diese ersetzen oder übernehmen.
 
 ### 10.0.4
 *Änderungen*
-- [APS-156](https://1ivy.atlassian.net/browse/APS-156) Klemme bedienen herein
-  von Session CriteriaQueryContext
-- [APS-86](https://1ivy.atlassian.net/browse/APS-86) Benutz Augenblick für
-  Auditable Entitäten schaffen/Update/streicht
-- [APS-87](https://1ivy.atlassian.net/browse/APS-87) Benennen um isEnabled
-  herein ToggleableEntity
-- [APS-158](https://1ivy.atlassian.net/browse/APS-158) Refactor Typ hirachy für
-  Auditable- und ToggleableEntity
+- [APS-156](https://1ivy.atlassian.net/browse/APS-156) Behandlung von Sitzungen
+  in CriteriaQueryContext korrigieren
+- [APS-86](https://1ivy.atlassian.net/browse/APS-86) Verwenden Sie Instant für
+  überprüfbare Entitäten erstellen/aktualisieren/löschen
+- [APS-87](https://1ivy.atlassian.net/browse/APS-87) Umbenennen von „isEnabled”
+  in „ToggleableEntity”
+- [APS-158](https://1ivy.atlassian.net/browse/APS-158) Refaktorisierung der
+  Typhierarchie für Auditable- und ToggleableEntity
 
-*Unverträglichkeiten*
+*Inkompatibilitäten*
 
-:Ausruf::Ausruf: **NOTE: Dieses Update zügelt allzugroße Änderungen zu Spalte
-Namen und datatypes sowie refactoring von Entität und DAO Struktur.** **Bitte
-übergeben zu der Liste von Änderungen erwähnten hier und in den #Anraten**
-:Ausruf::Ausruf:
+:exclamation::exclamation: **HINWEIS: Dieses Update enthält wesentliche
+Änderungen an Spaltennamen und Datentypen sowie eine Umgestaltung der Entitäts-
+und DAO-Struktur.** **Bitte beachten Sie die hier und in den Empfehlungen
+aufgeführten Änderungen**:exclamation::exclamation:
 
-- Datatype Von `AuditableEntity`s `Kopfball` Attribute für schaffen/verbessern
-  und streichen #wo Datum gewechselt zu `Augenblick`
-- Attribut `expiryDate` von `ToggleableEntity` hat gewesen umbenannt zu
-  **expiry** und sein datatype #abgeändert zu `Augenblick`
-- Attribut `ToggleableEntity`s **isEnabled** hat gewesen umbenannt zu
-  **aktiviert** und sein datatype #abgeändert zu `aussagenlogisch`
-- `AuditableEntity` Und `ToggleableEntity` sind jetzt #ableiten von
-  `VersionableEntity` statt `GenericIdEntity`
-- Zu versehen eine Version von den #abgeändert Entitäten mit ein #vordefiniert
-  `Schnur` id die neuen Entitäten `AuditableIdEntity` und `ToggleableIdEntity`
-  und #zusammenpassend DAOs haben gewesen hereingebracht
+- Datentyp von „ `” AuditableEntity`s `Header` Attribute für
+  Erstellungs-/Aktualisierungs- und Löschdatum wurden geändert in `Instant`
+- Attribut `expiryDate` von `ToggleableEntity` wurde umbenannt in **expiry** und
+  sein Datentyp wurde geändert in `Instant`
+- Attribut `ToggleableEntity`s **isEnabled** wurde umbenannt in **enabled** und
+  sein Datentyp wurde geändert in `boolean`
+- `AuditableEntity` und `ToggleableEntity` werden nun von `abgeleitet.
+  VersionableEntity` anstelle von `GenericIdEntity`
+- `` Um eine Version der geänderten Entitäten mit einer vordefinierten
+  Zeichenfolge „ `“ bereitzustellen, wurden die neuen Entitäten „ `“, „` “,
+  „AuditableIdEntity“, „ “ und „ `“ sowie die entsprechenden DAOs eingeführt.
 
-*#Anraten*
-- Benenn um das expiry Spalte zu **expiry** #außer angepasst hast du die Spalte
-  Namen anyways. #Z.B. #ÄNDERN TISCH **yourtable** BENENNT UM SPALTE
-  **expiryDate** ZU **expiry**.
-- Benenn um das isEnabled Spalte zu **aktiviert** #außer angepasst hast du die
-  Spalte Namen anyways. #Z.B. #ÄNDERN TISCH **yourtable** BENENNT UM SPALTE
-  **isEnabled** ZU **aktiviert**.
-- Herstellung sicher dort ist nein *NULL* Werte für die **aktiviert** Spalte in
-  eurer Datenbank. Die Spalte war definiert da nicht nullable, so einziges
-  Handbuch Änderungen in der Datenbank sollte haben zeitigen *NULL* Werte
-- Nutzung `bekommt/gesetzt...AsDate` Oder `#bekommen/gesetzt...AsLocalDateTime`
-  Methoden ob du brauchst zu bekommen #ausgebaut datatypes von
-  schaffen/modifizieren/streichen/expiry `Augenblick`s
-- Änderung Gebrauch von `AuditableEntity` und `ToggleableEntity` zu
-  `AuditableIdEntity` und `ToggleableIdEntity`. Nutzung #zusammenpassend DAOs
+*Empfehlungen*
+- Benennen Sie die Spalte „expiry” in „ **expiry” um,**, es sei denn, Sie haben
+  die Spaltennamen ohnehin angepasst. Beispiel: ALTER TABLE **yourtable** RENAME
+  COLUMN **expiryDate** TO **expiry**.
+- Benennen Sie die Spalte „isEnabled” in „ **” um, und die Spalte „enabled” in
+  „** ”, es sei denn, Sie haben die Spaltennamen ohnehin angepasst. Beispiel:
+  ALTER TABLE **yourtable** RENAME COLUMN **isEnabled** TO **enabled**.
+- * Stellen Sie sicher, dass es keine NULL-Werte ( *) für die Spalte „ **” (** )
+  in Ihrer Datenbank gibt, die für „ ” ( ) aktiviert ist. Die Spalte wurde als
+  nicht nullfähig definiert, sodass nur manuelle Änderungen in der Datenbank zu
+  NULL-Werten ( *) für „* ” ( ) geführt haben sollten.
+- Verwenden Sie die Methoden „ `get/set...AsDate“` oder „
+  `get/set...AsLocalDateTime“`, wenn Sie konvertierte Datentypen von
+  „create/modify/delete/expiry“ `Instant`s abrufen müssen.
+- Ändern Sie die Verwendung von `AuditableEntity` und `ToggleableEntity` in
+  `AuditableIdEntity` und `ToggleableIdEntity`. Verwenden Sie passende DAOs.
 
 ### 10.0.3
 *Änderungen*
-- Zugefügt Quellen zu Experten Werkzeug
+- Quellen zu Maven-Artefakt hinzugefügt
 
-*Unverträglichkeiten*
-- *#Nichts*
+*Inkompatibilitäten*
+- *Keine*
 
-*#Anraten*
-- *#Nichts*
+*Empfehlungen*
+- *Keine*
 
 ### 10.0.2
 *Änderungen*
-- [APS-148](https://1ivy.atlassian.net/browse/APS-148) Ausnahme während
-  speichern ist #schweigend schluckte
+- [APS-148](https://1ivy.atlassian.net/browse/APS-148) Ausnahme beim Speichern
+  wird stillschweigend ignoriert
 
-*Unverträglichkeiten*
-- *#Nichts*
+*Inkompatibilitäten*
+- *Keine*
 
-*#Anraten*
-- **forceSingleResult()** War begeben zu höher Klasse. #Im Fall implementiertest
-  du eure eigene Version, Kontrolle ob kannst du entfernen ihm
-- Einige Aufgaben herein **AbstractDAO** welcher kehrte zurück den Typ
-  **Objekt** will jetzt zurückkehren ebensolchen gleichen Typ da #hereinkommen.
-  Ob du benutztest ihnen und hatten Typisierungen, sie dürfen deswegen sein
-  nicht mehr nötig
+*Empfehlungen*
+- **forceSingleResult()** wurde in eine höhere Klasse verschoben. Falls Sie Ihre
+  eigene Version implementiert haben, prüfen Sie, ob Sie diese entfernen können.
+- Einige Funktionen in „ **“, „AbstractDAO“ und „** “, die den Typ „ **“
+  zurückgaben, „Object“ und „** “, geben nun denselben Typ zurück, der
+  eingegeben wurde. Wenn Sie diese Funktionen verwendet und Typumwandlungen
+  vorgenommen haben, sind diese möglicherweise nicht mehr erforderlich.
 
 ### 10.0.0
 *Änderungen*
-- Die Beharrlichkeit Bibliothek war begeben zu dem Marktplatz und will folgen
-  die Version Nummerierung #mauscheln dort
-- Das JPA Demo projiziert herein jetzt direkt eingeschlossen in der
-  Beharrlichkeit utils Marktplatz Komponente
+- Die Persistenz-Bibliothek wurde in den Marktplatz verschoben und folgt dort
+  dem Versionsnummerierungsschema.
+- Das JPA-Demoprojekt ist nun direkt in der
+  Persistence-Utilities-Marketplace-Komponente enthalten.
 
-*Unverträglichkeiten*
-- Die Kolonie zu die Beharrlichkeit Bibliothek muss sein entfernt von projiziert
-  und tauschte aus mal die Marktplatz Komponente benutzen
+*Inkompatibilitäten*
+- Die Abhängigkeit von der Persistenz-Bibliothek muss aus den Projekten entfernt
+  und durch die Verwendung der Marktplatzkomponente ersetzt werden.
 
 ### 0.10.0
 *Änderungen*
-- [APS-84](https://1ivy.atlassian.net/browse/APS-84) forceSingleResult() sollten
-  arbeiten für irgendwelchen Typ
-- [APS-91](https://1ivy.atlassian.net/browse/APS-91) Mach
-  AbstractDAO.unproxyAndInitialize() typesafe
-- [APS-108](https://1ivy.atlassian.net/browse/APS-108) #Zufügen gestrichen
-  Wurf() herein GenericDAO.Speicher() nochmal
+- [APS-84](https://1ivy.atlassian.net/browse/APS-84) forceSingleResult() sollte
+  für jeden Typ funktionieren.
+- [APS-91](https://1ivy.atlassian.net/browse/APS-91)
+  AbstractDAO.unproxyAndInitialize() typsicher machen
+- [APS-108](https://1ivy.atlassian.net/browse/APS-108) Entferntes throw() in
+  GenericDAO.save() wieder hinzufügen
 
-*Unverträglichkeiten*
-- *#Nichts*
+*Inkompatibilitäten*
+- *Keine*
 
 ### 0.9.4
 *Änderungen*
-- [TG-1013](https://1ivy.atlassian.net/browse/TG-1013) Beharrlichkeit Bibliothek
-  Geschichte Klemme
+- [TG-1013](https://1ivy.atlassian.net/browse/TG-1013) Persistenz-Bibliothek –
+  Historie korrigiert
 
-*Unverträglichkeiten*
-- Änderungen zu Geschichte
-    - HistoryPK.#Zeitstempel gewechselt von #Aufreihen zu #Zeitstempel
-    - Geschichte.jsonData Gewechselt von Clob zu #Aufreihen
-    - Zugefügt originalen Bohne Wert zu AuditHandler.handleUpdate()
+*Inkompatibilitäten*
+- Änderungen an der Historie
+    - HistoryPK.timestamp wurde von String zu Timestamp geändert.
+    - History.jsonData wurde von Clob zu String geändert.
+    - Der ursprüngliche Bean-Wert wurde zu AuditHandler.handleUpdate()
+      hinzugefügt.
 
 ### 0.9.3
 *Änderungen*
-- [TG-781](https://1ivy.atlassian.net/browse/TG-781) Beharrlichkeit Bibliothek:
-  Erlaub super tippt ein QuerySettings
+- [TG-781](https://1ivy.atlassian.net/browse/TG-781) Persistence Library:
+  Supertypen in QuerySettings zulassen
 
-*Unverträglichkeiten*
-- *#Nichts*
+*Inkompatibilitäten*
+- *Keine*
 
 ### 0.9.2
 *Änderungen*
-- [TG-871](https://1ivy.atlassian.net/browse/TG-871) Beharrlichkeit Bibliothek:
-  SearchFilter: Ordnen tut nicht #arbeiten# für #auffangen #welche ist nicht von
-  dem Resultat trennen tuple
+- [TG-871](https://1ivy.atlassian.net/browse/TG-871) Persistence Library:
+  SearchFilter: Sortierung funktioniert nicht für Felder, die nicht Teil des
+  Ergebnistupels sind.
 
-*Unverträglichkeiten*
-- Entfernt Aufgabe **GenericDAO.isSyncableEntity()**
-- Nur ob #kodieren vertraut auf Käfer dass ordnen für unselected Felder arbeiten
-  nicht
+*Inkompatibilitäten*
+- Entfernte Funktion „ **“ GenericDAO.isSyncableEntity()**
+- Nur wenn der Code auf einem Fehler basiert, dass das Sortieren für nicht
+  ausgewählte Felder nicht funktioniert.
 
 ### 0.9.1
 *Änderungen*
-- [TG-780](https://1ivy.atlassian.net/browse/TG-780) Beharrlichkeit Bibliothek:
-  Geteilt hinein Bibliothek und Klausur
+- [TG-780](https://1ivy.atlassian.net/browse/TG-780) Persistence Library:
+  Aufteilung in Bibliothek und Test
 
-*Unverträglichkeiten*
-- *#Nichts*
+*Inkompatibilitäten*
+- *Keine*
 
 ### 0.9.0
-*Unverträglichkeiten*
-- Änderung Gruppiert ID von **com.axonivy** Zu **com.axonivy.utils**
-- Änderung Werkzeug ID von **Beharrlichkeit** zu **Beharrlichkeit-utils**
+*Inkompatibilitäten*
+- Ändern Sie die Gruppen-ID von „ **com.axonivy** ” in „ **com.axonivy.utils”.**
+- Ändern Sie die Artefakt-ID von „ **persistence-** ” in „
+  **persistence-utils”.**
 
 ### 0.0.2
-- Neuer Entität Typ **VersionableEntity** Unterstützungen optimistisch
-  #abschließen
+- Neuer Entitätstyp „ **“ „VersionableEntity“** unterstützt optimistisches
+  Locking
 
-*Unverträglichkeiten*
-- Ob du benutztest **GenericEntity** direkt und du vertraust weiter optimistisch
-  #abschließen, dann wechselst dies zu **VersionableEntity**
+*Inkompatibilitäten*
+- Wenn Sie **GenericEntity** direkt verwendet haben und sich auf optimistisches
+  Locking verlassen, ändern Sie dies in **VersionableEntity.**
 
 ### 0.0.1
-Dies ist die einleitende Version
+Dies ist die erste Version.
 
 ## Demo
-## Charakterzüge
-- Nutzung von die AxonIvy Beharrlichkeit Bibliothek
-- [#Java Bohne Bestätigung](https://beanvalidation.org/) Beispiel
-- [JUnit](https://junit.org/junit5/) Klausuren für Beharrlichkeit Bibliothek und
-  Demo Projekt
-- [DBUnit](https://www.dbunit.org/) testdata zu benutzen in Demo Projekt und
-  auch herein JUnit Klausuren
-- [Quarz](http://www.quartz-scheduler.org/) Beruf zu hochheben Saläre an
-  regelmäßig Zeit-Intervalle :-)
+## Funktionen
+- Verwendung der AxonIvy Persistence Library
+- [Java Bean Validation](https://beanvalidation.org/) Beispiel
+- [JUnit](https://junit.org/junit5/) Tests für Persistenz-Bibliothek und
+  Demo-Projekt
+- [DBUnit](https://www.dbunit.org/) Testdaten zur Verwendung im Demo-Projekt und
+  auch in JUnit-Tests
+- [Quartz](http://www.quartz-scheduler.org/) Aufgabe, die Gehälter in
+  regelmäßigen Abständen zu erhöhen :-)
 
-## Klausur #Daten
-Bereite vor Klausur #Daten erhielt aufrecht herein #exzellieren ein integratives
-Datei benutzend DBUnit. Ebensolche gleiche Klausur Daten sind benutzt herein die
-UI und herein JUnit Klausuren.
+## Testdaten
+Bereiten Sie Testdaten vor, die in einer integrierten Excel-Datei mit DBUnit
+verwaltet werden. Dieselben Testdaten werden in der Benutzeroberfläche und in
+JUnit-Tests verwendet.
 
 ## Datenbank
-Das Demo Projekt Nutzungen die hsqldb Datenbank und lässt fallen und schafft
-#wann alle Tische starteten. Du darfst wechseln dies zu einer verschiedenen
-Datenbank aber sein vorsichtig tu verstehen und gesetzt richtig der
-`überwintert.hbm2ddl.Auto` setzend herein `Beharrlichkeit.xml`!
+Das Demo-Projekt verwendet die hsqldb-Datenbank und löscht und erstellt alle
+Tabellen beim Start. Sie können dies auf eine andere Datenbank ändern, aber
+achten Sie darauf, die Einstellungen „ `“, „hibernate.hbm2ddl.auto“, „` “ in „
+`“, „persistence.xml“ und „` “ richtig zu verstehen und einzustellen!
 
-![Testdata Präparat UI](images/Testdata.png "Testdata Präparat UI")
+![Testdaten-Vorbereitungs-UI](images/Testdata.png "Testdaten-Vorbereitung-UI")
 
 ## Abteilungen
-Liste, bearbeite und streichen Abteilungen. Streichend eine Abteilung will sein
-benutzt auf einem logischen Level Charakterzüge von die `AuditableEntity`.
+Listen Sie Abteilungen auf, bearbeiten und löschen Sie sie. Das Löschen einer
+Abteilung erfolgt auf logischer Ebene unter Verwendung der Funktionen von „ `”
+und „AuditableEntity”`.
 
-![Abteilung Sucht UI](images/DepartmentSearch.png "Abteilung Sucht UI")
+![Department Search UI](images/DepartmentSearch.png
+"Abteilungssuche-Benutzeroberfläche")
 
 ## Personen
-Liste, bearbeite und streichen Personen. Personen können sein synchronisiert zu
-Efeu Nutzer.
+Personen auflisten, bearbeiten und löschen. Personen können mit Ivy-Benutzern
+synchronisiert werden.
 
-In dieser Liste, eine Person kann nur anderen Personen von ebensolcher gleichen
-Abteilung sehen. Sicht von Personen sind implementiert direkt herein die
-PersonDAO und vollstreckt für fast alle DAO Aufgaben. Nur #dürfen sieht die
-Administrator Rolle alle Personen.
+In dieser Liste kann eine Person nur andere Personen derselben Abteilung sehen.
+Die Sichtbarkeit von Personen wird direkt in PersonDAO implementiert und für
+fast alle DAO-Funktionen durchgesetzt. Nur die Administratorrolle darf alle
+Personen sehen.
 
-#Bean Bestätigung ist benutzt zu validieren Person #Daten. Bestätigungen können
-Fehler veranlassen (z.B. ob ein obligatorisches Feld fehlt) oder Warnungen (z.B.
-ob den Efeu Benutzernamen folgt nicht den heißend Konvention
-firstname.lastname).
+Bean Validation wird zur Validierung von Personendaten verwendet. Validierungen
+können zu Fehlern (z. B. wenn ein Pflichtfeld fehlt) oder Warnungen (z. B. wenn
+der Ivy-Benutzername nicht der Namenskonvention Vorname.Nachname entspricht)
+führen.
 
-Die Liste ist bieten ordnen und filtern von Spalten mit #ein #faul
-#Daten-modellier. Dieses Mittel, jener ordnend, filternd und #Funkruf will sein
-getan #bei der Datenbank mit eine #dynamisch #errichtet Anfrage.
+Die Liste bietet Sortier- und Filterfunktionen für Spalten mit einem
+Lazy-Datenmodell. Das bedeutet, dass das Sortieren, Filtern und Blättern von der
+Datenbank mit einer dynamisch erstellten Abfrage durchgeführt wird.
 
-![Person Sucht UI](images/PersonSearch.png "Person Sucht UI")
+![Personensuche-Benutzeroberfläche](images/PersonSearch.png "Benutzeroberfläche
+für die Personensuche")
