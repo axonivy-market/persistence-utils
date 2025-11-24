@@ -6,7 +6,7 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.PrimeFaces;
 
 import com.axonivy.utils.persistence.dao.QuerySettings;

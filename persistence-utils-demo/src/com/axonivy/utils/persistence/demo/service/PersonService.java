@@ -5,7 +5,7 @@ import java.math.RoundingMode;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.axonivy.utils.persistence.demo.Logger;
 import com.axonivy.utils.persistence.demo.daos.PersonDAO;

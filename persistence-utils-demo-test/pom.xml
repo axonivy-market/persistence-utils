@@ -47,16 +47,13 @@
       <artifactId>ivy-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-compress</artifactId>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.poi</groupId>
-      <artifactId>poi</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.poi</groupId>
-      <artifactId>poi-ooxml</artifactId>
+      <groupId>com.axonivy.ivy.api</groupId>
+      <artifactId>ivy-poi-api</artifactId>
     </dependency>
   </dependencies>
   <repositories>

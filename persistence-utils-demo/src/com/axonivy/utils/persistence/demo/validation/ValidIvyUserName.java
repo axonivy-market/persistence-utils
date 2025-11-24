@@ -12,7 +12,7 @@ import javax.validation.Constraint;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.axonivy.utils.persistence.demo.entities.Person;
 import com.axonivy.utils.persistence.validation.ConstraintValidatorAdapter;
