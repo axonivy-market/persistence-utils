@@ -2,7 +2,7 @@ package com.axonivy.utils.persistence.demo.service;
 
 import java.math.BigDecimal;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.axonivy.utils.persistence.demo.Logger;
 
