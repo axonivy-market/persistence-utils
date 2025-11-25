@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.dbunit.DatabaseUnitException;
 
 import com.axonivy.utils.persistence.demo.Logger;

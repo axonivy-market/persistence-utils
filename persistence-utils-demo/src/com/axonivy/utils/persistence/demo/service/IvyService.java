@@ -8,7 +8,7 @@ import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.axonivy.utils.persistence.demo.Constants;
 import com.axonivy.utils.persistence.demo.Logger;
