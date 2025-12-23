@@ -9,7 +9,7 @@
   </parent>
   <groupId>com.axonivy.utils.persistence</groupId>
   <artifactId>persistence-utils-demo-webtest</artifactId>
-  <version>13.2.0</version>
+  <version>13.2.1-SNAPSHOT</version>
   <packaging>iar-integration-test</packaging>
   <description>Web Test project of the persistence utils demo project.</description>
   <dependencies>
