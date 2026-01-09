@@ -7,16 +7,16 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>${project.name}</module>
-    <module>${project.name}-demo</module>
-    <module>${project.name}-demo-tool</module>
-    <module>${project.name}-demo-test</module>
-    <module>${project.name}-demo-webtest</module>
-    <module>${project.name}-product</module>
+    <module>persistence-utils</module>
+    <module>persistence-utils-demo</module>
+    <module>persistence-utils-demo-tool</module>
+    <module>persistence-utils-demo-test</module>
+    <module>persistence-utils-demo-webtest</module>
+    <module>persistence-utils-product</module>
   </modules>
 
   <scm>
-    <developerConnection>scm:git:https://github.com/axonivy-market/${project.name}.git</developerConnection>
+    <developerConnection>scm:git:https://github.com/axonivy-market/persistence-utils.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
