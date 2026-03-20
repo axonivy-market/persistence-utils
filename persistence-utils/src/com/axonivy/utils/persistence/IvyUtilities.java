@@ -35,7 +35,7 @@ public class IvyUtilities {
 	public static String getProcessModelName() {
 		String result = null;
 		try {
-			result = asSystem(() -> Ivy.request().getProcessModel().getName());
+			result = asSystem(() -> Ivy.request().getProcessModelVersion().getName());
 		} catch (Exception e) {
 			LOG.warn("Could not get process model name, returning {0}", e, result);
 		}
