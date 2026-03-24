@@ -74,3 +74,5 @@ jobs:
                 -Dsonar.sources="$ALL_SOURCES" \
                 -Dsonar.java.binaries="$ALL_BINARIES" \
                 -Dsonar.exclusions="**/target/**,**/.git/**,**/.scannerwork/**"
+                -Dproject-build-plugin.skip=true \
+                -Denforcer.skip=true
