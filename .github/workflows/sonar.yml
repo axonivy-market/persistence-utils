@@ -40,4 +40,33 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=axonivy-market_persistence-utils -Dsonar.organization=axonivy-market
+        run: |  
+              REPO_ABS_PATH=$(pwd)
+      
+              ALL_SOURCES=$(
+                {
+                  find . -type d -path "*/src/main/java"      ! -path "*/target/*" ! -path "*/.git/*" ! -path "*/.scannerwork/*"
+                  find . -type d -path "*/src/main/resources" ! -path "*/target/*" ! -path "*/.git/*" ! -path "*/.scannerwork/*"
+                  find . -type d -path "*/src/main/webapp"    ! -path "*/target/*" ! -path "*/.git/*" ! -path "*/.scannerwork/*"
+                  find . -type d -name "src"                  ! -path "*/target/*" ! -path "*/.git/*" ! -path "*/.scannerwork/*"
+                  find . -type d -name "src_wsproc"           ! -path "*/target/*" ! -path "*/.git/*" ! -path "*/.scannerwork/*"
+                  find . -type d -name "src_dataClasses"      ! -path "*/target/*" ! -path "*/.git/*" ! -path "*/.scannerwork/*"
+                } | xargs -I{} realpath "{}" | sort -u | tr '\n' ',' | sed 's/,$//'
+              )
+              [ -z "$ALL_SOURCES" ] && ALL_SOURCES="$REPO_ABS_PATH"
+      
+              ALL_BINARIES=$(
+                find . -type d -name "classes" -path "*/target/classes" | xargs -I{} realpath "{}" | sort | tr '\n' ',' | sed 's/,$//'
+              )
+              [ -z "$ALL_BINARIES" ] && ALL_BINARIES="$REPO_ABS_PATH"
+      
+              echo ">>> Sources (abs) : $ALL_SOURCES"
+              echo ">>> Binaries (abs): $ALL_BINARIES"
+      
+              mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+                -Dsonar.projectKey=axonivy-market_a-trust-connector \
+                -Dsonar.organization=axonivy-market \
+                -Dsonar.scm.disabled=true \
+                -Dsonar.sources="$ALL_SOURCES" \
+                -Dsonar.java.binaries="$ALL_BINARIES" \
+                -Dsonar.exclusions="**/target/**,**/.git/**,**/.scannerwork/**"
