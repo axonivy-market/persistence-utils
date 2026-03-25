@@ -68,7 +68,7 @@ Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation i
 - [APS-156](https://1ivy.atlassian.net/browse/APS-156) Fix handling of session in CriteriaQueryContext
 - [APS-86](https://1ivy.atlassian.net/browse/APS-86) Use Instant for Auditable Entities create/update/delete
 - [APS-87](https://1ivy.atlassian.net/browse/APS-87) Rename isEnabled in ToggleableEntity
-- [APS-158](https://1ivy.atlassian.net/browse/APS-158) Refactor Type hirachy for Auditable- and ToggleableEntity
+- [APS-158](https://1ivy.atlassian.net/browse/APS-158) Refactor Type hierarchy for Auditable- and ToggleableEntity
 
 *Incompatibilities*
 
