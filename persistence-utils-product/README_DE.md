@@ -89,8 +89,8 @@ Market!***
   überprüfbare Entitäten erstellen/aktualisieren/löschen
 - [APS-87](https://1ivy.atlassian.net/browse/APS-87) Umbenennen von „isEnabled”
   in „ToggleableEntity”
-- [APS-158](https://1ivy.atlassian.net/browse/APS-158) Refaktorisierung der
-  Typhierarchie für Auditable- und ToggleableEntity
+- [APS-158](https://1ivy.atlassian.net/browse/APS-158) Refactor Type hierarchy
+  for Auditable- and ToggleableEntity
 
 *Inkompatibilitäten*
 
