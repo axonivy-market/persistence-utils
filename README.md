@@ -8,7 +8,7 @@ database access and convenient use.
 
 The library helps you create DAO classes of your entities which have all the APIs for fully database access.
 Besides, it also helps you quickly create some typical Entity classes with boiler-plate requirements, like
-simple audtiting features.
+simple auditing features.
 
 What is in this guide:
 
