@@ -1,10 +1,15 @@
 # Persistence Utils
 Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation initiatives by introducing an abstraction DAO layer. This utility:
+
+### Key features
 - Allows robust and complex database access based on the [JPA 2.2 standard](https://www.oracle.com/java/technologies/persistence-jsp.html).
 - Helps you create DAO classes for your entities with direct access to databases using standard APIs
 - Simplifies the creation of typical entity classes
 - Supports you with a demo implementation
 - Shows example usage of some optional related technologies
+- Provides powerful search and filtering utilities with efficient paging and sorting.
+- Includes built-in audit and history tracking for entities to help with compliance and debugging.
+- Offers localization-aware helpers (enum CMS names, locale-sensitive comparators) and Ivy integration utilities.
 
 ## Projects
 - *persistence-utils-demo* the demo project
@@ -213,3 +218,87 @@ that sorting, filtering and paging will be done by the database with a dynamical
 query. 
 
 ![Person Search UI](images/PersonSearch.png "Person Search UI")
+
+### Demo workflows
+
+- Person search
+  1. Start the `personSearch` process (`personSearch.ivp`).
+  2. This opens the PersonSearch dialog (lazy data model). Use filters, sorting and paging to find entries.
+  3. Edit or create a person in the dialog. Saving runs server-side validation and can sync the person to Ivy users.
+
+- Department search
+  1. Start the `departmentSearch` process (`departmentSearch.ivp`).
+  2. This opens the DepartmentSearch dialog (eager load via `findAll()`). Use client-side filtering and sorting.
+  3. Edit or delete departments; deletions are logical and use the audit-enabled entity model.
+
+- Raise salaries
+  1. Start the `raiseSalary` process or run the scheduled job.
+  2. The process executes `PersonService.raiseSalaries()` to increase salaries in the demo dataset.
+
+### Form components
+
+- `PersonSearch` dialog (`PersonSearchCtrl`, `PersonSearchLazyDataModel`): lazy search table, server-side filtering, sorting, paging, edit dialog with validation and Ivy sync.
+- `DepartmentSearch` dialog (`DepartmentSearchCtrl`): department list, edit/delete, uses auditable markers and ordering by name.
+
+
+## Setup
+
+- Roles: `Everybody` (defined in `config/roles.xml`). Ensure users have the appropriate role to access administrative features.
+- Configuration: review `config/persistence.xml` and `config/databases.yaml` and set your database connection and JPA properties before deploying.
+
+```
+@variables.yaml@
+```
+
+## Components
+
+- DAO layer: GenericDAO and supporting DAOs provide a reusable persistence API for entities.
+- Services: `EnumService`, date utilities, and other helpers for common persistence tasks.
+- Utilities: reflection helpers, caching utilities, and Ivy integration helpers used across the library.
+- Demo and tooling: included demo project, test suites, and a small test-data generator tool.
+
+### Maven artifacts
+
+1. persistence-utils-demo (maven-import)
+
+```xml
+<dependency>
+  <groupId>com.axonivy.utils.persistence</groupId>
+  <artifactId>persistence-utils-demo</artifactId>
+  <version>13.2.3</version>
+  <type>iar</type>
+</dependency>
+```
+
+2. persistence-utils-demo-tool (maven-import)
+
+```xml
+<dependency>
+  <groupId>com.axonivy.utils.persistence</groupId>
+  <artifactId>persistence-utils-demo-tool</artifactId>
+  <version>13.2.3</version>
+  <type>iar</type>
+</dependency>
+```
+
+3. persistence-utils-demo-test (maven-import)
+
+```xml
+<dependency>
+  <groupId>com.axonivy.utils.persistence</groupId>
+  <artifactId>persistence-utils-demo-test</artifactId>
+  <version>13.2.3</version>
+  <type>iar</type>
+</dependency>
+```
+
+4. persistence-utils (maven-dependency)
+
+```xml
+<dependency>
+  <groupId>com.axonivy.utils.persistence</groupId>
+  <artifactId>persistence-utils</artifactId>
+  <version>13.2.3</version>
+  <type>jar</type>
+</dependency>
+```
