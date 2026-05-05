@@ -2,7 +2,6 @@
 Persistence Utils provides reusable components to simplify database access in Axon Ivy projects. The product speeds up development by offering a consistent data-access layer, ready-made search and audit helpers, and demo applications that illustrate common patterns.
 
 ### Key features
-- Allows robust and complex database access based on the [JPA 2.2 standard](https://www.oracle.com/java/technologies/persistence-jsp.html).
 - Save development time with a reusable data-access layer and ready-made query helpers.
 - Reliable, thread-safe session management integrated with Axon Ivy to avoid common session/transaction pitfalls.
 - Powerful server-side search and filtering for responsive, pageable lists and efficient data retrieval.
