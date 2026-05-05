@@ -1,304 +1,64 @@
 # Persistence Utils
-Axon Ivy's JPA Persistence Lib utility helps you accelerate process automation initiatives by introducing an abstraction DAO layer. This utility:
+Persistence Utils provides reusable components to simplify database access in Axon Ivy projects. The product speeds up development by offering a consistent data-access layer, ready-made search and audit helpers, and demo applications that illustrate common patterns.
 
 ### Key features
 - Allows robust and complex database access based on the [JPA 2.2 standard](https://www.oracle.com/java/technologies/persistence-jsp.html).
-- Helps you create DAO classes for your entities with direct access to databases using standard APIs
-- Simplifies the creation of typical entity classes
-- Supports you with a demo implementation
-- Shows example usage of some optional related technologies
-- Provides powerful search and filtering utilities with efficient paging and sorting.
-- Includes built-in audit and history tracking for entities to help with compliance and debugging.
-- Offers localization-aware helpers (enum CMS names, locale-sensitive comparators) and Ivy integration utilities.
-
-## Projects
-- *persistence-utils-demo* the demo project
-- *persistence-utils-demo-tool* tool tp generate test data for the demo project
-- *persistence-utils-test* JUnit tests for the persistence library and the demo project
-- *persistence-utils-demo* JUnit web test demo
-
-## Release Notes
-
-***For newer versions, please see the changelog in the Axon Ivy Market!***
-
-### 12.0.1
-*Changes*
-
-- [Issue 82](https://github.com/axonivy-market/persistence-utils/issues/82) Fix getExpression of whole objects
-
-### 11.3.2-SNAPSHOT
-*Changes*
-
-- [APS-232](https://1ivy.atlassian.net/browse/APS-232) Fix GitHub issue 73 (SearchFilter descending sort)
-
-### 10.0.8
-*Changes*
-
-- [APS-224](https://1ivy.atlassian.net/browse/APS-224) Fix handling of empty lists or null values in enum SearchFilters
-- [APS-226](https://1ivy.atlassian.net/browse/APS-226) Fix fetching of external database to method compatible with Ivy 10 and Ivy 11
-
-
-### 10.0.7
-*Changes*
-
-- Added missing documentation of 10.0.5
-- Fixed sorting of CMS to locale aware case insensitive
-
-*Incompatibilities*
-- Note: This note was added to 10.0.5: `HasCmsName` is now part of the persistence utils, if you have your own, you need to replace or inherit.
-
-
-### 10.0.6
-*Changes*
-
-- Fixed web test
-
-
-### 10.0.5
-*Changes*
-
-- [APS-206](https://1ivy.atlassian.net/browse/APS-206) Make forceSingleResult more general
-- [APS-220](https://1ivy.atlassian.net/browse/APS-220) Add convenience functions for search filter implementation
-  - New functions in GenericDAO to help implementing SearchFilters containing enumerations with CMS names.
-  - Access to currently built search query while predicates are built.
-- [APS-222](https://1ivy.atlassian.net/browse/APS-222) Update Logging and DB GUI in Junit tests
-
-*Incompatibilities*
-- `FilterPredicate.getSearchFilter` was renamed to `FilterPredicate.getSearchEnum`
-- `FilterOrder.getSearchFilter` was renamed to `FilterOrder.getSearchEnum`
-- `HasCmsName` is now part of the persistence utils, if you have your own, you need to replace or inherit.
-
-### 10.0.4
-*Changes*
-- [APS-156](https://1ivy.atlassian.net/browse/APS-156) Fix handling of session in CriteriaQueryContext
-- [APS-86](https://1ivy.atlassian.net/browse/APS-86) Use Instant for Auditable Entities create/update/delete
-- [APS-87](https://1ivy.atlassian.net/browse/APS-87) Rename isEnabled in ToggleableEntity
-- [APS-158](https://1ivy.atlassian.net/browse/APS-158) Refactor Type hierarchy for Auditable- and ToggleableEntity
-
-*Incompatibilities*
-
-:exclamation::exclamation: **NOTE: This update contains major changes to column names and datatypes as well as refactoring of entity and DAO structure.**
-**Please refer to the list of changes mentioned here and in the recommendations** :exclamation::exclamation:
-
-- Datatype of `AuditableEntity`s `Header` attributes for create/update and delete date where changed to `Instant`
-- Attribute `expiryDate` of `ToggleableEntity` has been renamed to **expiry** and its datatype changed to `Instant`
-- Attribute `ToggleableEntity`s **isEnabled** has been renamed to **enabled** and its datatype changed to `boolean`
-- `AuditableEntity` and `ToggleableEntity` are now derived from `VersionableEntity` instead of `GenericIdEntity`
-- To provide a version of the changed Entities with a predefined `String` id the new Entities `AuditableIdEntity` and `ToggleableIdEntity` and matching DAOs have been introduced
-
-*Recommendations*
-- rename the expiry column to **expiry** unless you have customized the column names anyways. e.g. ALTER TABLE **yourtable** RENAME COLUMN **expiryDate** TO **expiry**.
-- rename the isEnabled column to **enabled** unless you have customized the column names anyways. e.g. ALTER TABLE **yourtable** RENAME COLUMN **isEnabled** TO **enabled**.
-- Make sure there are no *NULL* values for the **enabled** column in your database. The column was defined as not nullable, so only manual changes in the database should have lead to *NULL* values
-- use `get/set...AsDate` or `get/set...AsLocalDateTime` methods if you need to get converted datatypes of create/modify/delete/expiry `Instant`s
-- Change usage of `AuditableEntity` and `ToggleableEntity` to `AuditableIdEntity` and `ToggleableIdEntity`. Use matching DAOs
-
-### 10.0.3
-*Changes*
-- Added sources to maven artifact
-
-*Incompatibilities*
-- *None*
-
-*Recommendations*
-- *None*
-
-### 10.0.2
-*Changes*
-- [APS-148](https://1ivy.atlassian.net/browse/APS-148) Exception during save is silently swallowed
-
-*Incompatibilities*
-- *None*
-
-*Recommendations*
-- **forceSingleResult()** was moved to higher class. In case you implemented your own version, check whether you can remove it
-- some functions in **AbstractDAO** which returned the type **Object** will now return the same type as coming in. If you used them and had typecasts, they might therefore be no longer necessary
-
-### 10.0.0
-*Changes*
-- The persistence library was moved to the marketplace and will follow the version numbering scheme there
-- The JPA demo project in now directly included in the persistence utils marketplace component
-
-*Incompatibilities*
-- The dependency to the persistence library must be removed from projects and replaced by using the marketplace component
-
-### 0.10.0
-*Changes*
-- [APS-84](https://1ivy.atlassian.net/browse/APS-84) forceSingleResult() should work for any type
-- [APS-91](https://1ivy.atlassian.net/browse/APS-91) Make AbstractDAO.unproxyAndInitialize() typesafe
-- [APS-108](https://1ivy.atlassian.net/browse/APS-108) Add deleted throw() in GenericDAO.save() again
-
-*Incompatibilities*
-- *None*
-
-### 0.9.4
-*Changes*
-- [TG-1013](https://1ivy.atlassian.net/browse/TG-1013) Persistence Library History Fix
-
-*Incompatibilities*
-- Changes to history
-    - HistoryPK.timestamp changed from String to Timestamp
-    - History.jsonData changed from Clob to String
-    - Added original bean value to AuditHandler.handleUpdate()
-
-### 0.9.3
-*Changes*
-- [TG-781](https://1ivy.atlassian.net/browse/TG-781) Persistence Library: Allow super types in QuerySettings
-
-*Incompatibilities*
-- *None*
-
-### 0.9.2
-*Changes*
-- [TG-871](https://1ivy.atlassian.net/browse/TG-871) Persistence Library: SearchFilter: Sorting does not work for fields which are not part of the result tuple
-
-*Incompatibilities*
-- removed function **GenericDAO.isSyncableEntity()**
-- only if code relies on bug that sorting for unselected fields does not work
-
-### 0.9.1
-*Changes*
-- [TG-780](https://1ivy.atlassian.net/browse/TG-780) Persistence Library: Split into library and test
-
-*Incompatibilities*
-- *None*
-
-### 0.9.0
-*Incompatibilities*
-- Change Group ID from **com.axonivy** to **com.axonivy.utils**
-- Change Artifact ID from **persistence** to **persistence-utils**
-
-### 0.0.2
-- new entity type **VersionableEntity** supports optimistic locking
-
-*Incompatibilities*
-- if you were using **GenericEntity** directly and you rely on optimistic locking, then change this to **VersionableEntity**
-
-### 0.0.1
-This is the initial version
+- Save development time with a reusable data-access layer and ready-made query helpers.
+- Reliable, thread-safe session management integrated with Axon Ivy to avoid common session/transaction pitfalls.
+- Powerful server-side search and filtering for responsive, pageable lists and efficient data retrieval.
+- Built-in audit/history support and helpful utilities for JSON, string handling and reflection.
+- Ready-to-run demo apps and test data to explore features quickly and reduce onboarding time.
 
 ## Demo
-## Features
-- Use of the AxonIvy Persistence Library
-- [Java Bean Validation](https://beanvalidation.org/) example
-- [JUnit](https://junit.org/junit5/) tests for persistence library and demo project
-- [DBUnit](https://www.dbunit.org/) testdata to use in demo project and also in JUnit tests
-- [Quartz](http://www.quartz-scheduler.org/) job to raise salaries at regular time-intervals :-)
 
-## Test data
-Prepare test data maintained in an integrated excel file using DBUnit.
-The same test data is used in the UI and in JUnit tests.
-
-## Database
-The demo project uses the hsqldb database and drops and creates all tables when started.
-You may change this to a different database but be careful tu understand and
-set correctly the `hibernate.hbm2ddl.auto` setting in `persistence.xml`!
-
-![Testdata Preparation UI](images/Testdata.png "Testdata Preparation UI")
-
-## Departments
-List, edit and delete departments. Deleting a department will be done on a logical
-level using features of the `AuditableEntity`.
-
-![Department Search UI](images/DepartmentSearch.png "Department Search UI")
-
-## Persons
-List, edit and delete persons. Persons can be synced to Ivy Users.
-
-In this list, a person can only see other persons of the same department.
-Visibility of persons is implemented directly in the PersonDAO and enforced
-for almost all DAO functions. Only the administrator role is allowed to see all persons.
-
-Bean validation is used to validate person data. Validations can cause Errors (e.g. if
-a mandatory field is missing) or Warnings (e.g. if the Ivy username does not follow the
-naming convention firstname.lastname).
-
-The list is featuring sorting and filtering of columns with a lazy data-model. This means,
-that sorting, filtering and paging will be done by the database with a dynamically built
-query. 
+### Person Search
+1. Launch the "Person Search" demo from the demo start page.
+2. You see a searchable, pageable list of people with column filters and sorting. Use the filters to narrow results.
+3. Click "Edit" on a person to open the detail dialog. Change fields and save; validation may show Errors or Warnings. If only Warnings appear, use "Save Anyway" to persist changes.
+4. Use the "Ivy User" control to sync a person to an Ivy user when required.
 
 ![Person Search UI](images/PersonSearch.png "Person Search UI")
 
-### Demo workflows
+### Department Search
+1. Launch the "Department Search" demo.
+2. The list shows all departments and supports client-side filtering and sorting. Add, edit, or delete entries using the provided controls.
+3. Deleting a department is performed logically (soft delete) and can be undone by adjusting the data if required.
 
-- Person search
-  1. Start the `personSearch` process (`personSearch.ivp`).
-  2. This opens the PersonSearch dialog (lazy data model). Use filters, sorting and paging to find entries.
-  3. Edit or create a person in the dialog. Saving runs server-side validation and can sync the person to Ivy users.
+![Department Search UI](images/DepartmentSearch.png "Department Search UI")
 
-- Department search
-  1. Start the `departmentSearch` process (`departmentSearch.ivp`).
-  2. This opens the DepartmentSearch dialog (eager load via `findAll()`). Use client-side filtering and sorting.
-  3. Edit or delete departments; deletions are logical and use the audit-enabled entity model.
-
-- Raise salaries
-  1. Start the `raiseSalary` process or run the scheduled job.
-  2. The process executes `PersonService.raiseSalaries()` to increase salaries in the demo dataset.
-
-### Form components
-
-- `PersonSearch` dialog (`PersonSearchCtrl`, `PersonSearchLazyDataModel`): lazy search table, server-side filtering, sorting, paging, edit dialog with validation and Ivy sync.
-- `DepartmentSearch` dialog (`DepartmentSearchCtrl`): department list, edit/delete, uses auditable markers and ordering by name.
-
-
-## Setup
-
-- Roles: `Everybody` (defined in `config/roles.xml`). Ensure users have the appropriate role to access administrative features.
-- Configuration: review `config/persistence.xml` and `config/databases.yaml` and set your database connection and JPA properties before deploying.
-
-```
-@variables.yaml@
-```
+### Raise Salaries
+1. Start the "Raise Salaries" process to execute the example salary update.
+2. This workflow runs a demo script that increases salaries for the included test data. Review results in the Person Search UI after execution.
 
 ## Components
 
-- DAO layer: GenericDAO and supporting DAOs provide a reusable persistence API for entities.
-- Services: `EnumService`, date utilities, and other helpers for common persistence tasks.
-- Utilities: reflection helpers, caching utilities, and Ivy integration helpers used across the library.
-- Demo and tooling: included demo project, test suites, and a small test-data generator tool.
-
 ### Maven artifacts
-
-1. persistence-utils-demo (maven-import)
-
-```xml
-<dependency>
-  <groupId>com.axonivy.utils.persistence</groupId>
-  <artifactId>persistence-utils-demo</artifactId>
-  <version>13.2.3</version>
-  <type>iar</type>
-</dependency>
-```
-
-2. persistence-utils-demo-tool (maven-import)
-
-```xml
-<dependency>
-  <groupId>com.axonivy.utils.persistence</groupId>
-  <artifactId>persistence-utils-demo-tool</artifactId>
-  <version>13.2.3</version>
-  <type>iar</type>
-</dependency>
-```
-
-3. persistence-utils-demo-test (maven-import)
-
-```xml
-<dependency>
-  <groupId>com.axonivy.utils.persistence</groupId>
-  <artifactId>persistence-utils-demo-test</artifactId>
-  <version>13.2.3</version>
-  <type>iar</type>
-</dependency>
-```
-
-4. persistence-utils (maven-dependency)
+1. com.axonivy.utils.persistence:persistence-utils
 
 ```xml
 <dependency>
   <groupId>com.axonivy.utils.persistence</groupId>
   <artifactId>persistence-utils</artifactId>
-  <version>13.2.3</version>
   <type>jar</type>
+</dependency>
+```
+
+2. com.axonivy.utils.persistence:persistence-utils-demo
+
+```xml
+<dependency>
+  <groupId>com.axonivy.utils.persistence</groupId>
+  <artifactId>persistence-utils-demo</artifactId>
+  <type>iar</type>
+</dependency>
+```
+
+3. com.axonivy.utils.persistence:persistence-utils-demo-tool
+
+```xml
+<dependency>
+  <groupId>com.axonivy.utils.persistence</groupId>
+  <artifactId>persistence-utils-demo-tool</artifactId>
+  <type>iar</type>
 </dependency>
 ```
