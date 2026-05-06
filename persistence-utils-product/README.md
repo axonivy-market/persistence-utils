@@ -49,13 +49,13 @@ in the `persistence-utils-demo` module.
 ## Components
 
 ### Exposed CALLABLE_SUB processes
-No CALLABLE_SUB process files found in the main module.
+No callable sub delivered by this extension.
 
 ### Form components
-No form components were detected in the main module.
+No form components delivered by this extension.
 
 ### Open API resources
-No public OpenAPI specs are available for this product.
+No public OpenAPI specs delivered by this extension.
 
 ### Maven artifacts
 

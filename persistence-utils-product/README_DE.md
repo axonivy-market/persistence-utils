@@ -1,9 +1,9 @@
 # Persistence Utils
 
-Eine kompakte Bibliothek, die die Datenbankintegration für Axon Ivy Prozesse vereinfacht. Sie
-bietet wiederverwendbare DAOs, Such- und Abfragehilfen, Transaktions- und Entity-Manager-
-Utilities, Audit-/Historie-Unterstützung sowie ein Demo-Projekt mit Testdaten zum schnellen
-Ausprobieren.
+Mit dieser Bibliothek vereinfachst du die Datenbankintegration für Axon Ivy-Prozesse. Die
+Bibliothek stellt dir wiederverwendbare DAOs, Such- und Abfragehilfen, Transaktions- und
+Entity-Manager-Utilities sowie Audit-/Historie-Unterstützung zur Verfügung und enthält ein
+Demo-Projekt mit Testdaten, mit dem du Funktionen schnell ausprobieren kannst.
 
 ### Wichtigste Funktionen
 - Vereinfachte Nutzung von JPA/Hibernate durch wiederverwendbare `GenericDAO`-Hilfen.
@@ -47,13 +47,13 @@ Nachfolgend findest du kurze, benutzerorientierte Workflows, die die Demo-Szenar
 ## Komponenten
 
 ### Exponierte CALLABLE_SUB-Prozesse
-Es wurden keine CALLABLE_SUB-Prozessdateien im Hauptmodul gefunden.
+- Dieses Produkt enthält keine CALLABLE_SUB-Prozessdateien im Hauptmodul.
 
 ### Formular-Komponenten
-Im Hauptmodul wurden keine Formular-Komponenten entdeckt.
+- Im Hauptmodul wurden keine Formular-Komponenten entdeckt.
 
 ### OpenAPI-Ressourcen
-Für dieses Produkt sind keine öffentlichen OpenAPI-Spezifikationen verfügbar.
+- Für dieses Produkt sind keine öffentlichen OpenAPI-Spezifikationen verfügbar.
 
 ### Maven-Artefakte
 
