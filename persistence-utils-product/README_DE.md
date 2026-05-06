@@ -1,9 +1,85 @@
 # Persistence Utils
-Persistence Utils stellt wiederverwendbare Komponenten bereit, mit denen du den Datenzugriff in Axon Ivy‑Projekten vereinfachst. Das Produkt beschleunigt die Entwicklung, indem es eine einheitliche Datenzugriffsschicht, fertige Such‑ und Audit‑Hilfen sowie Demo‑Apps bietet.
+
+Eine kompakte Bibliothek, die die Datenbankintegration für Axon Ivy Prozesse vereinfacht. Sie
+bietet wiederverwendbare DAOs, Such- und Abfragehilfen, Transaktions- und Entity-Manager-
+Utilities, Audit-/Historie-Unterstützung sowie ein Demo-Projekt mit Testdaten zum schnellen
+Ausprobieren.
 
 ### Wichtigste Funktionen
-- Spare Entwicklungszeit mit einer wiederverwendbaren Datenzugriffsschicht und fertigen Such‑Hilfen.
-- Sichere, automatische Sitzungsverwaltung in Axon Ivy für zuverlässige Datenbankoperationen.
-- Leistungsstarke serverseitige Suche und Filterung für schnelle, paginierte Listen.
-- Eingebaute Audit-/Historienfunktionen und praktische Helfer für JSON‑ und String‑Verarbeitung.
-- Fertige Demos und Testdaten, damit du Funktionen schnell ausprobieren kannst.
+- Vereinfachte Nutzung von JPA/Hibernate durch wiederverwendbare `GenericDAO`-Hilfen.
+- Serverseitiges Filtern, Sortieren und Paginierung über Lazy-Data-Modelle für große Tabellen.
+- Ivy-kompatibler Entity-Manager und Transaktions-Hilfen für sichere Prozessintegration.
+- Integrierte Audit-/Historie- und Validierungshilfen für auditable Entities.
+- Demo-Anwendung und Testdaten zum schnellen Validieren und Kennenlernen der Funktionen.
+
+## Demo
+
+Nachfolgend findest du kurze, benutzerorientierte Workflows, die die Demo-Szenarien aus dem
+`persistence-utils-demo` Modul reproduzieren.
+
+### Personensuche
+1. Öffne die Demo und wähle auf der Startseite **Person Search** aus.
+2. Gib Suchbegriffe ein oder nutze die Spaltenfilter, um die Ergebnisse einzuschränken; die Liste
+   ist paginiert und unterstützt serverseitiges Sortieren und Filtern.
+3. Klicke auf eine Zeile oder den **Add**-Button, um den Bearbeitungsdialog zu öffnen, ändere
+   Felder und speichere deine Änderungen.
+
+![Personensuche](images/PersonSearch.png)
+
+### Abteilungssuche
+1. Öffne **Department Search** in der Demo.
+2. Sieh dir die Abteilungsliste an, nutze die Paginierung zum Blättern und klicke auf **Add** oder
+   das Bearbeiten-Symbol, um eine Abteilung anzulegen oder zu bearbeiten.
+
+![Abteilungssuche](images/DepartmentSearch.png)
+
+### Testdaten vorbereiten
+1. Die Demo enthält eine einfache UI zur Testdatenaufbereitung, mit der du die Demo-Datenbank
+   mit Beispielentitäten befüllst.
+
+![Testdaten-Aufbereitung](images/Testdata.png)
+
+## Einrichtung
+- Demo-Konfiguration: Das Demo-Modul verwendet eine In-Memory-Datasource; `hibernate.hbm2ddl.auto`
+  ist im Demo für `create-drop` gesetzt. Für den produktiven Betrieb konfiguriere deine
+  Datasource in `config/databases.yaml` und passe gegebenenfalls `persistence.xml` an.
+
+## Komponenten
+
+### Exponierte CALLABLE_SUB-Prozesse
+Es wurden keine CALLABLE_SUB-Prozessdateien im Hauptmodul gefunden.
+
+### Formular-Komponenten
+Im Hauptmodul wurden keine Formular-Komponenten entdeckt.
+
+### OpenAPI-Ressourcen
+Für dieses Produkt sind keine öffentlichen OpenAPI-Spezifikationen verfügbar.
+
+### Maven-Artefakte
+
+1. persistence-utils
+```xml
+<dependency>
+  <groupId>com.axonivy.utils.persistence</groupId>
+  <artifactId>persistence-utils</artifactId>
+  <type>jar</type>
+</dependency>
+```
+
+2. persistence-utils-demo
+```xml
+<dependency>
+  <groupId>com.axonivy.utils.persistence</groupId>
+  <artifactId>persistence-utils-demo</artifactId>
+  <type>iar</type>
+</dependency>
+```
+
+3. persistence-utils-demo-tool
+```xml
+<dependency>
+  <groupId>com.axonivy.utils.persistence</groupId>
+  <artifactId>persistence-utils-demo-tool</artifactId>
+  <type>iar</type>
+</dependency>
+```

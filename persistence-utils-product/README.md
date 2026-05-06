@@ -1,39 +1,65 @@
 # Persistence Utils
-Persistence Utils provides reusable components to simplify database access in Axon Ivy projects. The product speeds up development by offering a consistent data-access layer, ready-made search and audit helpers, and demo applications that illustrate common patterns.
+
+A compact library that simplifies database integration for Axon Ivy processes. It
+provides reusable DAOs, query and search helpers, transaction and entity-manager
+utilities, audit/history support, and a demo project with test data to explore
+features quickly.
 
 ### Key features
-- Save development time with a reusable data-access layer and ready-made query helpers.
-- Reliable, thread-safe session management integrated with Axon Ivy to avoid common session/transaction pitfalls.
-- Powerful server-side search and filtering for responsive, pageable lists and efficient data retrieval.
-- Built-in audit/history support and helpful utilities for JSON, string handling and reflection.
-- Ready-to-run demo apps and test data to explore features quickly and reduce onboarding time.
+- Simplifies JPA/Hibernate usage with a reusable `GenericDAO` and query helpers.
+- Server-side filtering, sorting and pagination via lazy data models for large tables.
+- Ivy-aware entity manager and transaction helpers for safe process integration.
+- Built-in audit/history and validation helpers for auditable entities.
+- Demo application and test data to validate setup and explore features.
 
 ## Demo
 
-### Person Search
-1. Launch the "Person Search" demo from the demo start page.
-2. You see a searchable, pageable list of people with column filters and sorting. Use the filters to narrow results.
-3. Click "Edit" on a person to open the detail dialog. Change fields and save; validation may show Errors or Warnings. If only Warnings appear, use "Save Anyway" to persist changes.
-4. Use the "Ivy User" control to sync a person to an Ivy user when required.
+Below are short, user-facing workflows that reproduce the demo scenarios provided
+in the `persistence-utils-demo` module.
 
-![Person Search UI](images/PersonSearch.png "Person Search UI")
+### Person Search
+1. Open the demo and choose **Person Search** from the start page.
+2. Enter search terms or use the column filters to narrow the results; the list
+   is paginated and supports server-side sorting and filtering.
+3. Click a row or the **Add** button to open the edit dialog, change fields and
+   save your changes.
+
+![Person Search](images/PersonSearch.png)
 
 ### Department Search
-1. Launch the "Department Search" demo.
-2. The list shows all departments and supports client-side filtering and sorting. Add, edit, or delete entries using the provided controls.
-3. Deleting a department is performed logically (soft delete) and can be undone by adjusting the data if required.
+1. Open **Department Search** from the demo start page.
+2. View the department list, use the paginator to browse, and click **Add** or
+   the edit icon to create or edit a department.
 
-![Department Search UI](images/DepartmentSearch.png "Department Search UI")
+![Department Search](images/DepartmentSearch.png)
 
-### Raise Salaries
-1. Start the "Raise Salaries" process to execute the example salary update.
-2. This workflow runs a demo script that increases salaries for the included test data. Review results in the Person Search UI after execution.
+### Prepare Test Data
+1. The demo includes a simple test-data preparation UI to populate the demo
+   database with example entities used by the sample dialogs.
+
+![Testdata Preparation UI](images/Testdata.png)
+
+## Setup
+
+- Demo configuration: the demo module uses an in-memory demo datasource and
+  `hibernate.hbm2ddl.auto` is configured for create-drop in the demo. For
+  production, configure your datasource in `config/databases.yaml` and adjust
+  `persistence.xml` accordingly.
 
 ## Components
 
-### Maven artifacts
-1. com.axonivy.utils.persistence:persistence-utils
+### Exposed CALLABLE_SUB processes
+No CALLABLE_SUB process files found in the main module.
 
+### Form components
+No form components were detected in the main module.
+
+### Open API resources
+No public OpenAPI specs are available for this product.
+
+### Maven artifacts
+
+1. persistence-utils
 ```xml
 <dependency>
   <groupId>com.axonivy.utils.persistence</groupId>
@@ -42,8 +68,7 @@ Persistence Utils provides reusable components to simplify database access in Ax
 </dependency>
 ```
 
-2. com.axonivy.utils.persistence:persistence-utils-demo
-
+2. persistence-utils-demo
 ```xml
 <dependency>
   <groupId>com.axonivy.utils.persistence</groupId>
@@ -52,8 +77,7 @@ Persistence Utils provides reusable components to simplify database access in Ax
 </dependency>
 ```
 
-3. com.axonivy.utils.persistence:persistence-utils-demo-tool
-
+3. persistence-utils-demo-tool
 ```xml
 <dependency>
   <groupId>com.axonivy.utils.persistence</groupId>
