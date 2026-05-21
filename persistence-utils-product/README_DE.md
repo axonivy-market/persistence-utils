@@ -1,85 +1,112 @@
 # Persistence Utils
 
-Mit dieser Bibliothek vereinfachst du die Datenbankintegration für Axon Ivy-Prozesse. Die
-Bibliothek stellt dir wiederverwendbare DAOs, Such- und Abfragehilfen, Transaktions- und
-Entity-Manager-Utilities sowie Audit-/Historie-Unterstützung zur Verfügung und enthält ein
-Demo-Projekt mit Testdaten, mit dem du Funktionen schnell ausprobieren kannst.
+Persistence Utils ist eine Bibliothek, die auf der Java Persistence API (JPA) basiert und dir hilft, ein datenbankbezogenes Axon Ivy‑Projekt schnell zu starten. Sie stellt eine abstrakte DAO‑Hierarchie bereit, die komplexeren Datenbankzugriff ermöglicht und die Nutzung vereinfacht.
 
-### Wichtigste Funktionen
-- Vereinfachte Nutzung von JPA/Hibernate durch wiederverwendbare `GenericDAO`-Hilfen.
-- Serverseitiges Filtern, Sortieren und Paginierung über Lazy-Data-Modelle für große Tabellen.
-- Ivy-kompatibler Entity-Manager und Transaktions-Hilfen für sichere Prozessintegration.
-- Integrierte Audit-/Historie- und Validierungshilfen für auditable Entities.
-- Demo-Anwendung und Testdaten zum schnellen Validieren und Kennenlernen der Funktionen.
+Die Bibliothek unterstützt dich beim Erstellen von DAO‑Klassen für deine Entitäten, die alle APIs für den vollständigen Datenbankzugriff enthalten. Außerdem hilft sie, typische Entitätsklassen mit Boilerplate‑Anforderungen wie einfachen Audit‑Funktionen schnell zu erstellen.
+
+## Hauptmerkmale
+
+- Vereinfachter Datenbankzugriff mit wiederverwendbaren DAO‑Klassen, die Boilerplate‑Code reduzieren und die Entwicklung beschleunigen.
+- Schnelles Erstellen von Entitätsklassen mit Standardmustern (Auditing, Lifecycle‑Hooks).
+- Enthält Demo‑Module und Beispiel‑Workflows (Personensuche, Abteilungssuche, Gehaltserhöhungen) zur Veranschaulichung.
+- Bereitstellung als Maven‑Artefakte und IAR/JAR‑Pakete für einfache Installation und Workspace‑Import.
+- Konfigurierbare Rollen und ein variables Konfigurationsmodell, um verschiedene Umgebungen zu unterstützen.
+- JPA‑basierte Architektur, geeignet für komplexe Abfragen und skalierbare Persistenzanforderungen.
 
 ## Demo
 
-Nachfolgend findest du kurze, benutzerorientierte Workflows, die die Demo-Szenarien aus dem
-`persistence-utils-demo` Modul reproduzieren.
+Schau dir die Demo‑Implementierungen in den Demo‑Modulen `persistence-utils-demo` und `persistence-utils-demo-tool` an.
 
-### Personensuche
-1. Öffne die Demo und wähle auf der Startseite **Person Search** aus.
-2. Gib Suchbegriffe ein oder nutze die Spaltenfilter, um die Ergebnisse einzuschränken; die Liste
-   ist paginiert und unterstützt serverseitiges Sortieren und Filtern.
-3. Klicke auf eine Zeile oder den **Add**-Button, um den Bearbeitungsdialog zu öffnen, ändere
-   Felder und speichere deine Änderungen.
+### Demo‑Workflows
+
+#### Persistence Utils Demo (persistence-utils-demo)
+
+##### Personensuche
+
+1. Starte die Personensuche über das Demo‑Menü.
+2. Es öffnet sich ein Dialog, in dem du Suchkriterien (Name, Abteilung, …) eingeben kannst.
+3. Gib die Suchbegriffe ein und starte die Suche.
+4. Sieh dir die Ergebnisse an und wähle einen Eintrag zur Detailansicht aus.
 
 ![Personensuche](images/PersonSearch.png)
 
-### Abteilungssuche
-1. Öffne **Department Search** in der Demo.
-2. Sieh dir die Abteilungsliste an, nutze die Paginierung zum Blättern und klicke auf **Add** oder
-   das Bearbeiten-Symbol, um eine Abteilung anzulegen oder zu bearbeiten.
+##### Abteilungssuche
+
+1. Starte die Abteilungssuche über das Demo‑Menü.
+2. Es erscheint ein Auswahl‑Dialog mit Spalten und Filtern.
+3. Verwende die Filter, um Ergebnisse einzugrenzen, und klicke, um eine Abteilung zu bearbeiten oder anzusehen.
+4. Prüfe die Ergebnisse oder lege eine neue Abteilung an.
 
 ![Abteilungssuche](images/DepartmentSearch.png)
 
-### Testdaten vorbereiten
-1. Die Demo enthält eine einfache UI zur Testdatenaufbereitung, mit der du die Demo-Datenbank
-   mit Beispielentitäten befüllst.
+##### Gehaltserhöhungen
 
-![Testdaten-Aufbereitung](images/Testdata.png)
+1. Starte den Workflow „Gehaltserhöhungen“ über das Demo‑Menü.
+2. Bestätige die Aktion, um die konfigurierten Gehaltserhöhungen anzuwenden.
+3. Prüfe die Bestätigung und verifiziere die aktualisierten Gehälter im System.
+
+#### Persistence Utils Demo Tool (persistence-utils-demo-tool)
+
+##### Testaufgaben ausführen
+
+1. Starte „Testaufgaben ausführen“ im Demo‑Menü.
+2. Bestätige die Ausführung der Testaufgaben.
+3. Prüfe die Testergebnisse oder Logs nach Abschluss.
+
+![Testaufgaben ausführen](images/Testdata.png)
 
 ## Einrichtung
-- Demo-Konfiguration: Das Demo-Modul verwendet eine In-Memory-Datasource; `hibernate.hbm2ddl.auto`
-  ist im Demo für `create-drop` gesetzt. Für den produktiven Betrieb konfiguriere deine
-  Datasource in `config/databases.yaml` und passe gegebenenfalls `persistence.xml` an.
+
+- **Rollen:** Everybody (konfiguriert in config/roles.xml)
+- **OpenAPI:** No public OpenAPI specs delivered by this extension.
+
+### Variablen
+
+- Es wurden keine Variablen erkannt.
+
+- Für diesen Abschnitt wurden keine Informationen bereitgestellt.
 
 ## Komponenten
 
-### Exponierte CALLABLE_SUB-Prozesse
-- Dieses Produkt enthält keine CALLABLE_SUB-Prozessdateien im Hauptmodul.
+### Connector‑Prozesse
 
-### Formular-Komponenten
-- Im Hauptmodul wurden keine Formular-Komponenten entdeckt.
+- No connector processes delivered by this extension.
 
-### OpenAPI-Ressourcen
-- Für dieses Produkt sind keine öffentlichen OpenAPI-Spezifikationen verfügbar.
+### Formular‑Komponenten
 
-### Maven-Artefakte
+- No form components delivered by this extension.
 
-1. persistence-utils
+### Maven‑Artefakte
+
+1. com.axonivy.utils.persistence:persistence-utils
+
 ```xml
 <dependency>
   <groupId>com.axonivy.utils.persistence</groupId>
   <artifactId>persistence-utils</artifactId>
+  <version>@version@</version>
   <type>jar</type>
 </dependency>
 ```
 
-2. persistence-utils-demo
+2. com.axonivy.utils.persistence:persistence-utils-demo
+
 ```xml
 <dependency>
   <groupId>com.axonivy.utils.persistence</groupId>
   <artifactId>persistence-utils-demo</artifactId>
+  <version>@version@</version>
   <type>iar</type>
 </dependency>
 ```
 
-3. persistence-utils-demo-tool
+3. com.axonivy.utils.persistence:persistence-utils-demo-tool
+
 ```xml
 <dependency>
   <groupId>com.axonivy.utils.persistence</groupId>
   <artifactId>persistence-utils-demo-tool</artifactId>
+  <version>@version@</version>
   <type>iar</type>
 </dependency>
 ```
