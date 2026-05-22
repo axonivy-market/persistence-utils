@@ -1,112 +1,126 @@
 # Persistence Utils
 
-Persistence Utils ist eine Bibliothek, die auf der Java Persistence API (JPA) basiert und dir hilft, ein datenbankbezogenes Axon Ivy‑Projekt schnell zu starten. Sie stellt eine abstrakte DAO‑Hierarchie bereit, die komplexeren Datenbankzugriff ermöglicht und die Nutzung vereinfacht.
+Persistence Utils ist eine Bibliothek, die auf der Java Persistence API (JPA) basiert und dir hilft, ein datenbankbezogenes Axon Ivy-Projekt schnell zu starten. Sie stellt eine DAO-Abstraktionshierarchie bereit, die komplexere Datenbankzugriffe ermöglicht und die Nutzung vereinfacht.
 
-Die Bibliothek unterstützt dich beim Erstellen von DAO‑Klassen für deine Entitäten, die alle APIs für den vollständigen Datenbankzugriff enthalten. Außerdem hilft sie, typische Entitätsklassen mit Boilerplate‑Anforderungen wie einfachen Audit‑Funktionen schnell zu erstellen.
+Die Bibliothek unterstützt dich beim Erstellen von DAO-Klassen für deine Entities und beim Erzeugen typischer Entity-Klassen mit Boilerplate-Anforderungen, wie z. B. einfachen Audit-Feldern.
 
-## Hauptmerkmale
+**Wichtigste Funktionen**
 
-- Vereinfachter Datenbankzugriff mit wiederverwendbaren DAO‑Klassen, die Boilerplate‑Code reduzieren und die Entwicklung beschleunigen.
-- Schnelles Erstellen von Entitätsklassen mit Standardmustern (Auditing, Lifecycle‑Hooks).
-- Enthält Demo‑Module und Beispiel‑Workflows (Personensuche, Abteilungssuche, Gehaltserhöhungen) zur Veranschaulichung.
-- Bereitstellung als Maven‑Artefakte und IAR/JAR‑Pakete für einfache Installation und Workspace‑Import.
-- Konfigurierbare Rollen und ein variables Konfigurationsmodell, um verschiedene Umgebungen zu unterstützen.
-- JPA‑basierte Architektur, geeignet für komplexe Abfragen und skalierbare Persistenzanforderungen.
+- Vereinfache die Datenbankintegration für Axon Ivy-Projekte mit JPA-basierten Hilfsmitteln.
+- Biete eine DAO-Abstraktionsschicht, die Boilerplate reduziert und die Wartbarkeit verbessert.
+- Erzeuge gängige Entity-Klassen mit integriertem Audit (Audit-Feldern).
+- Enthält Demo-Module und Tools, die Entwicklung und Tests beschleunigen.
+- Liefere Maven-kompatible Installer und Abhängigkeiten für einfache Paketierung und Deployment.
+- Integriere Projektkonfiguration und rollenbasierte Zugriffssteuerung für sichere Datenoperationen.
 
 ## Demo
 
-Schau dir die Demo‑Implementierungen in den Demo‑Modulen `persistence-utils-demo` und `persistence-utils-demo-tool` an.
+Sieh dir die bereitgestellten Demo-Implementierungen in den Demo-Modulen an. Sie zeigen benutzerorientierte Workflows wie Personensuche, Abteilungssuche und Gehaltserhöhungen.
 
-### Demo‑Workflows
+### Demo-Workflows
 
 #### Persistence Utils Demo (persistence-utils-demo)
 
 ##### Personensuche
 
 1. Starte die Personensuche über das Demo‑Menü.
-2. Es öffnet sich ein Dialog, in dem du Suchkriterien (Name, Abteilung, …) eingeben kannst.
-3. Gib die Suchbegriffe ein und starte die Suche.
-4. Sieh dir die Ergebnisse an und wähle einen Eintrag zur Detailansicht aus.
+2. Es öffnet sich ein Dialog zur Personensuche mit einer durchsuchbaren Liste und Filtern.
+3. Gib Suchkriterien ein oder verwende die Filter, um Personen zu finden, und wähle eine Person zur Anzeige aus.
+4. Bearbeite oder speichere Personendaten; die Bestätigung zeigt die aktualisierten Werte an.
 
 ![Personensuche](images/PersonSearch.png)
 
 ##### Abteilungssuche
 
 1. Starte die Abteilungssuche über das Demo‑Menü.
-2. Es erscheint ein Auswahl‑Dialog mit Spalten und Filtern.
-3. Verwende die Filter, um Ergebnisse einzugrenzen, und klicke, um eine Abteilung zu bearbeiten oder anzusehen.
-4. Prüfe die Ergebnisse oder lege eine neue Abteilung an.
+2. Es öffnet sich ein Dialog mit der Abteilungsübersicht und zugehörigen Bedienelementen.
+3. Verwende Suche und Filter, um Abteilungen zu finden und Details zu prüfen.
+4. Bearbeite und speichere Änderungen; die Bestätigung zeigt die aktualisierten Daten an.
 
 ![Abteilungssuche](images/DepartmentSearch.png)
 
 ##### Gehaltserhöhungen
 
-1. Starte den Workflow „Gehaltserhöhungen“ über das Demo‑Menü.
-2. Bestätige die Aktion, um die konfigurierten Gehaltserhöhungen anzuwenden.
-3. Prüfe die Bestätigung und verifiziere die aktualisierten Gehälter im System.
+1. Starte die Gehaltserhöhungen über das Demo‑Menü.
+2. Die Demo führt eine Gehaltsaktualisierung auf Beispieldaten aus; bestätige die Aktion, wenn du dazu aufgefordert wirst.
+3. Prüfe die aktualisierten Gehaltswerte in der Personenliste oder in Berichten.
 
 #### Persistence Utils Demo Tool (persistence-utils-demo-tool)
 
 ##### Testaufgaben ausführen
 
-1. Starte „Testaufgaben ausführen“ im Demo‑Menü.
-2. Bestätige die Ausführung der Testaufgaben.
-3. Prüfe die Testergebnisse oder Logs nach Abschluss.
+1. Starte "Testaufgaben ausführen" über das Demo‑Menü.
+2. Es öffnet sich das Test Tasks‑Dialogfenster, in dem vordefinierte Testaktionen ausgeführt werden können.
+3. Führe Aufgaben aus und prüfe die Ergebnisse und Protokolle.
 
-![Testaufgaben ausführen](images/Testdata.png)
+![Testdaten](images/Testdata.png)
 
 ## Einrichtung
 
 - **Rollen:** Everybody (konfiguriert in config/roles.xml)
-- **OpenAPI:** No public OpenAPI specs delivered by this extension.
+- **OpenAPI:** Keine Informationen wurden für diesen Abschnitt geliefert.
 
 ### Variablen
 
-- Es wurden keine Variablen erkannt.
+```yaml
+# yaml-language-server: $schema=https://json-schema.axonivy.com/app/12.0.0/variables.json
+# == Variables ==
+# 
+# You can define here your project Variables.
+# If you want to define/override a Variable for a specific Environment, 
+# add an additional ‘variables.yaml’ file in a subdirectory in the ‘Config’ folder: 
+# '<project>/Config/_<environment>/variables.yaml
+#
+Variables:
+#  myVariable: value
+```
 
-- Für diesen Abschnitt wurden keine Informationen bereitgestellt.
+### Optionale Authentifizierungs- und Laufzeitabschnitte
+
+- Keine Informationen wurden für diesen Abschnitt geliefert.
 
 ## Komponenten
 
-### Connector‑Prozesse
+### Aufrufbare Unterprozesse
 
-- No connector processes delivered by this extension.
+- Keine Connector‑Prozesse wurden von dieser Erweiterung geliefert.
 
-### Formular‑Komponenten
+### Dialogkomponenten
 
-- No form components delivered by this extension.
+- Es wurden keine Formularkomponenten von dieser Erweiterung geliefert.
+
+### Webdienste
+
+- Keine Informationen wurden für diesen Abschnitt geliefert.
 
 ### Maven‑Artefakte
 
-1. com.axonivy.utils.persistence:persistence-utils
+1. persistence-utils
 
 ```xml
 <dependency>
   <groupId>com.axonivy.utils.persistence</groupId>
   <artifactId>persistence-utils</artifactId>
-  <version>@version@</version>
   <type>jar</type>
 </dependency>
 ```
 
-2. com.axonivy.utils.persistence:persistence-utils-demo
+2. persistence-utils-demo
 
 ```xml
 <dependency>
   <groupId>com.axonivy.utils.persistence</groupId>
   <artifactId>persistence-utils-demo</artifactId>
-  <version>@version@</version>
   <type>iar</type>
 </dependency>
 ```
 
-3. com.axonivy.utils.persistence:persistence-utils-demo-tool
+3. persistence-utils-demo-tool
 
 ```xml
 <dependency>
   <groupId>com.axonivy.utils.persistence</groupId>
   <artifactId>persistence-utils-demo-tool</artifactId>
-  <version>@version@</version>
   <type>iar</type>
 </dependency>
 ```
