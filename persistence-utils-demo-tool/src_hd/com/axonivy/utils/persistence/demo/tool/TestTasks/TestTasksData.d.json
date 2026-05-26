@@ -1,23 +1,17 @@
 {
-  "$schema" : "https://json-schema.axonivy.com/data-class/12.0.0/data-class.json",
+  "$schema" : "https://json-schema.axonivy.com/14.0-dev/project/data-class.json",
   "simpleName" : "TestTasksData",
   "namespace" : "com.axonivy.utils.persistence.demo.tool.TestTasks",
-  "isBusinessCaseData" : false,
   "fields" : [ {
-    "name" : "message",
-    "type" : "String",
-    "modifiers" : [ "PERSISTENT" ]
+    "name" : "message"
   }, {
     "name" : "clean",
-    "type" : "Boolean",
-    "modifiers" : [ "PERSISTENT" ]
+    "type" : "Boolean"
   }, {
     "name" : "showErrorDetails",
-    "type" : "Boolean",
-    "modifiers" : [ "PERSISTENT" ]
+    "type" : "Boolean"
   }, {
     "name" : "cleanReload",
-    "type" : "Boolean",
-    "modifiers" : [ "PERSISTENT" ]
+    "type" : "Boolean"
   } ]
 }

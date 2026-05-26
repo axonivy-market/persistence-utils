@@ -1,0 +1,12 @@
+# yaml-language-server: $schema=https://json-schema.axonivy.com/14.0-dev/config/persistence-2.json
+Persistence:
+  jpa_demo:
+    DataSource: jpa-demo
+    Managed:
+      Classes:
+        - com.axonivy.utils.persistence.demo.entities.Department
+        - com.axonivy.utils.persistence.demo.entities.Person
+    Properties:
+      hibernate.enable_lazy_load_no_trans: 'true'
+      hibernate.hbm2ddl.auto: create-drop
+      hibernate.id.new_generator_mappings: 'false'
