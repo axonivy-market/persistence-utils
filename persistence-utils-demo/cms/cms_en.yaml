@@ -13,12 +13,16 @@ Dialogs:
               department: Department
               departmentSearch: Department Search
               edit: Edit
-              info: |
+              info: |-
+                <h3>Search</h3>
                 <ul>
-                <li>Also showing logically deleted departments</li>
-                <li>Non-Lazy search with <code>findAll()</code>, i.e. search returns Department objects</li>
-                <li>Validation</li>
-                <li>Intentional possibility to see fatal error (caused by exception) when trying to save a new department with an already existing name</li>
+                  <li>Search is non-lazy and loads all departments upfront using <code>findAll()</code>.</li>
+                  <li>Results include complete Department objects, including logically deleted departments.</li>
+                </ul>
+
+                <h3>Validation</h3>
+                <ul>
+                  <li>Creating a department with a name that already exists intentionally triggers a fatal error (via an exception) to demonstrate system-level error handling.</li>
                 </ul>
               infoHeader: Departmentsearch, Features
               name: Name
@@ -35,13 +39,25 @@ Dialogs:
               departmentName: Department
               edit: Edit
               firstName: Firstname
-              info: |
+              info: |-
+                <h3>Search</h3>
                 <ul>
-                <li>Restriction to persons of the own department (except for role Administrator)</li>
-                <li>Lazy Search with <code>SearchFilter</code>, i.e. search returns Tuples</li>
-                <li>Validation with hard errors and additional warnings which can be applied with "save anyway"</li>
-                <li>Class-level validation warning, if Ivy user name is not firstname.lastname</li>
-                <li>Class-level validation error, if Ivy user name is not unique because it is used (including deleted users)</li>
+                  <li>All fields search for exact matches; the salary field matches values greater than or equal to the entered value.</li>
+                  <li>Search is lazy and returns results as you type.</li>
+                  <li>Results are restricted to persons within your own department. Administrators can search across all departments.</li>
+                </ul>
+
+                <h3>Validation</h3>
+                <p>Saving triggers both errors and warnings:</p>
+                <ul>
+                  <li>Hard errors must be resolved before saving.</li>
+                  <li>Warnings can be accepted by choosing <b>"Save anyway"</b>.</li>
+                </ul>
+
+                <h3>Class-level checks:</h3>
+                <ul>
+                  <li>A warning is shown if the Ivy username does not follow the format <code>firstname.lastname</code>.</li>
+                  <li>An error is shown if the Ivy username is already in use, including by deleted users.</li>
                 </ul>
               infoHeader: Personsearch, Features
               ivyUserName: Ivy Username

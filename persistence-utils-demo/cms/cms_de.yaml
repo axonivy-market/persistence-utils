@@ -13,12 +13,16 @@ Dialogs:
               department: Abteilung
               departmentSearch: Abteilungssuche
               edit: Editieren
-              info: |
+              info: |-
+                <h3>Suche</h3>
                 <ul>
-                <li>Zeigt auch logisch gelöschte Abteilungen</li>
-                <li>Non-Lazy Suche mit <code>findAll()</code>, d.h. die Suche liefert Department Objekte</li>
-                <li>Validierung</li>
-                <li>Beabsichtigte Möglichkeit einen Fatal-error zu erzeugen (aufgrund einer Exception), indem eine neue Abteilung mit einerm bereits existierenden Namen gespeichert wird</li>
+                  <li>Die Suche erfolgt nicht verzögert und lädt alle Abteilungen im Voraus über <code>findAll()</code>.</li>
+                  <li>Die Ergebnisse enthalten vollständige Department-Objekte, einschließlich logisch gelöschter Abteilungen.</li>
+                </ul>
+
+                <h3>Validierung</h3>
+                <ul>
+                  <li>Das Anlegen einer Abteilung mit einem bereits vorhandenen Namen löst absichtlich einen schwerwiegenden Fehler (durch eine Exception) aus, um die Behandlung von Systemfehlern zu demonstrieren.</li>
                 </ul>
               infoHeader: Abteilungssuche, Features
               name: Name
@@ -35,13 +39,25 @@ Dialogs:
               departmentName: Abteilung
               edit: Editieren
               firstName: Vorname
-              info: |
+              info: |-
+                <h3>Suche</h3>
                 <ul>
-                <li>Einschränkung auf Personen der eigenen Abteilung (ausgenommen Rolle Administrator)</li>
-                <li>Lazy Search mittels <code>SearchFilter</code>, d.h. die Suche liefert Tuples</li>
-                <li>Validierung mit harten Fehlern und zusätzlich Warnungen, die mit "Trotzdem speichern" übernommen werden können</li>
-                <li>Class-level Validierungswarnung falls Ivy user name nicht firstname.lastname entspricht</li>
-                <li>Class-level Validierungsfehler falls Ivy user name nicht eindeutig ist, weil er schon benutzt wird (inkl. gelöschte Benutzer)</li>
+                  <li>Alle Felder suchen nach exakten Übereinstimmungen; das Gehaltsfeld liefert Treffer mit einem Wert, der größer oder gleich dem eingegebenen Wert ist.</li>
+                  <li>Die Suche erfolgt verzögert und liefert Ergebnisse bereits während der Eingabe.</li>
+                  <li>Die Ergebnisse sind auf Personen in Ihrer eigenen Abteilung beschränkt. Administratoren können über alle Abteilungen hinweg suchen.</li>
+                </ul>
+
+                <h3>Validierung</h3>
+                <p>Beim Speichern werden sowohl Fehler als auch Warnungen geprüft:</p>
+                <ul>
+                  <li>Fehler müssen behoben werden, bevor gespeichert werden kann.</li>
+                  <li>Warnungen können durch Auswahl von <b>"Trotzdem speichern"</b> akzeptiert werden.</li>
+                </ul>
+
+                <h3>Prüfungen auf Klassenebene:</h3>
+                <ul>
+                  <li>Eine Warnung wird angezeigt, wenn der Ivy-Benutzername nicht dem Format <code>vorname.nachname</code> entspricht.</li>
+                  <li>Ein Fehler wird angezeigt, wenn der Ivy-Benutzername bereits verwendet wird – auch von gelöschten Benutzern.</li>
                 </ul>
               infoHeader: Personensuche, Features
               ivyUserName: Ivy Username
