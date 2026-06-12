@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://json-schema.axonivy.com/14.0-dev/config/persistence-2.json
+Persistence:
+  jpa_demo:
+    DataSource: jpa-demo-test
+    Managed:
+      Classes:
+        - com.axonivy.utils.persistence.demo.entities.Department
+        - com.axonivy.utils.persistence.demo.entities.Person
+    Properties:
+      hibernate.hbm2ddl.auto: create-drop
+  persistence_utils:
+    DataSource: persistence-utils-test
+    Managed:
+      Classes:
+        - com.axonivy.utils.persistence.entities.Car
+        - com.axonivy.utils.persistence.entities.Invoice
+        - com.axonivy.utils.persistence.entities.InvoicePosition
+        - com.axonivy.utils.persistence.entities.Producer
+        - com.axonivy.utils.persistence.entities.Product
+        - com.axonivy.utils.persistence.history.beans.History
+    Properties:
+      hibernate.hbm2ddl.auto: create-drop

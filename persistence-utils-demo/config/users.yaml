@@ -1,0 +1,6 @@
+# yaml-language-server: $schema=https://json-schema.axonivy.com/14.0-dev/config/users.json
+Users:
+  - Name: jpa_admin
+    Password: jpa_admin
+    Roles:
+      - Administrator
