@@ -125,7 +125,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 224, "y" : 480 }
+        "at" : { "x" : 224, "y" : 552 }
       },
       "connect" : [
         { "id" : "f15", "to" : "f13" }
@@ -134,7 +134,7 @@
       "id" : "f13",
       "type" : "TaskEnd",
       "visual" : {
-        "at" : { "x" : 352, "y" : 480 }
+        "at" : { "x" : 352, "y" : 552 }
       }
     }, {
       "id" : "f14",
@@ -153,12 +153,24 @@
         "demo"
       ],
       "visual" : {
-        "at" : { "x" : 96, "y" : 480 },
+        "at" : { "x" : 96, "y" : 552 },
         "labelOffset" : { "x" : 32, "y" : 37 }
       },
       "connect" : [
         { "id" : "f16", "to" : "f12" }
       ]
+    }, {
+      "id" : "f17",
+      "type" : "ProcessAnnotation",
+      "name" : [
+        "Salaries are increased at random. The behavior is controlled by two values in config.yaml:",
+        "• probability — the chance (in %) that a given person receives a raise.",
+        "• percentage — the raise amount applied to their current salary, in %."
+      ],
+      "visual" : {
+        "at" : { "x" : 228, "y" : 453 },
+        "size" : { "width" : 296, "height" : 118 }
+      }
     } ],
   "layout" : {
     "lanes" : [ {
@@ -169,7 +181,7 @@
         "size" : 192
       }, {
         "name" : "Raise Salary",
-        "size" : 192
+        "size" : 248
       } ]
   }
 }
