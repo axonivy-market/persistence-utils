@@ -16,13 +16,13 @@ Dialogs:
               info: |-
                 <h3>Search</h3>
                 <ul>
-                  <li>Search is non-lazy and loads all departments upfront using <code>findAll()</code>.</li>
-                  <li>Results include complete Department objects, including logically deleted departments.</li>
+                  <li>Search is non-lazy and loads all departments upfront via <code>findAll()</code>, returning full Department objects.</li>
+                  <li>Results include logically deleted departments.</li>
                 </ul>
 
                 <h3>Validation</h3>
                 <ul>
-                  <li>Creating a department with a name that already exists intentionally triggers a fatal error (via an exception) to demonstrate system-level error handling.</li>
+                  <li>Attempting to save a new department with an already existing name intentionally triggers a fatal error (caused by an exception), demonstrating system-level error handling.</li>
                 </ul>
               infoHeader: Departmentsearch, Features
               name: Name
@@ -57,7 +57,7 @@ Dialogs:
                 <h3>Class-level checks:</h3>
                 <ul>
                   <li>A warning is shown if the Ivy username does not follow the format <code>firstname.lastname</code>.</li>
-                  <li>An error is shown if the Ivy username is already in use, including by deleted users.</li>
+                  <li>An error is shown if the Ivy username is already in use — including by deleted users.</li>
                 </ul>
               infoHeader: Personsearch, Features
               ivyUserName: Ivy Username

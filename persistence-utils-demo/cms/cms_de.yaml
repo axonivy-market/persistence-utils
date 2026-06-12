@@ -16,13 +16,13 @@ Dialogs:
               info: |-
                 <h3>Suche</h3>
                 <ul>
-                  <li>Die Suche erfolgt nicht verzögert und lädt alle Abteilungen im Voraus über <code>findAll()</code>.</li>
-                  <li>Die Ergebnisse enthalten vollständige Department-Objekte, einschließlich logisch gelöschter Abteilungen.</li>
+                  <li>Die Suche erfolgt nicht verzögert und lädt alle Abteilungen im Voraus über <code>findAll()</code>, wobei vollständige Department-Objekte zurückgegeben werden.</li>
+                  <li>Die Ergebnisse enthalten logisch gelöschte Abteilungen.</li>
                 </ul>
 
                 <h3>Validierung</h3>
                 <ul>
-                  <li>Das Anlegen einer Abteilung mit einem bereits vorhandenen Namen löst absichtlich einen schwerwiegenden Fehler (durch eine Exception) aus, um die Behandlung von Systemfehlern zu demonstrieren.</li>
+                  <li>Der Versuch, eine neue Abteilung mit einem bereits existierenden Namen zu speichern, löst absichtlich einen schwerwiegenden Fehler aus (verursacht durch eine Exception) und demonstriert die Behandlung von Fehlern auf Systemebene.</li>
                 </ul>
               infoHeader: Abteilungssuche, Features
               name: Name
