@@ -192,9 +192,12 @@ public abstract class AbstractDAO implements BaseDAO {
 	public void rollbackTransaction() {
 		ManagedTransaction ta = threadLocalTransaction.get();
 		if (ta != null) {
-			ta.rollback();
-			threadLocalTransaction.remove();
-			currentTransactions.remove(Thread.currentThread());
+			try {
+				ta.rollback();
+			} finally {
+				threadLocalTransaction.remove();
+				currentTransactions.remove(Thread.currentThread());
+			}
 		}
 	}
 
@@ -257,9 +260,12 @@ public abstract class AbstractDAO implements BaseDAO {
 					Thread.currentThread().getId());
 			count = 0;
 			if (isActive) {
-				transaction.rollback();
+				try {
+					transaction.rollback();
+				} finally {
+					isActive = false;
+				}
 			}
-			isActive = false;
 		}
 
 		@Override

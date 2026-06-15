@@ -217,14 +217,17 @@ public class IvyEntityManager {
 				for (Entry<String, PersistenceContext> entry : persistenceContexts.entrySet()) {
 					PersistenceContext persistenceContext = entry.getValue();
 					Session session = persistenceContext.getHibernateSession();
-					if (session != null && session.isOpen()) {
-						session.clear();
-						session.close();
+					try {
+						if (session != null && session.isOpen()) {
+							session.clear();
+							session.close();
+						}
+					} finally {
+						persistenceContext.setHibernateSession(null);
+						LOG.debug("thread {0} context {1} closed entity manager: {2} because session nesting count was 0",
+								Thread.currentThread().getId(), entry.getKey(), session);
+						closedEm = true;
 					}
-					persistenceContext.setHibernateSession(null);
-					LOG.debug("thread {0} context {1} closed entity manager: {2} because session nesting count was 0",
-							Thread.currentThread().getId(), entry.getKey(), session);
-					closedEm = true;
 				}
 			}
 
