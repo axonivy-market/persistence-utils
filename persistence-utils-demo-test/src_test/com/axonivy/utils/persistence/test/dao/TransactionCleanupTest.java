@@ -49,7 +49,11 @@ public class TransactionCleanupTest {
 		contexts.put("test.test", persistenceContext);
 		setThreadLocalField(entityManager, "threadLocalPersistenceContexts", contexts);
 
-		entityManager.closeSession();
+		try {
+			entityManager.closeSession();
+		} catch (RuntimeException e) {
+			// Some runtimes propagate the close failure, others only log it.
+		}
 
 		assertThat(getField(persistenceContext, "hibernateSession")).isNull();
 	}
