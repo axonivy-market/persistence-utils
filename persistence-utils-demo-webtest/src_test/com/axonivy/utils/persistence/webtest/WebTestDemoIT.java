@@ -47,7 +47,7 @@ public class WebTestDemoIT {
 
 	@BeforeAll
 	public static void setup() {
-		int randomNumber = new Random().nextInt(999999999);
+		int randomNumber = new Random().nextInt(9999);
 		marketingDepartmentName = "Marketing" + randomNumber;
 		productionDepartmentName = "Production" + randomNumber;
 		firstName = "Peter" + randomNumber;
@@ -218,8 +218,12 @@ public class WebTestDemoIT {
 
 	private static void startLoginAsAdmin(WebAppFixture fixture) {
 		fixture.login("jpa_admin", "jpa_admin");
-
-		open(EngineUrl.base() + "/dev-workflow-ui/faces/profile.xhtml");
+		var profileUrl = EngineUrl.base();
+		if(!profileUrl.endsWith("/")) {
+			profileUrl+="/";
+		}
+		profileUrl += "dev-workflow-ui/faces/profile.xhtml";
+		open(profileUrl);
 		SelenideElement lang = $(By.name("profileForm:contentLanguage_editableInput")).shouldBe(enabled);
 		lang.clear();
 		lang.sendKeys("en");

@@ -12,6 +12,7 @@ import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseStream;
 import jakarta.faces.context.ResponseWriter;
+import jakarta.faces.lifecycle.Lifecycle;
 import jakarta.faces.render.RenderKit;
 
 import org.mockito.Mockito;
@@ -166,5 +167,10 @@ public class SimpleFacesContext extends FacesContext {
 		public FacesMessage getFacesMessage() {
 			return facesMessage;
 		}
+	}
+
+	@Override
+	public Lifecycle getLifecycle() {
+		throw new UnsupportedOperationException("Unimplemented method 'getLifecycle'");
 	}
 }

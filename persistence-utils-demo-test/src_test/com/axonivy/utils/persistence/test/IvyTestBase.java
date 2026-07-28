@@ -18,7 +18,7 @@ import com.axonivy.utils.persistence.demo.Logger;
 import com.axonivy.utils.persistence.demo.service.IvyService;
 import com.axonivy.utils.persistence.test.service.LogService;
 
-import ch.ivyteam.ivy.application.IApplication;
+import ch.ivyteam.ivy.application.app.Application;
 import ch.ivyteam.ivy.db.IExternalDatabase;
 import ch.ivyteam.ivy.db.IExternalDatabaseManager;
 import ch.ivyteam.ivy.environment.AppFixture;
@@ -51,7 +51,7 @@ public class IvyTestBase {
 	 */
 	public static IExternalDatabase getExternalDatabase(String name) {
 		return IExternalDatabaseManager.instance()
-				.getExternalDatabaseApplicationContext(IApplication.current())
+				.getExternalDatabaseApplicationContext(Application.current())
 				.getExternalDatabase(name);
 	}
 
@@ -214,7 +214,7 @@ public class IvyTestBase {
 	}
 
 	public void createUser(String ivyUserName, String firstName, String lastName, String password) {
-		ISecurityContext securityContext = IApplication.current().getSecurityContext();
+		ISecurityContext securityContext = Application.current().securityContext();
 
 		LOG.info("Creating user {0}", ivyUserName);
 		securityContext.users().create(NewUser.create(ivyUserName)
