@@ -47,7 +47,7 @@ public class WebTestDemoIT {
 
 	@BeforeAll
 	public static void setup() {
-		int randomNumber = new Random().nextInt(999999999);
+		int randomNumber = new Random().nextInt(9999);
 		marketingDepartmentName = "Marketing" + randomNumber;
 		productionDepartmentName = "Production" + randomNumber;
 		firstName = "Peter" + randomNumber;
