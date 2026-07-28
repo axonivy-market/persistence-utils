@@ -147,7 +147,7 @@ public class ValidationService {
 			if(groupArray.length == 0) {
 				groupArray = new Class<?>[]{DefaultGroup.class};
 			}
-			Validator<Object> validator = Validation.buildDefaultValidatorFactory().getValidator();
+			Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 			try {
 				constraintViolations = validator.validate(entity, groupArray);
 			} catch (Exception e) {

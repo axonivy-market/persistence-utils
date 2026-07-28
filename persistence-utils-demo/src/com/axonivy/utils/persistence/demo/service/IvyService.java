@@ -15,7 +15,7 @@ import com.axonivy.utils.persistence.demo.Logger;
 import com.axonivy.utils.persistence.demo.enums.Role;
 import com.axonivy.utils.persistence.demo.ivy.CustomField;
 
-import ch.ivyteam.ivy.application.IApplication;
+import ch.ivyteam.ivy.application.app.Application;
 import ch.ivyteam.ivy.environment.Ivy;
 import ch.ivyteam.ivy.process.model.value.SignalCode;
 import ch.ivyteam.ivy.security.IRole;
@@ -88,7 +88,7 @@ public class IvyService {
 	 * @return
 	 */
 	public static long getApplicationId() {
-		return IApplication.current().getId();
+		return Application.current().id();
 	}
 
 	/**

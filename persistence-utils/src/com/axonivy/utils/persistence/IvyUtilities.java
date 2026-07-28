@@ -7,7 +7,7 @@ import java.util.function.Function;
 
 import com.axonivy.utils.persistence.logging.Logger;
 
-import ch.ivyteam.ivy.application.IApplication;
+import ch.ivyteam.ivy.application.app.Application;
 import ch.ivyteam.ivy.environment.Ivy;
 import ch.ivyteam.ivy.runtime.IvyRuntime;
 import ch.ivyteam.ivy.security.IRole;
@@ -129,13 +129,8 @@ public class IvyUtilities {
 	 * @param application the application
 	 * @return true if the application is running in Axon Ivy Designer
 	 */
-	public static boolean isDesigner(IApplication application) {
-		try {
-			return asSystem(() -> IApplication.DESIGNER_APPLICATION_NAME.equalsIgnoreCase(application.getName()));
-		} catch (Exception e) {
-			LOG.warn("Could not check whether app is designer, returning false", e);
-		}
-		return false;
+	public static boolean isDesigner(Application application) {
+		return application.securityContext().isDevMode();
 	}
 
 }
