@@ -3,8 +3,8 @@ package com.axonivy.utils.persistence.test;
 import java.util.Collection;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.persistence.Tuple;
 
 import org.apache.commons.lang.StringUtils;

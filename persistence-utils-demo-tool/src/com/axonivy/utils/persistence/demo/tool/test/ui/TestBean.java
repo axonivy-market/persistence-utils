@@ -1,9 +1,10 @@
 package com.axonivy.utils.persistence.demo.tool.test.ui;
 
+import java.io.Serializable;
 import java.io.FileNotFoundException;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import jakarta.inject.Named;
+import jakarta.faces.view.ViewScoped;
 
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -11,9 +12,9 @@ import org.primefaces.model.StreamedContent;
 import com.axonivy.utils.persistence.demo.tool.test.service.TestService;
 
 
-@ManagedBean(name = "test")
+@Named(value = "test")
 @ViewScoped
-public class TestBean {
+public class TestBean implements Serializable {
 
 	public StreamedContent getDBExport() throws FileNotFoundException {
 
