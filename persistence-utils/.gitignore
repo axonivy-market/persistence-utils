@@ -9,6 +9,3 @@ Thumbs.db
 hs_err_pid*
 
 # ivy
-src_generated/dataclass/
-src_generated/repo/
-src_generated/wsprocess/
