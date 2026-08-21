@@ -7,7 +7,7 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.persistence.Tuple;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.hsqldb.util.DatabaseManagerSwing;
 import org.junit.jupiter.api.AfterAll;

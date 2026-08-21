@@ -122,8 +122,7 @@ public class WebTestDemoIT {
 
 		$(By.id("personForm:salary_input")).shouldBe(enabled).sendKeys("1111900");
 
-		$(By.id("personForm:department")).click();
-		$(By.id("personForm:department_items")).$$(By.tagName("li")).find(text(productionDepartmentName)).click();
+		selectDepartment(productionDepartmentName);
 
 		clickOnSavePersonButton();
 
@@ -191,9 +190,11 @@ public class WebTestDemoIT {
 	}
 
 	private void selectMaritalStatus(String status) {
-		$(By.id("personForm:maritalStatus")).click();
-		$(By.id("personForm:maritalStatus_items")).$$(By.tagName("li")).find(text(status)).click();
-		$(By.id("personForm:maritalStatus_items")).shouldBe(hidden);
+		PrimeUi.selectOne(By.id("personForm:maritalStatus")).selectItemByLabel(status);
+	}
+
+	private void selectDepartment(String department) {
+		PrimeUi.selectOne(By.id("personForm:department")).selectItemByLabel(department);
 	}
 
 	private void clickOnAddButton() {
