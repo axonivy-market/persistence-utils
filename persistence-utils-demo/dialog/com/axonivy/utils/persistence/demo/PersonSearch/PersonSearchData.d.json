@@ -3,10 +3,12 @@
   "simpleName" : "PersonSearchData",
   "namespace" : "com.axonivy.utils.persistence.demo.PersonSearch",
   "fields" : [ {
-    "name" : "personId"
+    "name" : "personId",
+    "modifiers" : [ ]
   }, {
     "name" : "secondSave",
-    "type" : "Boolean"
+    "type" : "Boolean",
+    "modifiers" : [ ]
   }, {
     "name" : "ctrl",
     "type" : "com.axonivy.utils.persistence.demo.ui.PersonSearchCtrl",
