@@ -3,15 +3,19 @@
   "simpleName" : "TestTasksData",
   "namespace" : "com.axonivy.utils.persistence.demo.tool.TestTasks",
   "fields" : [ {
-    "name" : "message"
+    "name" : "message",
+    "modifiers" : [ ]
   }, {
     "name" : "clean",
-    "type" : "Boolean"
+    "type" : "Boolean",
+    "modifiers" : [ ]
   }, {
     "name" : "showErrorDetails",
-    "type" : "Boolean"
+    "type" : "Boolean",
+    "modifiers" : [ ]
   }, {
     "name" : "cleanReload",
-    "type" : "Boolean"
+    "type" : "Boolean",
+    "modifiers" : [ ]
   } ]
 }

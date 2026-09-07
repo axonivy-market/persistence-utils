@@ -3,10 +3,12 @@
   "simpleName" : "DepartmentSearchData",
   "namespace" : "com.axonivy.utils.persistence.demo.DepartmentSearch",
   "fields" : [ {
-    "name" : "departmentId"
+    "name" : "departmentId",
+    "modifiers" : [ ]
   }, {
     "name" : "secondSave",
-    "type" : "Boolean"
+    "type" : "Boolean",
+    "modifiers" : [ ]
   }, {
     "name" : "ctrl",
     "type" : "com.axonivy.utils.persistence.demo.ui.DepartmentSearchCtrl",

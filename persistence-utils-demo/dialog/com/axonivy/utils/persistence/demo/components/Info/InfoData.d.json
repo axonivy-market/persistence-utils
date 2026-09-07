@@ -3,6 +3,7 @@
   "simpleName" : "InfoData",
   "namespace" : "com.axonivy.utils.persistence.demo.components.Info",
   "fields" : [ {
-    "name" : "value"
+    "name" : "value",
+    "modifiers" : [ ]
   } ]
 }
