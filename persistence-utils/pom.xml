@@ -24,9 +24,8 @@
       <artifactId>ivy-api</artifactId>
     </dependency>
     <dependency>
-      <groupId>commons-beanutils</groupId>
-      <artifactId>commons-beanutils</artifactId>
-      <scope>provided</scope>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-beanutils2</artifactId>
     </dependency>
   </dependencies>
   <repositories>
