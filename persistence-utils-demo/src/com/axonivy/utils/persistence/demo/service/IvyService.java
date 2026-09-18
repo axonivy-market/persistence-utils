@@ -357,7 +357,7 @@ public class IvyService {
 	 * @param signalCode
 	 */
 	public static void sendSignal(String signalCode) {
-		Ivy.wf().signals().send(new SignalCode(signalCode));
+		Ivy.wf().signals().send(SignalCode.of(signalCode));
 	}
 
 	/**
