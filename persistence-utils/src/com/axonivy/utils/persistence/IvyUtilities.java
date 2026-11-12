@@ -124,7 +124,7 @@ public class IvyUtilities {
 	}
 
 	/**
-	 * Checks if given {@link IApplication} is designer.
+	 * Checks if given {@link Application} is designer.
 	 *
 	 * @param application the application
 	 * @return true if the application is running in Axon Ivy Designer
