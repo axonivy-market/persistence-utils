@@ -253,7 +253,7 @@ public class IvyService {
 				IRole role = findRole(roleName);
 
 				if (role != null) {
-					if(Ivy.session().hasRole(role, true)) {
+					if(Ivy.session().hasRole(role)) {
 						hasRole = true;
 						break;
 					}

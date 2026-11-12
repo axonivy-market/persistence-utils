@@ -105,7 +105,7 @@ public class SearchFilterTest extends DemoTestBase {
 
 
 		LOG.info("Test in German");
-		try (SessionLocale sessionLocale = SessionLocale.get(Locale.GERMAN)) {
+		try (var _ = SessionLocale.get(Locale.GERMAN)) {
 			var tuples = personDAO.findBySearchFilter(filter);
 
 			var set = tuples.stream().map(t -> t.get(1)).collect(Collectors.toSet());
@@ -123,7 +123,7 @@ public class SearchFilterTest extends DemoTestBase {
 				.add(PersonSearchField.MARITAL_STATUS_CONTAINS, "Partner");
 
 		LOG.info("Test in German");
-		try (SessionLocale sessionLocale = SessionLocale.get(Locale.GERMAN)) {
+		try (var _ = SessionLocale.get(Locale.GERMAN)) {
 			var tuples = personDAO.findBySearchFilter(filter);
 
 			var set = tuples.stream().map(t -> t.get(1)).collect(Collectors.toSet());
@@ -142,13 +142,13 @@ public class SearchFilterTest extends DemoTestBase {
 		filter.addSort(PersonSearchField.MARITAL_STATUS, true);
 
 		LOG.info("Test in German");
-		try (SessionLocale sessionLocale = SessionLocale.get(Locale.GERMAN)) {
+		try (var _ = SessionLocale.get(Locale.GERMAN)) {
 			var tuples = personDAO.findBySearchFilter(filter);
 			logTuples("All in german", tuples, -30);
 			assertThat(assertOrder(cmsName(tuples, 1), true).size()).isGreaterThan(1);
 		}
 		LOG.info("Test in English");
-		try (SessionLocale sessionLocale = SessionLocale.get(Locale.ENGLISH)) {
+		try (var _ = SessionLocale.get(Locale.ENGLISH)) {
 			var tuples = personDAO.findBySearchFilter(filter);
 			assertThat(assertOrder(cmsName(tuples, 1), true).size()).isGreaterThan(1);
 		}
@@ -160,12 +160,12 @@ public class SearchFilterTest extends DemoTestBase {
 		filter.addSort(PersonSearchField.MARITAL_STATUS, false);
 
 		LOG.info("Test in German");
-		try (SessionLocale sessionLocale = SessionLocale.get(Locale.GERMAN)) {
+		try (var _ = SessionLocale.get(Locale.GERMAN)) {
 			var tuples = personDAO.findBySearchFilter(filter);
 			assertThat(assertOrder(cmsName(tuples, 1), false).size()).isGreaterThan(1);
 		}
 		LOG.info("Test in English");
-		try (SessionLocale sessionLocale = SessionLocale.get(Locale.ENGLISH)) {
+		try (var _ = SessionLocale.get(Locale.ENGLISH)) {
 			var tuples = personDAO.findBySearchFilter(filter);
 			assertThat(assertOrder(cmsName(tuples, 1), false).size()).isGreaterThan(1);
 		}

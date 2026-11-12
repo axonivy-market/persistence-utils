@@ -365,7 +365,7 @@ public class ProductDAOTest extends DemoTestBase {
 
 			Expression<String> path = ProductDAO.getExpression(null, q.r, Product_.name);
 			q.q.where(q.c.like(path, "%Samsung%"));
-			q.q.multiselect(path);
+			q.q.select(q.c.tuple(path));
 			List<Tuple> tuples = productDAO.findByCriteria(q);
 
 			assertThat(tuples).isNotEmpty();
@@ -381,7 +381,8 @@ public class ProductDAOTest extends DemoTestBase {
 				CriteriaQueryGenericContext<Product, Long> countQueryContext = productDAO.initializeQuery(Product.class,
 						Long.class);) {
 
-			whereNameLikeSamsung(q);
+			Expression<String> path = whereNameLikeSamsung(q);
+			q.q.select(q.c.tuple(path));
 			List<Tuple> tuples = productDAO.findByCriteria(q);
 
 			whereNameLikeSamsung(countQueryContext);
@@ -393,10 +394,10 @@ public class ProductDAOTest extends DemoTestBase {
 		productDAO.deleteAll(products);
 	}
 
-	private void whereNameLikeSamsung(CriteriaQueryGenericContext<Product, ?> q) {
+	private Expression<String> whereNameLikeSamsung(CriteriaQueryGenericContext<Product, ?> q) {
 		Expression<String> path = ProductDAO.getExpression(null, q.r, Product_.name);
 		q.q.where(q.c.like(path, "%Samsung%"));
-		q.q.multiselect(path);
+		return path;
 	}
 
 	@Test

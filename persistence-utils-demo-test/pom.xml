@@ -79,11 +79,6 @@
         <groupId>com.axonivy.ivy.ci</groupId>
         <artifactId>project-build-plugin</artifactId>
         <extensions>true</extensions>
-        <configuration>
-          <compilerOptions>
-            <compilerOption>-XprintProcessorInfo</compilerOption>
-          </compilerOptions>
-        </configuration>
       </plugin>
     </plugins>
   </build>
