@@ -14,8 +14,8 @@
   <packaging>iar</packaging>
   <dependencies>
     <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-jpamodelgen</artifactId>
+      <groupId>org.hibernate.orm</groupId>
+      <artifactId>hibernate-processor</artifactId>
       <version>7.4.15.Final</version>
       <scope>provided</scope>
     </dependency>

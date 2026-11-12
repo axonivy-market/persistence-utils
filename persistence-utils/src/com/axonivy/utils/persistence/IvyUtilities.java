@@ -9,7 +9,6 @@ import com.axonivy.utils.persistence.logging.Logger;
 
 import ch.ivyteam.ivy.application.app.Application;
 import ch.ivyteam.ivy.environment.Ivy;
-import ch.ivyteam.ivy.runtime.IvyRuntime;
 import ch.ivyteam.ivy.security.IRole;
 import ch.ivyteam.ivy.security.ISecurityContext;
 import ch.ivyteam.ivy.security.exec.Sudo;
@@ -113,18 +112,7 @@ public class IvyUtilities {
 	}
 
 	/**
-	 * Check if this program is running in Axon Ivy Designer or not
-	 *
-	 * @deprecated use {@link IvyRuntime#isDesigner()}
-	 * @return true if this program is running in Axon Ivy Designer
-	 */
-	@Deprecated
-	public static boolean isDesigner() {
-		return IvyRuntime.isDesigner();
-	}
-
-	/**
-	 * Checks if given {@link IApplication} is designer.
+	 * Checks if given {@link Application} is designer.
 	 *
 	 * @param application the application
 	 * @return true if the application is running in Axon Ivy Designer
