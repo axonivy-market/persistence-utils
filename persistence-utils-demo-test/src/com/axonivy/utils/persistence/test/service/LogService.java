@@ -65,8 +65,8 @@ public class LogService {
 		appenderLog(c -> ConsoleAppender.newBuilder()
 				.setName(name)
 				.setLayout(PatternLayout.newBuilder()//
-						.withPattern(LOGFORMAT)
-						.withConfiguration(c)
+						.setPattern(LOGFORMAT)
+						.setConfiguration(c)
 						.build())
 				.setConfiguration(c)
 				.build(), globalLevel, loggerNames);
@@ -104,7 +104,7 @@ public class LogService {
 	public Function<Configuration, Appender> consoleAppenderSupplier(String pattern) {
 		return c -> ConsoleAppender.newBuilder()
 				.setName("stdout")
-				.setLayout(PatternLayout.newBuilder().withPattern(pattern).withConfiguration(c).build())
+				.setLayout(PatternLayout.newBuilder().setPattern(pattern).setConfiguration(c).build())
 				.setConfiguration(c)
 				.build();
 	}
@@ -123,7 +123,7 @@ public class LogService {
 		return c -> OutputStreamAppender.newBuilder()
 				.setName(name)
 				.setTarget(stream)
-				.setLayout(PatternLayout.newBuilder().withPattern(pattern).withConfiguration(c).build())
+				.setLayout(PatternLayout.newBuilder().setPattern(pattern).setConfiguration(c).build())
 				.setConfiguration(c)
 				.build();
 	}
@@ -153,10 +153,10 @@ public class LogService {
 		if(loggerLevels != null) {
 			for (LoggerLevel loggerLevel : loggerLevels) {
 				LoggerConfig loggerConfig = LoggerConfig.newBuilder()
-						.withAdditivity(loggerLevel.isAdditivity())
-						.withLevel(loggerLevel.getLevel())
-						.withLoggerName(loggerLevel.getName())
-						.withConfig(configuration)
+						.setAdditivity(loggerLevel.isAdditivity())
+						.setLevel(loggerLevel.getLevel())
+						.setLoggerName(loggerLevel.getName())
+						.setConfig(configuration)
 						.build();
 				loggerConfig.addAppender(appender, null, null);
 				configuration.addLogger(loggerLevel.getName(), loggerConfig);
@@ -219,10 +219,10 @@ public class LogService {
 			// remove, if already there
 			configuration.removeLogger(loggerLevel.getName());
 			LoggerConfig loggerConfig = LoggerConfig.newBuilder()
-					.withAdditivity(true)
-					.withLevel(loggerLevel.getLevel())
-					.withLoggerName(loggerLevel.getName())
-					.withConfig(configuration)
+					.setAdditivity(true)
+					.setLevel(loggerLevel.getLevel())
+					.setLoggerName(loggerLevel.getName())
+					.setConfig(configuration)
 					.build();
 			loggerConfig.addAppender(appender, null, null);
 			configuration.addLogger(loggerLevel.getName(), loggerConfig);

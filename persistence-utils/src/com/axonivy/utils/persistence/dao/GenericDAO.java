@@ -22,26 +22,6 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceException;
-import jakarta.persistence.Query;
-import jakarta.persistence.Tuple;
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaBuilder.In;
-import jakarta.persistence.criteria.CriteriaDelete;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.CriteriaUpdate;
-import jakarta.persistence.criteria.Expression;
-import jakarta.persistence.criteria.Order;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import jakarta.persistence.metamodel.Attribute;
-import jakarta.persistence.metamodel.EntityType;
-import jakarta.persistence.metamodel.Metamodel;
-import jakarta.persistence.metamodel.SingularAttribute;
-import jakarta.transaction.TransactionRolledbackException;
-
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -72,6 +52,27 @@ import com.axonivy.utils.persistence.search.FilterPredicate;
 import com.axonivy.utils.persistence.search.FindByExample;
 import com.axonivy.utils.persistence.search.SearchFilter;
 import com.axonivy.utils.persistence.service.EnumService;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceException;
+import jakarta.persistence.Query;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
+import jakarta.persistence.criteria.CriteriaDelete;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.CriteriaUpdate;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Order;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.metamodel.Attribute;
+import jakarta.persistence.metamodel.EntityType;
+import jakarta.persistence.metamodel.Metamodel;
+import jakarta.persistence.metamodel.SingularAttribute;
+import jakarta.transaction.TransactionRolledbackException;
 
 /**
  * @author Various People
@@ -440,7 +441,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 * @return entity with specified id
 	 */
 	public T findById(Serializable id) {
-		try (AutoCloseable closeableSession = beginSession()) {
+		try (var _ = beginSession()) {
 			T bean;
 			bean = findInEM(getType(), id);
 			return bean;
@@ -563,7 +564,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 		final Long count;
 		if (f != null) {
 			CriteriaQueryGenericContext<T, Long> tmpQuery = f;
-			try (AutoCloseable closeableSession = beginSession()) {
+			try (var _ = beginSession()) {
 				tmpQuery = new CriteriaQueryGenericContext<T, Long>(tmpQuery) { // a temporary copy so that the
 					// definitive query is not changed
 					@Override
@@ -572,7 +573,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 					}
 				};
 
-				tmpQuery.q.multiselect(tmpQuery.c.countDistinct(tmpQuery.r));
+				tmpQuery.q.select(tmpQuery.c.countDistinct(tmpQuery.r));
 
 				count = findByCriteriaInternal(tmpQuery).stream().findFirst().orElse(0L);
 			} catch (Exception e) {
@@ -607,7 +608,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 */
 	private <U> List<U> findByCriteriaInternal(CriteriaQueryGenericContext<T, U> ctx) {
 		LocalTime startOfMeasurements = LocalTime.now();
-		try (AutoCloseable au = beginSession()) {
+		try (var _ = beginSession()) {
 
 			QuerySettings<T> querySettings = ctx.getQuerySettings();
 
@@ -686,12 +687,13 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 */
 	public long updateRawByCriteria(UpdateQueryGenericContext<T> criteriaFactory) {
 		LocalTime startOfMeasurements = LocalTime.now();
-		try (AutoCloseable au = beginSession();) {
+		try (var _ = beginSession();) {
 			Boolean[] isError = new Boolean[] { true };
-			try (AutoCloseTransaction autoclose = beginTransaction(isError)) {
+			try (var _ = beginTransaction(isError)) {
 
 				manipulateUpdateQuery(criteriaFactory);
-				Query query = getEM().createQuery(criteriaFactory.u);
+				EntityManager em = getEM();
+				Query query = em.createQuery(criteriaFactory.u);
 				int result = query.executeUpdate();
 
 				if (LOG.isDebugEnabled()) {
@@ -749,11 +751,12 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	public long deletePhysicallyRawByCriteria(DeleteQueryGenericContext<T> criteriaFactory) {
 		LocalTime startOfMeasurements = LocalTime.now();
 
-		try (AutoCloseable au = beginSession();) {
+		try (var _ = beginSession();) {
 			Boolean[] isError = new Boolean[] { true };
 
-			try (AutoCloseTransaction autoclose = beginTransaction(isError)) {
-				Query query = getEM().createQuery(criteriaFactory.d);
+			try (var _ = beginTransaction(isError)) {
+				EntityManager em = getEM();
+				Query query = em.createQuery(criteriaFactory.d);
 				int result = query.executeUpdate();
 
 				if (LOG.isDebugEnabled()) {
@@ -1003,7 +1006,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 
 		UpdateInformation newUpdateInformation = new UpdateInformation(tmpBean, type, tmpBean.getSessionUsername());
 
-		try (AutoCloseable closeableSession = beginSession()) {
+		try (var _ = beginSession()) {
 			beginTransaction();
 
 			handleUpdatingAudit(toBeMergedBean, current, type);
@@ -1110,7 +1113,6 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 		return handler;
 	}
 
-	@SuppressWarnings("unchecked")
 	protected T removeBean(T oldBean) {
 		T bean = oldBean;
 
@@ -1151,7 +1153,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	public List<T> saveAll(List<T> beans) throws TransactionRolledbackException {
 		final Boolean[] errorFlag = new Boolean[] { true };// per default we assume an error can happen, and set it to
 		// false only at the end
-		try (AutoCloseable autocloseSession = beginSession()) {
+		try (var _ = beginSession()) {
 			startTransactionAndSaveList(beans, errorFlag);
 		} catch (Exception e) {
 			LOG.error("Error while calling saveAll", e);
@@ -1162,7 +1164,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	}
 
 	private void startTransactionAndSaveList(List<T> beans, final Boolean[] errorFlag) throws TransactionRolledbackException {
-		try (AutoCloseTransaction autocloseTransaction = beginTransaction(errorFlag)) {
+		try (var _ = beginTransaction(errorFlag)) {
 			for (ListIterator<T> iter = beans.listIterator(); iter.hasNext();) {
 				T bean = iter.next();
 				bean = save(bean);
@@ -1190,8 +1192,8 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 */
 	public List<T> deleteAll(List<T> beans) {
 		final Boolean[] errorFlag = new Boolean[] { true };
-		try (AutoCloseable autocloseSession = beginSession()) {
-			try (AutoCloseTransaction autocloseTransaction = beginTransaction(errorFlag)) {
+		try (var _ = beginSession()) {
+			try (var _ = beginTransaction(errorFlag)) {
 				if (beans != null) {
 					for (T bean : beans) {
 						delete(bean);
@@ -1225,9 +1227,9 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 */
 	public final T deleteCascade(T bean, CascadeDelete<T> cascadeDelete) {
 		T modifiedBean = bean;
-		try (AutoCloseable closeableSession = beginSession()) {
+		try (var _ = beginSession()) {
 			final Boolean[] isError = new Boolean[] { true };
-			try (AutoCloseTransaction closeableTransaction = beginTransaction(isError)) {
+			try (var _ = beginTransaction(isError)) {
 				cascadeDelete.deleteChildren(modifiedBean);
 				modifiedBean = delete(modifiedBean);
 				isError[0] = false;
@@ -1256,8 +1258,8 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 	 */
 	public List<T> deleteAllCascade(List<T> beans, CascadeDelete<T> cascadeDelete) {
 		final Boolean[] errorFlag = new Boolean[] { true };
-		try (AutoCloseable autocloseSession = beginSession()) {
-			try (AutoCloseTransaction autocloseTransaction = beginTransaction(errorFlag)) {
+		try (var _ = beginSession()) {
+			try (var _ = beginTransaction(errorFlag)) {
 				if (beans != null) {
 					for (T bean : beans) {
 						deleteCascade(bean, cascadeDelete);
@@ -1380,7 +1382,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 
 			// Build query from all predicates and selections and orders.
 			query.q.where(totalAps.getPredicatesArray());
-			query.q.multiselect(totalAps.getSelectionsArray());
+			query.q.select(query.c.tuple(totalAps.getSelectionsArray()));
 			query.q.orderBy(totalAps.getOrders());
 
 			LOG.debug("query: {0}", query);
@@ -1457,7 +1459,7 @@ public abstract class GenericDAO<M extends GenericEntity_, T extends GenericEnti
 			query.q.where(totalAps.getPredicatesArray());
 
 			var countEx = distinct ? query.c.countDistinct(query.r) : query.c.count(query.r);
-			query.q.multiselect(countEx);
+			query.q.select(countEx);
 
 			long result = forceSingleResult(findByCriteria(query));
 

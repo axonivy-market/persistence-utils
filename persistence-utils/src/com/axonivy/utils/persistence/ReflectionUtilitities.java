@@ -158,7 +158,6 @@ public class ReflectionUtilitities {
 	 */
 	public static List<String> getPrefixedMethodNames(Class<?> clazz,
 			String prefix) {
-		@SuppressWarnings("unchecked")
 		Set<String> methodNameSet = new HashSet<>(CollectionUtils.collect(
 				getPrefixedMethods(clazz, prefix),
 				method -> ((Method) method).getName()));
