@@ -116,7 +116,7 @@
 									<i class="fa fa-trash" aria-hidden="true" />
 									<p:confirm
 										header="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/deleteHeader')}"
-										message="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/deleteMessage', [personTuple.get(2), personTuple.get(3)])}"
+										message="#{ivy.cms.co('/Dialogs/com/axonivy/demo/jpa_demo/core/PersonSearch/deleteMessage', [person.get('FIRST_NAME'), person.get('LAST_NAME')])}"
 										icon="pi pi-exclamation-triangle" />
 								</p:commandLink>
 							</p:column>

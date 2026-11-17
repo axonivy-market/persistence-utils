@@ -146,6 +146,8 @@ public class Logger implements ILogger {
 		log(Level.FATAL, formattedMessage, throwable, args);
 	}
 
+	// IvyRuntime.isDesigner() is marked for removal, but no public replacement exists in the Ivy 14 API
+	@SuppressWarnings("removal")
 	protected void ensureInitialized() {
 		if(!initialized) {
 			synchronized (Logger.class) {
