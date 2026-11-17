@@ -123,7 +123,7 @@ public class ProducerDAOTest extends DemoTestBase {
 				Tuple.class)) {
 			Expression<String> path1 = ProducerDAO.getExpression(null, q.r, Producer_.name);
 			q.q.where(q.c.like(path1, "axon"));
-			q.q.multiselect(path1);
+			q.q.select(q.c.tuple(path1));
 			List<Tuple> tuples = producerDAO.findByCriteria(q);
 			assertThat(tuples).as("Found exactly one entry").hasSize(1);
 			assertThat(tuples.get(0).get(0)).as("Name of entry match").isEqualTo("axon");

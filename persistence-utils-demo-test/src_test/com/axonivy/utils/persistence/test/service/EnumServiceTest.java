@@ -33,12 +33,12 @@ public class EnumServiceTest extends DemoTestBase {
 
 	@Test
 	public void testSortingEnum() {
-		try (LocaleSetter localeSetter = LocaleSetter.set(Locale.ENGLISH)) {
+		try (var _ = LocaleSetter.set(Locale.ENGLISH)) {
 			List<Entry<TestEnum, String>> sorted = EnumService.getSortedByCmsName(TestEnum.class);
 
 			assertThat(sorted.stream().map(e -> e.getKey()).toList()).containsExactly(TestEnum.ONE, TestEnum.THREE, TestEnum.TWO);
 		}
-		try (LocaleSetter localeSetter = LocaleSetter.set(Locale.GERMAN)) {
+		try (var _ = LocaleSetter.set(Locale.GERMAN)) {
 			List<Entry<TestEnum, String>> sorted = EnumService.getSortedByCmsName(TestEnum.class);
 
 			assertThat(sorted.stream().map(e -> e.getKey()).toList()).containsExactly(TestEnum.THREE, TestEnum.ONE, TestEnum.TWO);
@@ -47,7 +47,7 @@ public class EnumServiceTest extends DemoTestBase {
 
 	@Test
 	public void testSortingUmlaut() {
-		try (LocaleSetter localeSetter = LocaleSetter.set(Locale.GERMAN)) {
+		try (var _ = LocaleSetter.set(Locale.GERMAN)) {
 			List<String> list = List.of(SS, UEs, "d", OEs, "B", AEs + "B", "c", AE, AEs, OE, UE, "A");
 			List<String> sorted = list.stream().sorted(EnumService.localeAwareCIComparator()).toList();
 			assertThat(sorted).containsExactly("A", AEs, AE, AEs + "B", "B", "c", "d", OEs, OE, SS, UEs, UE);
@@ -56,7 +56,7 @@ public class EnumServiceTest extends DemoTestBase {
 
 	@Test
 	public void testSortingMissingValues() {
-		try (LocaleSetter localeSetter = LocaleSetter.set(Locale.GERMAN)) {
+		try (var _ = LocaleSetter.set(Locale.GERMAN)) {
 			var list = new ArrayList<String>();
 			list.add("First");
 			list.add("Second");
