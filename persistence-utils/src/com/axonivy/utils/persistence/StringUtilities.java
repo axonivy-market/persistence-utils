@@ -1,6 +1,5 @@
 package com.axonivy.utils.persistence;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
@@ -16,11 +15,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.axonivy.utils.persistence.beans.GetterIdString;
 import com.axonivy.utils.persistence.logging.Logger;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.type.CollectionType;
 
 /**
  * Utilities and convenience functions for {@link String}s.
@@ -31,13 +30,9 @@ public class StringUtilities {
 	private static final String CLASS_SEPARATOR_REGEX = "\\"+CLASS_SEPARATOR_STRING;
 	private static final Logger LOG = Logger.getLogger(StringUtilities.class);
 
-	private static ObjectMapper MAPPER;
-
-	static {
-		MAPPER = new ObjectMapper();
-		MAPPER.registerModule(new JavaTimeModule());
-		MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-	}
+	private static final ObjectMapper MAPPER = JsonMapper.builder()
+			.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+			.build();
 
 	private StringUtilities(){
 	}
@@ -412,7 +407,7 @@ public class StringUtilities {
 				}else{
 					object = MAPPER.readValue(jsonString, clazz);
 				}
-			} catch (IOException e) {
+			} catch (JacksonException e) {
 				LOG.error("Could not deserialize value {0} into {1}", e, jsonString, clazz);
 			}
 		}
@@ -431,7 +426,7 @@ public class StringUtilities {
 		if(value != null){
 			try {
 				return MAPPER.writeValueAsString(value);
-			} catch (JsonProcessingException e) {
+			} catch (JacksonException e) {
 				LOG.error("Could not serialize value {0} into json string", e, value);
 			}
 		}
