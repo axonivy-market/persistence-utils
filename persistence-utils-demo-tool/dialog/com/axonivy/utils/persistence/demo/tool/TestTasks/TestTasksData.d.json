@@ -1,0 +1,21 @@
+{
+  "$schema" : "https://json-schema.axonivy.com/14.0/project/data-class.json",
+  "simpleName" : "TestTasksData",
+  "namespace" : "com.axonivy.utils.persistence.demo.tool.TestTasks",
+  "fields" : [ {
+    "name" : "message",
+    "modifiers" : [ ]
+  }, {
+    "name" : "clean",
+    "type" : "Boolean",
+    "modifiers" : [ ]
+  }, {
+    "name" : "showErrorDetails",
+    "type" : "Boolean",
+    "modifiers" : [ ]
+  }, {
+    "name" : "cleanReload",
+    "type" : "Boolean",
+    "modifiers" : [ ]
+  } ]
+}

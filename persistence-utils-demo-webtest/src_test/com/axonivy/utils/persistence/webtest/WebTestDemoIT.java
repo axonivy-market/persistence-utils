@@ -47,7 +47,7 @@ public class WebTestDemoIT {
 
 	@BeforeAll
 	public static void setup() {
-		int randomNumber = new Random().nextInt(999999999);
+		int randomNumber = new Random().nextInt(9999);
 		marketingDepartmentName = "Marketing" + randomNumber;
 		productionDepartmentName = "Production" + randomNumber;
 		firstName = "Peter" + randomNumber;
@@ -122,8 +122,7 @@ public class WebTestDemoIT {
 
 		$(By.id("personForm:salary_input")).shouldBe(enabled).sendKeys("1111900");
 
-		$(By.id("personForm:department")).click();
-		$(By.id("personForm:department_items")).$$(By.tagName("li")).find(text(productionDepartmentName)).click();
+		selectDepartment(productionDepartmentName);
 
 		clickOnSavePersonButton();
 
@@ -191,9 +190,11 @@ public class WebTestDemoIT {
 	}
 
 	private void selectMaritalStatus(String status) {
-		$(By.id("personForm:maritalStatus")).click();
-		$(By.id("personForm:maritalStatus_items")).$$(By.tagName("li")).find(text(status)).click();
-		$(By.id("personForm:maritalStatus_items")).shouldBe(hidden);
+		PrimeUi.selectOne(By.id("personForm:maritalStatus")).selectItemByLabel(status);
+	}
+
+	private void selectDepartment(String department) {
+		PrimeUi.selectOne(By.id("personForm:department")).selectItemByLabel(department);
 	}
 
 	private void clickOnAddButton() {
@@ -218,8 +219,12 @@ public class WebTestDemoIT {
 
 	private static void startLoginAsAdmin(WebAppFixture fixture) {
 		fixture.login("jpa_admin", "jpa_admin");
-
-		open(EngineUrl.base() + "/dev-workflow-ui/faces/profile.xhtml");
+		var profileUrl = EngineUrl.base();
+		if(!profileUrl.endsWith("/")) {
+			profileUrl+="/";
+		}
+		profileUrl += "dev-workflow-ui/faces/profile.xhtml";
+		open(profileUrl);
 		SelenideElement lang = $(By.name("profileForm:contentLanguage_editableInput")).shouldBe(enabled);
 		lang.clear();
 		lang.sendKeys("en");

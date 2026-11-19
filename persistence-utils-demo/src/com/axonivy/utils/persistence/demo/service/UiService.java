@@ -4,15 +4,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Predicate;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.component.html.HtmlOutputLabel;
-import javax.faces.component.visit.VisitCallback;
-import javax.faces.component.visit.VisitContext;
-import javax.faces.component.visit.VisitResult;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.FacesMessage.Severity;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UIViewRoot;
+import jakarta.faces.component.html.HtmlOutputLabel;
+import jakarta.faces.component.visit.VisitCallback;
+import jakarta.faces.component.visit.VisitContext;
+import jakarta.faces.component.visit.VisitResult;
+import jakarta.faces.context.FacesContext;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.primefaces.PrimeFaces;

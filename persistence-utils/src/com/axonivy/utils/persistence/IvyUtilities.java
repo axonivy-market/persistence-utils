@@ -7,9 +7,8 @@ import java.util.function.Function;
 
 import com.axonivy.utils.persistence.logging.Logger;
 
-import ch.ivyteam.ivy.application.IApplication;
+import ch.ivyteam.ivy.application.app.Application;
 import ch.ivyteam.ivy.environment.Ivy;
-import ch.ivyteam.ivy.runtime.IvyRuntime;
 import ch.ivyteam.ivy.security.IRole;
 import ch.ivyteam.ivy.security.ISecurityContext;
 import ch.ivyteam.ivy.security.exec.Sudo;
@@ -35,7 +34,7 @@ public class IvyUtilities {
 	public static String getProcessModelName() {
 		String result = null;
 		try {
-			result = asSystem(() -> Ivy.request().getProcessModelVersion().getName());
+			result = asSystem(() -> Ivy.request().project().name());
 		} catch (Exception e) {
 			LOG.warn("Could not get process model name, returning {0}", e, result);
 		}
@@ -113,29 +112,13 @@ public class IvyUtilities {
 	}
 
 	/**
-	 * Check if this program is running in Axon Ivy Designer or not
-	 *
-	 * @deprecated use {@link IvyRuntime#isDesigner()}
-	 * @return true if this program is running in Axon Ivy Designer
-	 */
-	@Deprecated
-	public static boolean isDesigner() {
-		return IvyRuntime.isDesigner();
-	}
-
-	/**
-	 * Checks if given {@link IApplication} is designer.
+	 * Checks if given {@link Application} is designer.
 	 *
 	 * @param application the application
 	 * @return true if the application is running in Axon Ivy Designer
 	 */
-	public static boolean isDesigner(IApplication application) {
-		try {
-			return asSystem(() -> IApplication.DESIGNER_APPLICATION_NAME.equalsIgnoreCase(application.getName()));
-		} catch (Exception e) {
-			LOG.warn("Could not check whether app is designer, returning false", e);
-		}
-		return false;
+	public static boolean isDesigner(Application application) {
+		return application.securityContext().isDevMode();
 	}
 
 }

@@ -1,0 +1,9 @@
+{
+  "$schema" : "https://json-schema.axonivy.com/14.0/project/data-class.json",
+  "simpleName" : "InfoData",
+  "namespace" : "com.axonivy.utils.persistence.demo.components.Info",
+  "fields" : [ {
+    "name" : "value",
+    "modifiers" : [ ]
+  } ]
+}

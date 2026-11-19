@@ -8,9 +8,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.validation.Constraint;
-import javax.validation.ConstraintValidatorContext;
-import javax.validation.Payload;
+import jakarta.validation.Constraint;
+import jakarta.validation.ConstraintValidatorContext;
+import jakarta.validation.Payload;
 
 import com.axonivy.utils.persistence.dao.QuerySettings;
 import com.axonivy.utils.persistence.dao.markers.AuditableMarker;

@@ -3,8 +3,8 @@ package com.axonivy.utils.persistence.validation;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 import ch.ivyteam.ivy.environment.Ivy;
 

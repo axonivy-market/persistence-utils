@@ -22,7 +22,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.metamodel.PluralAttribute;
 import jakarta.persistence.metamodel.SingularAttribute;
 
-import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.beanutils2.PropertyUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -158,7 +158,6 @@ public class ReflectionUtilitities {
 	 */
 	public static List<String> getPrefixedMethodNames(Class<?> clazz,
 			String prefix) {
-		@SuppressWarnings("unchecked")
 		Set<String> methodNameSet = new HashSet<>(CollectionUtils.collect(
 				getPrefixedMethods(clazz, prefix),
 				method -> ((Method) method).getName()));

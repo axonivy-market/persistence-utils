@@ -3,8 +3,8 @@ package com.axonivy.utils.persistence.demo.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.application.FacesMessage.Severity;
 
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.PrimeFaces;

@@ -1,0 +1,17 @@
+{
+  "$schema" : "https://json-schema.axonivy.com/14.0/project/data-class.json",
+  "simpleName" : "DepartmentSearchData",
+  "namespace" : "com.axonivy.utils.persistence.demo.DepartmentSearch",
+  "fields" : [ {
+    "name" : "departmentId",
+    "modifiers" : [ ]
+  }, {
+    "name" : "secondSave",
+    "type" : "Boolean",
+    "modifiers" : [ ]
+  }, {
+    "name" : "ctrl",
+    "type" : "com.axonivy.utils.persistence.demo.ui.DepartmentSearchCtrl",
+    "modifiers" : [ ]
+  } ]
+}
