@@ -186,7 +186,8 @@ public class WebTestDemoIT {
 	}
 
 	private static void startLoginAsAdmin(WebAppFixture fixture) {
-		// fixture.login("jpa_admin", "jpa_admin");
+		// Needed for maven build, comment out in local runs.
+		fixture.login("jpa_admin", "jpa_admin");
 
 		open(EngineUrl.base() + "/dev-workflow-ui/faces/profile.xhtml");
 		SelenideElement lang = $(By.name("profileForm:contentLanguage_editableInput")).shouldBe(enabled);
